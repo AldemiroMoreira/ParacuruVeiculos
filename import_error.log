@@ -1,0 +1,19 @@
+Error: Cannot find module 'bcrypt'
+Require stack:
+- C:\Users\Usuario\Desktop\OLA\backend\models\AdminUser.js
+- C:\Users\Usuario\Desktop\OLA\backend\models\index.js
+- C:\Users\Usuario\Desktop\OLA\backend\test_seed.js\nError: Cannot find module 'bcrypt'
+Require stack:
+- C:\Users\Usuario\Desktop\OLA\backend\models\AdminUser.js
+- C:\Users\Usuario\Desktop\OLA\backend\models\index.js
+- C:\Users\Usuario\Desktop\OLA\backend\test_seed.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1077:15)
+    at Module._load (node:internal/modules/cjs/loader:922:27)
+    at Module.require (node:internal/modules/cjs/loader:1143:19)
+    at require (node:internal/modules/cjs/helpers:119:18)
+    at Object.<anonymous> (C:\Users\Usuario\Desktop\OLA\backend\models\AdminUser.js:3:16)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+    at Module.require (node:internal/modules/cjs/loader:1143:19)

@@ -1,0 +1,252 @@
+[
+    {
+        "id": 1,
+        "fabricante_id": 1,
+        "nome": "Onix"
+    },
+    {
+        "id": 2,
+        "fabricante_id": 1,
+        "nome": "Tracker"
+    },
+    {
+        "id": 3,
+        "fabricante_id": 1,
+        "nome": "S10"
+    },
+    {
+        "id": 4,
+        "fabricante_id": 1,
+        "nome": "Cruze"
+    },
+    {
+        "id": 5,
+        "fabricante_id": 1,
+        "nome": "Spin"
+    },
+    {
+        "id": 6,
+        "fabricante_id": 2,
+        "nome": "Gol"
+    },
+    {
+        "id": 7,
+        "fabricante_id": 2,
+        "nome": "Polo"
+    },
+    {
+        "id": 8,
+        "fabricante_id": 2,
+        "nome": "T-Cross"
+    },
+    {
+        "id": 9,
+        "fabricante_id": 2,
+        "nome": "Nivus"
+    },
+    {
+        "id": 10,
+        "fabricante_id": 2,
+        "nome": "Amarok"
+    },
+    {
+        "id": 11,
+        "fabricante_id": 3,
+        "nome": "Strada"
+    },
+    {
+        "id": 12,
+        "fabricante_id": 3,
+        "nome": "Argo"
+    },
+    {
+        "id": 13,
+        "fabricante_id": 3,
+        "nome": "Mobi"
+    },
+    {
+        "id": 14,
+        "fabricante_id": 3,
+        "nome": "Toro"
+    },
+    {
+        "id": 15,
+        "fabricante_id": 3,
+        "nome": "Pulse"
+    },
+    {
+        "id": 16,
+        "fabricante_id": 4,
+        "nome": "Ranger"
+    },
+    {
+        "id": 17,
+        "fabricante_id": 4,
+        "nome": "Mustang"
+    },
+    {
+        "id": 18,
+        "fabricante_id": 4,
+        "nome": "Bronco"
+    },
+    {
+        "id": 19,
+        "fabricante_id": 4,
+        "nome": "Maverick"
+    },
+    {
+        "id": 20,
+        "fabricante_id": 5,
+        "nome": "Corolla"
+    },
+    {
+        "id": 21,
+        "fabricante_id": 5,
+        "nome": "Hilux"
+    },
+    {
+        "id": 22,
+        "fabricante_id": 5,
+        "nome": "Yaris"
+    },
+    {
+        "id": 23,
+        "fabricante_id": 5,
+        "nome": "Corolla Cross"
+    },
+    {
+        "id": 24,
+        "fabricante_id": 5,
+        "nome": "SW4"
+    },
+    {
+        "id": 25,
+        "fabricante_id": 6,
+        "nome": "Civic"
+    },
+    {
+        "id": 26,
+        "fabricante_id": 6,
+        "nome": "HR-V"
+    },
+    {
+        "id": 27,
+        "fabricante_id": 6,
+        "nome": "City"
+    },
+    {
+        "id": 28,
+        "fabricante_id": 6,
+        "nome": "ZR-V"
+    },
+    {
+        "id": 29,
+        "fabricante_id": 7,
+        "nome": "HB20"
+    },
+    {
+        "id": 30,
+        "fabricante_id": 7,
+        "nome": "Creta"
+    },
+    {
+        "id": 31,
+        "fabricante_id": 7,
+        "nome": "Tucson"
+    },
+    {
+        "id": 32,
+        "fabricante_id": 8,
+        "nome": "Kwid"
+    },
+    {
+        "id": 33,
+        "fabricante_id": 8,
+        "nome": "Duster"
+    },
+    {
+        "id": 34,
+        "fabricante_id": 8,
+        "nome": "Oroch"
+    },
+    {
+        "id": 35,
+        "fabricante_id": 8,
+        "nome": "Master"
+    },
+    {
+        "id": 36,
+        "fabricante_id": 9,
+        "nome": "Kicks"
+    },
+    {
+        "id": 37,
+        "fabricante_id": 9,
+        "nome": "Versa"
+    },
+    {
+        "id": 38,
+        "fabricante_id": 9,
+        "nome": "Sentra"
+    },
+    {
+        "id": 39,
+        "fabricante_id": 9,
+        "nome": "Frontier"
+    },
+    {
+        "id": 40,
+        "fabricante_id": 10,
+        "nome": "Renegade"
+    },
+    {
+        "id": 41,
+        "fabricante_id": 10,
+        "nome": "Compass"
+    },
+    {
+        "id": 42,
+        "fabricante_id": 10,
+        "nome": "Commander"
+    },
+    {
+        "id": 43,
+        "fabricante_id": 20,
+        "nome": "Tiggo 5x"
+    },
+    {
+        "id": 44,
+        "fabricante_id": 20,
+        "nome": "Tiggo 7"
+    },
+    {
+        "id": 45,
+        "fabricante_id": 20,
+        "nome": "Tiggo 8"
+    },
+    {
+        "id": 46,
+        "fabricante_id": 22,
+        "nome": "Dolphin"
+    },
+    {
+        "id": 47,
+        "fabricante_id": 22,
+        "nome": "Song Plus"
+    },
+    {
+        "id": 48,
+        "fabricante_id": 22,
+        "nome": "Seal"
+    },
+    {
+        "id": 49,
+        "fabricante_id": 23,
+        "nome": "Haval H6"
+    },
+    {
+        "id": 50,
+        "fabricante_id": 23,
+        "nome": "Ora 03"
+    }
+]

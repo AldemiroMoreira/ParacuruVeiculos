@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paracuru Veículos</title>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#4ade80', // Lighter Green (400)
+                            600: '#22c55e', // Green (500)
+                            900: '#14532d', // Green (900)
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- App Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="text-slate-800">
+    <div id="root"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/services/api.js"></script>
+
+    <!-- App Scripts -->
+    <!-- Components -->
+    <script type="text/babel" src="/js/components/Header.js"></script>
+    <script type="text/babel" src="/js/components/Footer.js"></script>
+    <script type="text/babel" src="/js/components/AdCard.js"></script>
+    <script type="text/babel" src="/js/components/AdBanner.js"></script>
+
+    <!-- Pages -->
+    <script type="text/babel" src="/js/pages/HomePage.js"></script>
+    <script type="text/babel" src="/js/pages/LoginPage.js"></script>
+    <script type="text/babel" src="/js/pages/RegisterPage.js"></script>
+    <script type="text/babel" src="/js/pages/ForgotPasswordPage.js"></script>
+    <script type="text/babel" src="/js/pages/ChatPage.js"></script>
+    <script type="text/babel" src="/js/pages/InboxPage.js"></script>
+    <script type="text/babel" src="/js/pages/FavoritesPage.js"></script>
+    <script type="text/babel" src="/js/pages/CreateAdPage.js"></script>
+    <script type="text/babel" src="/js/pages/AdDetailPage.js"></script>
+    <script type="text/babel" src="/js/pages/CheckoutPage.js"></script>
+    <script type="text/babel" src="/js/pages/AdminPage.js"></script>
+
+    <!-- Main App -->
+    <script type="text/babel" src="/js/App.js"></script>
+</body>
+
+</html>

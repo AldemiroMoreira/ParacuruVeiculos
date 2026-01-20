@@ -1,0 +1,1 @@
+ALTER TABLE mensagens ADD COLUMN imagem VARCHAR(255) NULL AFTER conteudo;

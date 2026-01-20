@@ -1,0 +1,102 @@
+[
+    {
+        "id": 1,
+        "nome": "Chevrolet"
+    },
+    {
+        "id": 2,
+        "nome": "Volkswagen"
+    },
+    {
+        "id": 3,
+        "nome": "Fiat"
+    },
+    {
+        "id": 4,
+        "nome": "Ford"
+    },
+    {
+        "id": 5,
+        "nome": "Toyota"
+    },
+    {
+        "id": 6,
+        "nome": "Honda"
+    },
+    {
+        "id": 7,
+        "nome": "Hyundai"
+    },
+    {
+        "id": 8,
+        "nome": "Renault"
+    },
+    {
+        "id": 9,
+        "nome": "Nissan"
+    },
+    {
+        "id": 10,
+        "nome": "Jeep"
+    },
+    {
+        "id": 11,
+        "nome": "Mitsubishi"
+    },
+    {
+        "id": 12,
+        "nome": "Citroën"
+    },
+    {
+        "id": 13,
+        "nome": "Peugeot"
+    },
+    {
+        "id": 14,
+        "nome": "BMW"
+    },
+    {
+        "id": 15,
+        "nome": "Mercedes-Benz"
+    },
+    {
+        "id": 16,
+        "nome": "Audi"
+    },
+    {
+        "id": 17,
+        "nome": "Kia"
+    },
+    {
+        "id": 18,
+        "nome": "Volvo"
+    },
+    {
+        "id": 19,
+        "nome": "Land Rover"
+    },
+    {
+        "id": 20,
+        "nome": "Caoa Chery"
+    },
+    {
+        "id": 21,
+        "nome": "JAC Motors"
+    },
+    {
+        "id": 22,
+        "nome": "BYD"
+    },
+    {
+        "id": 23,
+        "nome": "GWM"
+    },
+    {
+        "id": 24,
+        "nome": "Troller"
+    },
+    {
+        "id": 25,
+        "nome": "Suzuki"
+    }
+]
