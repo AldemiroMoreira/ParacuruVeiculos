@@ -1,0 +1,11 @@
+
+        Time: 2026-01-20T21:18:32.827Z
+        Error Message: auto_return invalid. back_url.success must be defined
+        Error Cause: {}
+        Full Error: {
+  "message": "auto_return invalid. back_url.success must be defined",
+  "error": "invalid_auto_return",
+  "status": 400,
+  "cause": null
+}
+        

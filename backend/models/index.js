@@ -2,7 +2,7 @@ const sequelize = require('../config/database');
 const Usuario = require('./Usuario');
 const Anuncio = require('./Anuncio');
 const Plano = require('./Plano');
-// const Payment = require('./Payment');
+const Payment = require('./Payment');
 const AnuncioImage = require('../models/AnuncioImage'); // Keep old one or migrate?
 const Fabricante = require('./Fabricante');
 const Modelo = require('./Modelo');
@@ -64,6 +64,7 @@ module.exports = {
     Usuario,
     Anuncio,
     Plano,
+    Payment,
     Fabricante,
     Modelo,
     State,
