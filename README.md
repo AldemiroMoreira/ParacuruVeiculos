@@ -1,4 +1,4 @@
-# Butique do Carro - MVP
+# ParacuruVeiculos - MVP
 
 Sistema profissional de anúncio de veículos.
 
