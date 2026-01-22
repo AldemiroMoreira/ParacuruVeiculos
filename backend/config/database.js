@@ -11,6 +11,12 @@ const sequelize = new Sequelize(
         dialect: 'mariadb',
         logging: false, // Set to console.log to see SQL queries
         port: process.env.DB_PORT || 3306,
+        dialectOptions: process.env.DB_SSL === 'true' ? {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        } : {}
     }
 );
 
