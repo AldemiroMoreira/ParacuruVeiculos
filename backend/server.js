@@ -43,7 +43,12 @@ app.use('/api/propagandas', propagandasRoutes);
 // Database Test
 const sequelize = require('./config/database');
 sequelize.authenticate()
-    .then(() => console.log('Database connected...'))
+    .then(() => {
+        console.log('Database connected...');
+        // Auto-create/update tables based on models
+        return sequelize.sync({ alter: true });
+    })
+    .then(() => console.log('Database synced!'))
     .catch(err => console.log('Error: ' + err));
 
 // Fallback for SPA (Single Page Application)
