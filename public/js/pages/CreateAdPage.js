@@ -1,6 +1,6 @@
 const CreateAdPage = ({ user, navigateTo }) => {
     const [formData, setFormData] = React.useState({
-        titulo: '', descricao: '', preco: '', ano_fabricacao: '', km: '', fabricante_id: '', modelo_id: '', estado_id: '', cidade_id: '', plan_id: '1'
+        titulo: '', descricao: '', preco: '', ano_fabricacao: '', km: '', fabricante_id: '', modelo_id: '', estado_id: '', cidade_id: '', plan_id: '1', especie_id: ''
     });
     const [images, setImages] = React.useState([]);
     const [previews, setPreviews] = React.useState([]);
@@ -9,6 +9,7 @@ const CreateAdPage = ({ user, navigateTo }) => {
     const [cities, setCities] = React.useState([]);
     const [fabricantes, setFabricantes] = React.useState([]);
     const [modelos, setModelos] = React.useState([]);
+    const [especies, setEspecies] = React.useState([]);
 
     React.useEffect(() => {
         // Fetch States
@@ -19,6 +20,11 @@ const CreateAdPage = ({ user, navigateTo }) => {
         // Fetch Fabricantes
         api.get('/resources/fabricantes')
             .then(res => setFabricantes(res.data))
+            .catch(err => console.error(err));
+
+        // Fetch Especies
+        api.get('/resources/especies')
+            .then(res => setEspecies(res.data))
             .catch(err => console.error(err));
 
         // Cleanup previews
@@ -110,17 +116,36 @@ const CreateAdPage = ({ user, navigateTo }) => {
         }
     };
 
+    const handleEspecieChange = (e) => {
+        const especieId = e.target.value;
+        setFormData(prev => ({ ...prev, especie_id: especieId, modelo_id: '' }));
+        // If manufacturer is selected, refetch models for this species
+        if (formData.fabricante_id) {
+            fetchModelos(formData.fabricante_id, especieId);
+        } else {
+            setModelos([]);
+        }
+    };
+
     const handleFabricanteChange = (e) => {
         const fabId = e.target.value;
         setFormData(prev => ({ ...prev, fabricante_id: fabId, modelo_id: '' }));
 
         if (fabId) {
-            api.get(`/resources/modelos/${fabId}`)
-                .then(res => setModelos(res.data))
-                .catch(err => console.error(err));
+            fetchModelos(fabId, formData.especie_id);
         } else {
             setModelos([]);
         }
+    };
+
+    const fetchModelos = (fabId, especieId) => {
+        let url = `/resources/modelos/${fabId}`;
+        if (especieId) {
+            url += `?especieId=${especieId}`;
+        }
+        api.get(url)
+            .then(res => setModelos(res.data))
+            .catch(err => console.error(err));
     };
 
     const handleSubmit = async (e) => {
@@ -176,9 +201,11 @@ const CreateAdPage = ({ user, navigateTo }) => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    <input name="ano_fabricacao" type="number" value={formData.ano_fabricacao} onChange={handleChange} required className="p-3 border rounded-lg" placeholder="Ano" />
-                    <input name="km" type="number" value={formData.km} onChange={handleChange} required className="p-3 border rounded-lg" placeholder="KM" />
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <select name="especie_id" value={formData.especie_id} onChange={handleEspecieChange} required className="p-3 border rounded-lg bg-white">
+                        <option value="">Espécie</option>
+                        {especies.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
+                    </select>
 
                     <select name="fabricante_id" value={formData.fabricante_id} onChange={handleFabricanteChange} required className="p-3 border rounded-lg bg-white">
                         <option value="">Marca</option>
@@ -189,6 +216,9 @@ const CreateAdPage = ({ user, navigateTo }) => {
                         <option value="">Modelo</option>
                         {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
                     </select>
+
+                    <input name="ano_fabricacao" type="number" value={formData.ano_fabricacao} onChange={handleChange} required className="p-3 border rounded-lg" placeholder="Ano" />
+                    <input name="km" type="number" value={formData.km} onChange={handleChange} required className="p-3 border rounded-lg" placeholder="KM" />
 
                     <select name="plan_id" value={formData.plan_id} onChange={handleChange} className="p-3 border rounded-lg bg-white">
                         <option value="1">Plano Básico (15 dias) - R$ 30,00</option>

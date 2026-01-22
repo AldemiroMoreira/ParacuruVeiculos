@@ -1,12 +1,12 @@
 const { Op } = require('sequelize');
-const { Anuncio, AnuncioImage, Usuario, Fabricante, Modelo, State, City } = require('../models');
+const { Anuncio, AnuncioImage, Usuario, Fabricante, Modelo, State, City, EspecieVeiculo } = require('../models');
 const fs = require('fs');
 const path = require('path');
 const imageValidator = require('../utils/imageValidator');
 
 exports.createAnuncio = async (req, res) => {
     try {
-        const { titulo, descricao, fabricante_id, modelo_id, ano_fabricacao, km, preco, estado_id, cidade_id } = req.body;
+        const { titulo, descricao, fabricante_id, modelo_id, ano_fabricacao, km, preco, estado_id, cidade_id, especie_id } = req.body;
         const usuario_id = req.userData.userId; // Middleware provides userId
 
         // Create Anuncio logic... (keep existing)
@@ -38,6 +38,7 @@ exports.createAnuncio = async (req, res) => {
             preco,
             estado_id,
             cidade_id,
+            especie_id,
             status: 'pending_payment'
         });
 
@@ -83,11 +84,12 @@ exports.createAnuncio = async (req, res) => {
 
 exports.getAnuncios = async (req, res) => {
     try {
-        const { fabricante_id, modelo_id, estado_id, cidade_id, minPrice, maxPrice } = req.query;
+        const { fabricante_id, modelo_id, estado_id, cidade_id, especie_id, minPrice, maxPrice } = req.query;
         let where = { status: 'active' };
 
         if (fabricante_id) where.fabricante_id = fabricante_id;
         if (modelo_id) where.modelo_id = modelo_id;
+        if (especie_id) where.especie_id = especie_id;
         if (estado_id) where.estado_id = estado_id;
         if (cidade_id) where.cidade_id = cidade_id;
 
@@ -105,7 +107,8 @@ exports.getAnuncios = async (req, res) => {
                 { model: Fabricante, attributes: ['nome'] },
                 { model: Modelo, attributes: ['nome'] },
                 { model: State, attributes: ['name', 'abbreviation'] },
-                { model: City, attributes: ['nome'] }
+                { model: City, attributes: ['nome'] },
+                { model: EspecieVeiculo, attributes: ['nome'] }
             ],
             order: [['created_at', 'DESC']]
         });
@@ -126,7 +129,8 @@ exports.getAnuncioById = async (req, res) => {
                 { model: Fabricante, attributes: ['nome'] },
                 { model: Modelo, attributes: ['nome'] },
                 { model: State, attributes: ['name', 'abbreviation'] },
-                { model: City, attributes: ['nome'] }
+                { model: City, attributes: ['nome'] },
+                { model: EspecieVeiculo, attributes: ['nome'] }
             ]
         });
 

@@ -13,6 +13,13 @@ exports.register = async (req, res) => {
 
         const cleanEmail = email.trim();
 
+        // ALERTA: Restrição temporária de usuários para fase de testes
+        // Permitir apenas "aldemiro.moreira@gmail.com" e "tcristina.mv@gmail.com"
+        const allowedEmails = ['aldemiro.moreira@gmail.com', 'tcristina.mv@gmail.com'];
+        if (!allowedEmails.includes(cleanEmail)) {
+            return res.status(403).json({ message: 'Cadastro restrito: Email não autorizado nesta fase de testes.' });
+        }
+
         const existingUser = await Usuario.findOne({ where: { email: cleanEmail } });
         if (existingUser) {
             return res.status(409).json({ message: 'Email já cadastrado' });

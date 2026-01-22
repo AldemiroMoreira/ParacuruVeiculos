@@ -30,7 +30,7 @@ const RegisterPage = ({ navigateTo }) => {
 
             <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-0.5">Nome Completo</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-0.5">Nome</label>
                     <input
                         type="text"
                         className="w-full p-1.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none text-sm"

@@ -8,12 +8,15 @@ const HomePage = ({ navigateTo, user }) => {
     const [modelos, setModelos] = React.useState([]);
     const [states, setStates] = React.useState([]);
     const [cities, setCities] = React.useState([]);
+    const [especies, setEspecies] = React.useState([]);
 
     const [filters, setFilters] = React.useState({
         fabricante_id: '',
         modelo_id: '',
+        modelo_id: '',
         estado_id: '',
-        cidade_id: ''
+        cidade_id: '',
+        especie_id: ''
     });
 
     // Fetch initial data
@@ -27,6 +30,11 @@ const HomePage = ({ navigateTo, user }) => {
         // Fetch Fabricantes
         api.get('/resources/fabricantes')
             .then(res => setFabricantes(res.data))
+            .catch(err => console.error(err));
+
+        // Fetch Especies
+        api.get('/resources/especies')
+            .then(res => setEspecies(res.data))
             .catch(err => console.error(err));
 
         // Fetch Favorites if user
@@ -55,13 +63,14 @@ const HomePage = ({ navigateTo, user }) => {
                                 estado_id: loc.stateId,
                                 cidade_id: loc.cityId || '',
                                 fabricante_id: '',
-                                modelo_id: ''
+                                modelo_id: '',
+                                especie_id: ''
                             };
                             setFilters(initialFilters);
                             fetchAds(initialFilters);
                         })
                         .catch(() => {
-                            const initialFilters = { estado_id: loc.stateId, cidade_id: '', fabricante_id: '', modelo_id: '' };
+                            const initialFilters = { estado_id: loc.stateId, cidade_id: '', fabricante_id: '', modelo_id: '', especie_id: '' };
                             setFilters(initialFilters);
                             fetchAds(initialFilters);
                         });
@@ -166,7 +175,8 @@ const HomePage = ({ navigateTo, user }) => {
                                         estado_id: detectedUf,
                                         cidade_id: matchedCityId,
                                         fabricante_id: '',
-                                        modelo_id: ''
+                                        modelo_id: '',
+                                        especie_id: ''
                                     };
 
                                     // Persist to localStorage so it loads next time
@@ -246,11 +256,23 @@ const HomePage = ({ navigateTo, user }) => {
         if (name === 'fabricante_id') {
             setFilters(prev => ({ ...prev, modelo_id: '' })); // Reset model
             if (value) {
-                api.get(`/resources/modelos/${value}`)
+                const especieParam = filters.especie_id ? `?especieId=${filters.especie_id}` : '';
+                api.get(`/resources/modelos/${value}${especieParam}`)
                     .then(res => setModelos(res.data))
                     .catch(err => console.error(err));
             } else {
                 setModelos([]);
+            }
+        }
+
+        if (name === 'especie_id') {
+            setFilters(prev => ({ ...prev, modelo_id: '', [name]: value })); // Reset model when species changes
+            if (filters.fabricante_id) {
+                // If manufacturer is selected, refetch models for this NEW species
+                const especieParam = value ? `?especieId=${value}` : '';
+                api.get(`/resources/modelos/${filters.fabricante_id}${especieParam}`)
+                    .then(res => setModelos(res.data))
+                    .catch(err => console.error(err));
             }
         }
     };
@@ -270,10 +292,19 @@ const HomePage = ({ navigateTo, user }) => {
                     <div className="bg-brand-900 rounded-xl p-3 mb-4 text-white bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center relative overflow-hidden shadow-md">
                         <div className="absolute inset-0 bg-black/60"></div>
                         <div className="relative z-10 max-w-5xl mx-auto text-center py-3">
-                            <h2 className="text-xl md:text-2xl font-bold mb-1">Encontre seu próximo carro</h2>
+                            <h2 className="text-xl md:text-2xl font-bold mb-1">Encontre seu próximo veículo</h2>
                             <p className="text-gray-300 mb-3 text-xs">As melhores ofertas de Paracuru e região.</p>
 
-                            <div className="bg-white/10 backdrop-blur-md p-1.5 rounded-lg border border-white/10 grid grid-cols-2 md:grid-cols-4 gap-1.5">
+                            <div className="bg-white/10 backdrop-blur-md p-1.5 rounded-lg border border-white/10 grid grid-cols-2 md:grid-cols-5 gap-1.5">
+                                <select
+                                    name="especie_id"
+                                    value={filters.especie_id}
+                                    onChange={handleFilterChange}
+                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5"
+                                >
+                                    <option value="">Espécie (Todas)</option>
+                                    {especies.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
+                                </select>
                                 <select
                                     name="fabricante_id"
                                     value={filters.fabricante_id}

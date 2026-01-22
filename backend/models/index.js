@@ -11,6 +11,7 @@ const City = require('./City');
 const Message = require('./Message');
 const Favorite = require('./Favorite');
 const Propaganda = require('./Propaganda');
+const EspecieVeiculo = require('./EspecieVeiculo');
 
 // Associations
 Usuario.hasMany(Anuncio, { foreignKey: 'usuario_id' });
@@ -38,9 +39,12 @@ Anuncio.belongsToMany(Usuario, { through: Favorite, foreignKey: 'anuncio_id', as
 // Fabricantes / Modelos
 Fabricante.hasMany(Modelo, { foreignKey: 'fabricante_id' });
 Modelo.belongsTo(Fabricante, { foreignKey: 'fabricante_id' });
+Modelo.belongsTo(EspecieVeiculo, { foreignKey: 'especie_id' });
 
 Anuncio.belongsTo(Fabricante, { foreignKey: 'fabricante_id' });
+Anuncio.belongsTo(Fabricante, { foreignKey: 'fabricante_id' });
 Anuncio.belongsTo(Modelo, { foreignKey: 'modelo_id' });
+Anuncio.belongsTo(EspecieVeiculo, { foreignKey: 'especie_id' });
 
 // Locations
 // State hasMany City? Warning: City needs state_id. 
@@ -72,5 +76,6 @@ module.exports = {
     AnuncioImage,
     Message,
     Favorite,
-    Propaganda
+    Propaganda,
+    EspecieVeiculo
 };
