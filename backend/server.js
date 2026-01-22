@@ -45,8 +45,8 @@ const sequelize = require('./config/database');
 sequelize.authenticate()
     .then(() => {
         console.log('Database connected...');
-        // Auto-create/update tables based on models
-        return sequelize.sync({ alter: true });
+        // Sync models (create tables if missing, but don't force alter existing ones to avoid errors)
+        return sequelize.sync();
     })
     .then(() => console.log('Database synced!'))
     .catch(err => console.log('Error: ' + err));

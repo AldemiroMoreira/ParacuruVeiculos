@@ -21,7 +21,7 @@ Certifique-se de ter o MariaDB rodando.
 Crie o banco de dados e as tabelas rodando o script:
 `database/schema.sql`
 
-Isso criará o banco `butique_db` e as tabelas e dados iniciais.
+Isso criará o banco `paracuru_db` e as tabelas e dados iniciais.
 
 ### 2. Variáveis de Ambiente
 Crie um arquivo `.env` na raiz do projeto com o seguinte conteúdo (ajuste conforme necessário):
@@ -33,8 +33,9 @@ DB_USER=root
 DB_PASS=root
 DB_HOST=localhost
 JWT_SECRET=super_secret_jwt_key
-MP_ACCESS_TOKEN=APP_USR-7723783566072281-010903-9fdb1b18e9341b50bab4126dedd3bf79-2483148991
-BASE_URL=http://localhost:3000
+MP_ACCESS_TOKEN=
+
+BASE_URL=http://localhost:3003
 ```
 *Substitua `MP_ACCESS_TOKEN` pelo seu token de teste do Mercado Pago.*
 
@@ -51,10 +52,21 @@ node backend/server.js
 ```
 
 Acesse no navegador:
-`http://localhost:3000`
+`http://localhost:3003`
 
 ## Funcionalidades
 - **Auth**: Registro e Login de usuários.
 - **Anúncios**: Criar anúncios com fotos (upload múltiplo), busca por filtros.
 - **Pagamentos**: Integração Checkout Pro Mercado Pago.
 - **Admin**: Painel administrativo em `/admin` (Login separado na tabela `admin_users`).
+
+Para inicializar o servidor, você pode usar um dos seguintes comandos no terminal, dentro da pasta raiz do projeto (ParacuruVeiculos):
+
+Modo de Desenvolvimento (recomendado):
+npm run dev
+
+Este comando usa o nodemon, que reinicia o servidor automaticamente sempre que você salva uma alteração nos arquivos.
+Modo Padrão:
+npm start
+
+Este comando roda o servidor com o node simples.
