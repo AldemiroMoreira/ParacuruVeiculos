@@ -19,17 +19,29 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
 app.use('/imgs', express.static(path.join(__dirname, '../public/imgs')));
 
+console.log('[DEBUG] Starting server initialization...');
+
 // Routes
+console.log('[DEBUG] Loading authRoutes...');
 const authRoutes = require('./routes/authRoutes');
+console.log('[DEBUG] Loading anunciosRoutes...');
 const anunciosRoutes = require('./routes/anunciosRoutes');
+console.log('[DEBUG] Loading pagamentosRoutes...');
 const pagamentosRoutes = require('./routes/pagamentosRoutes');
+console.log('[DEBUG] Loading adminRoutes...');
 const adminRoutes = require('./routes/adminRoutes');
+console.log('[DEBUG] Loading locationsRoutes...');
 const locationsRoutes = require('./routes/locationsRoutes');
+console.log('[DEBUG] Loading resourcesRoutes...');
 const resourcesRoutes = require('./routes/resourcesRoutes');
+console.log('[DEBUG] Loading chatRoutes...');
 const chatRoutes = require('./routes/chatRoutes');
+console.log('[DEBUG] Loading favoritesRoutes...');
 const favoritesRoutes = require('./routes/favoritesRoutes');
+console.log('[DEBUG] Loading propagandasRoutes...');
 const propagandasRoutes = require('./routes/propagandasRoutes');
 
+console.log('[DEBUG] Registering middleware routes...');
 app.use('/api/auth', authRoutes);
 app.use('/api/anuncios', anunciosRoutes);
 app.use('/api/pagamentos', pagamentosRoutes);
@@ -41,6 +53,7 @@ app.use('/api/favorites', favoritesRoutes);
 app.use('/api/propagandas', propagandasRoutes);
 
 // Database Test
+console.log('[DEBUG] initializing DB connection...');
 const sequelize = require('./config/database');
 sequelize.authenticate()
     .then(() => {
