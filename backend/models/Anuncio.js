@@ -23,9 +23,9 @@ const Anuncio = sequelize.define('Anuncio', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    especie_id: {
+    categoria_id: {
         type: DataTypes.INTEGER,
-        allowNull: true // Allow null initially for migration/existing data, or forcing? User wants it for new ads. I'll make it allowNull: false eventually but for now maybe true to avoid breaking existing without defaults. But usually we want it required. I will make it allowNull: true for safety on existing rows, but the frontend will require it.
+        allowNull: true
     },
     ano_fabricacao: {
         type: DataTypes.INTEGER

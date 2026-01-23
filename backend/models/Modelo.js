@@ -12,9 +12,9 @@ const Modelo = sequelize.define('Modelo', {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    especie_id: {
+    categoria_id: {
         type: DataTypes.INTEGER,
-        allowNull: true // Allow null for now during migration
+        allowNull: true // Allow null only for migration safety
     },
     nome: {
         type: DataTypes.STRING,

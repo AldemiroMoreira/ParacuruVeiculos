@@ -8,7 +8,7 @@ const HomePage = ({ navigateTo, user }) => {
     const [modelos, setModelos] = React.useState([]);
     const [states, setStates] = React.useState([]);
     const [cities, setCities] = React.useState([]);
-    const [especies, setEspecies] = React.useState([]);
+    const [categorias, setCategorias] = React.useState([]);
 
     const [filters, setFilters] = React.useState({
         fabricante_id: '',
@@ -16,7 +16,7 @@ const HomePage = ({ navigateTo, user }) => {
         modelo_id: '',
         estado_id: '',
         cidade_id: '',
-        especie_id: ''
+        categoria_id: ''
     });
 
     // Fetch initial data
@@ -32,9 +32,9 @@ const HomePage = ({ navigateTo, user }) => {
             .then(res => setFabricantes(res.data))
             .catch(err => console.error(err));
 
-        // Fetch Especies
-        api.get('/resources/especies')
-            .then(res => setEspecies(res.data))
+        // Fetch Categorias
+        api.get('/resources/categorias')
+            .then(res => setCategorias(res.data))
             .catch(err => console.error(err));
 
         // Fetch Favorites if user
@@ -64,13 +64,13 @@ const HomePage = ({ navigateTo, user }) => {
                                 cidade_id: loc.cityId || '',
                                 fabricante_id: '',
                                 modelo_id: '',
-                                especie_id: ''
+                                categoria_id: ''
                             };
                             setFilters(initialFilters);
                             fetchAds(initialFilters);
                         })
                         .catch(() => {
-                            const initialFilters = { estado_id: loc.stateId, cidade_id: '', fabricante_id: '', modelo_id: '', especie_id: '' };
+                            const initialFilters = { estado_id: loc.stateId, cidade_id: '', fabricante_id: '', modelo_id: '', categoria_id: '' };
                             setFilters(initialFilters);
                             fetchAds(initialFilters);
                         });
@@ -176,7 +176,7 @@ const HomePage = ({ navigateTo, user }) => {
                                         cidade_id: matchedCityId,
                                         fabricante_id: '',
                                         modelo_id: '',
-                                        especie_id: ''
+                                        categoria_id: ''
                                     };
 
                                     // Persist to localStorage so it loads next time
@@ -256,8 +256,8 @@ const HomePage = ({ navigateTo, user }) => {
         if (name === 'fabricante_id') {
             setFilters(prev => ({ ...prev, modelo_id: '' })); // Reset model
             if (value) {
-                const especieParam = filters.especie_id ? `?especieId=${filters.especie_id}` : '';
-                api.get(`/resources/modelos/${value}${especieParam}`)
+                const categoriaParam = filters.categoria_id ? `?categoriaId=${filters.categoria_id}` : '';
+                api.get(`/resources/modelos/${value}${categoriaParam}`)
                     .then(res => setModelos(res.data))
                     .catch(err => console.error(err));
             } else {
@@ -265,12 +265,12 @@ const HomePage = ({ navigateTo, user }) => {
             }
         }
 
-        if (name === 'especie_id') {
+        if (name === 'categoria_id') {
             setFilters(prev => ({ ...prev, modelo_id: '', [name]: value })); // Reset model when species changes
             if (filters.fabricante_id) {
                 // If manufacturer is selected, refetch models for this NEW species
-                const especieParam = value ? `?especieId=${value}` : '';
-                api.get(`/resources/modelos/${filters.fabricante_id}${especieParam}`)
+                const categoriaParam = value ? `?categoriaId=${value}` : '';
+                api.get(`/resources/modelos/${filters.fabricante_id}${categoriaParam}`)
                     .then(res => setModelos(res.data))
                     .catch(err => console.error(err));
             }
@@ -297,13 +297,13 @@ const HomePage = ({ navigateTo, user }) => {
 
                             <div className="bg-white/10 backdrop-blur-md p-1.5 rounded-lg border border-white/10 grid grid-cols-2 md:grid-cols-5 gap-1.5">
                                 <select
-                                    name="especie_id"
-                                    value={filters.especie_id}
+                                    name="categoria_id"
+                                    value={filters.categoria_id}
                                     onChange={handleFilterChange}
                                     className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5"
                                 >
-                                    <option value="">Espécie (Todas)</option>
-                                    {especies.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
+                                    <option value="">Categoria (Todas)</option>
+                                    {categorias.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
                                 </select>
                                 <select
                                     name="fabricante_id"

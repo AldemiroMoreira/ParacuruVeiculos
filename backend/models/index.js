@@ -11,7 +11,7 @@ const City = require('./City');
 const Message = require('./Message');
 const Favorite = require('./Favorite');
 const Propaganda = require('./Propaganda');
-const EspecieVeiculo = require('./EspecieVeiculo');
+const Categoria = require('./Categoria');
 
 // Associations
 Usuario.hasMany(Anuncio, { foreignKey: 'usuario_id' });
@@ -39,23 +39,13 @@ Anuncio.belongsToMany(Usuario, { through: Favorite, foreignKey: 'anuncio_id', as
 // Fabricantes / Modelos
 Fabricante.hasMany(Modelo, { foreignKey: 'fabricante_id' });
 Modelo.belongsTo(Fabricante, { foreignKey: 'fabricante_id' });
-Modelo.belongsTo(EspecieVeiculo, { foreignKey: 'especie_id' });
+Modelo.belongsTo(Categoria, { foreignKey: 'categoria_id' });
 
-Anuncio.belongsTo(Fabricante, { foreignKey: 'fabricante_id' });
 Anuncio.belongsTo(Fabricante, { foreignKey: 'fabricante_id' });
 Anuncio.belongsTo(Modelo, { foreignKey: 'modelo_id' });
-Anuncio.belongsTo(EspecieVeiculo, { foreignKey: 'especie_id' });
+Anuncio.belongsTo(Categoria, { foreignKey: 'categoria_id' });
 
 // Locations
-// State hasMany City? Warning: City needs state_id. 
-// If State PK is UF, City state_id must be UF string?
-// Or State has ID? 
-// In schema.sql step 281: "states(uf) PRIMARY KEY".
-// So references should be to UF.
-// But models_new/City.js has state_id as INTEGER?
-// This implies a mismatch if I'm not careful.
-// For now, I'll comment out State->City association to avoid crash if types differ,
-// unless I'm sure. I'll focus on Anuncio->State.
 Anuncio.belongsTo(State, { foreignKey: 'estado_id', targetKey: 'abbreviation' });
 Anuncio.belongsTo(City, { foreignKey: 'cidade_id' });
 
@@ -77,5 +67,5 @@ module.exports = {
     Message,
     Favorite,
     Propaganda,
-    EspecieVeiculo
+    Categoria
 };

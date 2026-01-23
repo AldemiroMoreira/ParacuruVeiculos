@@ -1,4 +1,13 @@
-const { Fabricante, Modelo, EspecieVeiculo } = require('../models');
+const { Fabricante, Modelo, Categoria, Plano } = require('../models');
+
+exports.getPlanos = async (req, res) => {
+    try {
+        const planos = await Plano.findAll({ order: [['preco', 'ASC']] });
+        res.json(planos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 exports.getFabricantes = async (req, res) => {
     try {
@@ -12,11 +21,11 @@ exports.getFabricantes = async (req, res) => {
 exports.getModelos = async (req, res) => {
     try {
         const { fabricanteId } = req.params;
-        const { especieId } = req.query;
+        const { categoriaId } = req.query;
 
         let where = { fabricante_id: fabricanteId };
-        if (especieId) {
-            where.especie_id = especieId;
+        if (categoriaId) {
+            where.categoria_id = categoriaId;
         }
 
         const modelos = await Modelo.findAll({
@@ -29,10 +38,10 @@ exports.getModelos = async (req, res) => {
     }
 };
 
-exports.getEspecies = async (req, res) => {
+exports.getCategorias = async (req, res) => {
     try {
-        const especies = await EspecieVeiculo.findAll({ order: [['nome', 'ASC']] });
-        res.json(especies);
+        const categorias = await Categoria.findAll({ order: [['nome', 'ASC']] });
+        res.json(categorias);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const EspecieVeiculo = sequelize.define('EspecieVeiculo', {
+const Categoria = sequelize.define('Categoria', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,8 +12,8 @@ const EspecieVeiculo = sequelize.define('EspecieVeiculo', {
         allowNull: false
     }
 }, {
-    tableName: 'especie_veiculos',
+    tableName: 'categorias',
     timestamps: false
 });
 
-module.exports = EspecieVeiculo;
+module.exports = Categoria;
