@@ -24,6 +24,15 @@ async function seed() {
             await EspecieVeiculo.findOrCreate({ where: { nome } });
         }
 
+        // 1.1 Categorias (New - ensure these exist)
+        console.log('Seeding Categorias...');
+        const categoriasNomes = ['Carro', 'Moto', 'Caminhão', 'Van/Utilitário', 'Outros'];
+        const catMap = {};
+        for (const nome of categoriasNomes) {
+            const [cat] = await sequelize.models.Categoria.findOrCreate({ where: { nome } });
+            catMap[nome] = cat.id;
+        }
+
         // 2. Fabricantes
         console.log('Seeding Fabricantes...');
         for (const fab of fabricantesData) {
@@ -37,6 +46,32 @@ async function seed() {
         for (let i = 0; i < modelosData.length; i += chunkSize) {
             const chunk = modelosData.slice(i, i + chunkSize);
             await Modelo.bulkCreate(chunk, { updateOnDuplicate: ['nome', 'fabricante_id'] });
+        }
+
+        // 3.1 Link Modelos to Categorias (New)
+        console.log('Linking Modelos to Categorias...');
+        // Re-fetch existing models to update them
+        const allModelos = await Modelo.findAll();
+        // Helpers for mapping
+        const especiesMap = {};
+        const especiesList = await EspecieVeiculo.findAll();
+        especiesList.forEach(e => especiesMap[e.id] = e.nome);
+
+        for (const mod of allModelos) {
+            let catId = catMap['Outros'];
+            if (mod.especie_id && especiesMap[mod.especie_id]) {
+                const espName = especiesMap[mod.especie_id];
+                if (espName === 'Automóvel') catId = catMap['Carro'];
+                else if (espName === 'Moto') catId = catMap['Moto'];
+                else if (espName === 'Caminhão') catId = catMap['Caminhão'];
+                else if (espName === 'Ônibus') catId = catMap['Outros'];
+                else if (espName === 'Barco') catId = catMap['Outros'];
+                else if (espName === 'Aeronave') catId = catMap['Outros'];
+            }
+            // Fallback: If no especie_id, default to Carro if likely? Best to leave as Outros or logic from populate_categorias
+            if (!mod.categoria_id) { // Only update if empty? Or enforce? Let's enforce.
+                await mod.update({ categoria_id: catId });
+            }
         }
 
         // 4. Estados
