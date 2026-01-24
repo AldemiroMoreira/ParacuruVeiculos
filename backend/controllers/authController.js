@@ -55,8 +55,10 @@ exports.login = async (req, res) => {
             return res.status(401).json({ error: 'Senha incorreta' });
         }
 
+        const secretKey = process.env.JWT_SECRET || 'paracuru_secret_key_change_me';
         const token = jwt.sign(
             { userId: user.id, email: user.email },
+            secretKey,
             { expiresIn: '1h' }
         );
 
