@@ -17,11 +17,10 @@ let transporter;
 try {
     const nodemailer = require('nodemailer');
     transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST || 'smtp.mailtrap.io',
-        port: process.env.EMAIL_PORT || 2525,
+        service: 'gmail',
         auth: {
-            user: process.env.EMAIL_USER || 'user',
-            pass: process.env.EMAIL_PASS || 'pass'
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         }
     });
 } catch (e) {
