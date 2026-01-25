@@ -10,8 +10,16 @@ const CreateAdPage = ({ user, navigateTo }) => {
     const [fabricantes, setFabricantes] = React.useState([]);
     const [modelos, setModelos] = React.useState([]);
     const [categorias, setCategorias] = React.useState([]);
-
     const [planos, setPlanos] = React.useState([]);
+
+    const previewUrlsRef = React.useRef([]);
+
+    // Cleanup previews on unmount
+    React.useEffect(() => {
+        return () => {
+            previewUrlsRef.current.forEach(url => URL.revokeObjectURL(url));
+        };
+    }, []);
 
     React.useEffect(() => {
         // Fetch States
@@ -34,14 +42,6 @@ const CreateAdPage = ({ user, navigateTo }) => {
             .then(res => setPlanos(res.data))
             .catch(err => console.error(err));
 
-        const previewUrlsRef = React.useRef([]);
-
-        // Cleanup previews on unmount
-        React.useEffect(() => {
-            return () => {
-                previewUrlsRef.current.forEach(url => URL.revokeObjectURL(url));
-            };
-        }, []);
 
         const handleChange = (e) => {
             let { name, value } = e.target;
