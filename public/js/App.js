@@ -66,6 +66,8 @@ const App = () => {
                 return <AdminLoginPage navigateTo={navigateTo} />;
             case 'db_crud_categorias':
                 return <CategoriasCrudPage navigateTo={navigateTo} />;
+            case 'db_crud_planos':
+                return <PlanosCrudPage navigateTo={navigateTo} />;
 
             default:
                 return <HomePage navigateTo={navigateTo} />;

@@ -58,7 +58,16 @@ const CategoriasCrudPage = ({ navigateTo }) => {
 
     return (
         <div style={{ maxWidth: '800px', margin: '40px auto', fontFamily: 'Arial, sans-serif' }} className="p-4 bg-white shadow rounded-lg">
-            <h1 className="text-2xl font-bold mb-6">Gerenciar Categorias</h1>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-bold">Gerenciar Categorias</h1>
+                <div className="space-x-4">
+                    <span className="font-bold text-gray-800">Gerenciar Categorias</span>
+                    <span className="text-gray-400">|</span>
+                    <button onClick={() => navigateTo('db_crud_planos')} className="text-blue-600 hover:underline">
+                        Gerenciar Planos
+                    </button>
+                </div>
+            </div>
 
             <div className="flex gap-2 mb-6">
                 <input
