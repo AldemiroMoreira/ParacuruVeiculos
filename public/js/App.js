@@ -1,6 +1,6 @@
-// DB CRUD Pages
-import AdminLoginPage from './pages/db_crud/AdminLoginPage.js';
-import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
+// DB CRUD Pages - Loaded via index.html globals
+// import AdminLoginPage from './pages/db_crud/AdminLoginPage.js';
+// import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
 
 const App = () => {
     const [currentPage, setCurrentPage] = React.useState('home');
