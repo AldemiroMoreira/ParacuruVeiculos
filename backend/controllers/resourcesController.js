@@ -40,7 +40,7 @@ exports.getModelos = async (req, res) => {
 
 exports.getCategorias = async (req, res) => {
     try {
-        const categorias = await Categoria.findAll({ order: [['nome', 'ASC']] });
+        const categorias = await Categoria.findAll({ order: [['id', 'ASC']] });
         res.json(categorias);
     } catch (error) {
         res.status(500).json({ error: error.message });
