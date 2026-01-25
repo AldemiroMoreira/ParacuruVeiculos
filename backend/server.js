@@ -40,6 +40,10 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/favorites', favoritesRoutes);
 app.use('/api/propagandas', propagandasRoutes);
 
+// DB CRUD / Admin Module
+const dbCrudRoutes = require('./routes/db_crud/adminRoutes');
+app.use('/api/db_crud', dbCrudRoutes);
+
 // Database Test
 const sequelize = require('./config/database');
 sequelize.authenticate()

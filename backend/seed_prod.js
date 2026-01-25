@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const sequelize = require('./config/database');
-const { EspecieVeiculo, Fabricante, Modelo, State: Estado, City: Cidade, Plano, Usuario } = require('./models');
+const { Fabricante, Modelo, State: Estado, City: Cidade, Plano, Usuario } = require('./models');
 
 // Load JSON data
 const fabricantesData = JSON.parse(fs.readFileSync(path.join(__dirname, '../database/fabricantes.json'), 'utf-8'));
@@ -15,16 +15,9 @@ async function seed() {
         console.log('Connecting to database...');
         await sequelize.authenticate();
         console.log('Connected! Syncing models...');
-        // await sequelize.sync(); // Avoid sync if already synced by server, but harmless if safe.
+        await sequelize.sync(); // Ensure tables exist
 
-        // 1. Especies
-        console.log('Seeding Especies...');
-        const especies = ['Carro', 'Moto', 'Caminhão', 'Van/Utilitário', 'Outros'];
-        for (const nome of especies) {
-            await EspecieVeiculo.findOrCreate({ where: { nome } });
-        }
-
-        // 1.1 Categorias (New - ensure these exist)
+        // 1. Categorias (Create them first)
         console.log('Seeding Categorias...');
         const categoriasNomes = ['Carro', 'Moto', 'Caminhão', 'Van/Utilitário', 'Outros'];
         const catMap = {};
@@ -39,39 +32,20 @@ async function seed() {
             await Fabricante.upsert({ id: fab.id, nome: fab.nome });
         }
 
-        // 3. Modelos
-        console.log('Seeding Modelos...');
-        // Insert in chunks to avoid packet size issues
+        // 3. Modelos (Assume modelos.json contains CARROS)
+        console.log('Seeding Modelos (from modelos.json as Carros)...');
         const chunkSize = 50;
-        for (let i = 0; i < modelosData.length; i += chunkSize) {
-            const chunk = modelosData.slice(i, i + chunkSize);
-            await Modelo.bulkCreate(chunk, { updateOnDuplicate: ['nome', 'fabricante_id'] });
-        }
+        const carCategoryId = catMap['Carro'];
 
-        // 3.1 Link Modelos to Categorias (New)
-        console.log('Linking Modelos to Categorias...');
-        // Re-fetch existing models to update them
-        const allModelos = await Modelo.findAll();
-        // Helpers for mapping
-        const especiesMap = {};
-        const especiesList = await EspecieVeiculo.findAll();
-        especiesList.forEach(e => especiesMap[e.id] = e.nome);
+        // Prepare data with category_id
+        const modelosWithCat = modelosData.map(m => ({
+            ...m,
+            categoria_id: carCategoryId
+        }));
 
-        for (const mod of allModelos) {
-            let catId = catMap['Outros'];
-            if (mod.especie_id && especiesMap[mod.especie_id]) {
-                const espName = especiesMap[mod.especie_id];
-                if (espName === 'Automóvel') catId = catMap['Carro'];
-                else if (espName === 'Moto') catId = catMap['Moto'];
-                else if (espName === 'Caminhão') catId = catMap['Caminhão'];
-                else if (espName === 'Ônibus') catId = catMap['Outros'];
-                else if (espName === 'Barco') catId = catMap['Outros'];
-                else if (espName === 'Aeronave') catId = catMap['Outros'];
-            }
-            // Fallback: If no especie_id, default to Carro if likely? Best to leave as Outros or logic from populate_categorias
-            if (!mod.categoria_id) { // Only update if empty? Or enforce? Let's enforce.
-                await mod.update({ categoria_id: catId });
-            }
+        for (let i = 0; i < modelosWithCat.length; i += chunkSize) {
+            const chunk = modelosWithCat.slice(i, i + chunkSize);
+            await Modelo.bulkCreate(chunk, { updateOnDuplicate: ['nome', 'fabricante_id', 'categoria_id'] });
         }
 
         // 4. Estados

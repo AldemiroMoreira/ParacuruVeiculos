@@ -1,3 +1,7 @@
+// DB CRUD Pages
+import AdminLoginPage from './pages/db_crud/AdminLoginPage.js';
+import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
+
 const App = () => {
     const [currentPage, setCurrentPage] = React.useState('home');
     const [user, setUser] = React.useState(null);
@@ -56,6 +60,13 @@ const App = () => {
                 return <InboxPage navigateTo={navigateTo} user={user} />;
             case 'favorites':
                 return <FavoritesPage navigateTo={navigateTo} user={user} />;
+
+            // DB CRUD Routes
+            case 'db_crud_login':
+                return <AdminLoginPage navigateTo={navigateTo} />;
+            case 'db_crud_categorias':
+                return <CategoriasCrudPage navigateTo={navigateTo} />;
+
             default:
                 return <HomePage navigateTo={navigateTo} />;
         }

@@ -288,6 +288,20 @@ const HomePage = ({ navigateTo, user }) => {
                 {/* Main Content Column (Left) */}
                 <div className="flex-1 w-full min-w-0">
 
+                    {/* ADMIN SHORTCUT */}
+                    {user && user.email === 'aldemiro.moreira@gmail.com' && (
+                        <div className="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                            <strong className="font-bold">Acesso Restrito: </strong>
+                            <span className="block sm:inline">Painel de Gerenciamento de Categorias.</span>
+                            <button
+                                onClick={() => navigateTo('db_crud_login')}
+                                className="mt-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded"
+                            >
+                                Acessar Sub-Projeto CRUD
+                            </button>
+                        </div>
+                    )}
+
                     {/* Hero / Filter Section - Ultra Compact */}
                     <div className="bg-brand-900 rounded-xl p-3 mb-4 text-white bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center relative overflow-hidden shadow-md">
                         <div className="absolute inset-0 bg-black/60"></div>
