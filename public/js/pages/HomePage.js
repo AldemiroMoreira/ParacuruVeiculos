@@ -9,6 +9,7 @@ const HomePage = ({ navigateTo, user }) => {
     const [states, setStates] = React.useState([]);
     const [cities, setCities] = React.useState([]);
     const [categorias, setCategorias] = React.useState([]);
+    const [showAdminAlert, setShowAdminAlert] = React.useState(true);
 
     const [filters, setFilters] = React.useState({
         fabricante_id: '',
@@ -290,29 +291,23 @@ const HomePage = ({ navigateTo, user }) => {
 
                     {/* ADMIN SHORTCUT */}
                     {/* ADMIN SHORTCUT */}
-                    {user && user.email === 'aldemiro.moreira@gmail.com' && (
-                        (() => {
-                            const [visible, setVisible] = React.useState(true);
-                            if (!visible) return null;
-                            return (
-                                <div className="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
-                                    <strong className="font-bold">Acesso Restrito: </strong>
-                                    <span className="block sm:inline">Painel de Gerenciamento de Categorias.</span>
-                                    <button
-                                        onClick={() => navigateTo('db_crud_login')}
-                                        className="mt-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded"
-                                    >
-                                        Acessar Sub-Projeto CRUD
-                                    </button>
-                                    <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setVisible(false)}>
-                                        <svg className="fill-current h-6 w-6 text-yellow-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                            <title>Fechar</title>
-                                            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            );
-                        })()
+                    {user && user.email === 'aldemiro.moreira@gmail.com' && showAdminAlert && (
+                        <div className="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+                            <strong className="font-bold">Acesso Restrito: </strong>
+                            <span className="block sm:inline">Painel de Gerenciamento de Categorias.</span>
+                            <button
+                                onClick={() => navigateTo('db_crud_login')}
+                                className="mt-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded"
+                            >
+                                Acessar Sub-Projeto CRUD
+                            </button>
+                            <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShowAdminAlert(false)}>
+                                <svg className="fill-current h-6 w-6 text-yellow-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                    <title>Fechar</title>
+                                    <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                                </svg>
+                            </span>
+                        </div>
                     )}
 
                     {/* Hero / Filter Section - Ultra Compact */}
