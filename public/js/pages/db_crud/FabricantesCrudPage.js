@@ -1,9 +1,10 @@
-const CategoriasCrudPage = ({ navigateTo }) => {
-    // Access React globals
-    const [categorias, setCategorias] = React.useState([]);
+const FabricantesCrudPage = ({ navigateTo }) => {
+    const [fabricantes, setFabricantes] = React.useState([]);
     const [newItem, setNewItem] = React.useState('');
+    const [newLogo, setNewLogo] = React.useState('');
     const [editId, setEditId] = React.useState(null);
     const [editValue, setEditValue] = React.useState('');
+    const [editLogo, setEditLogo] = React.useState('');
 
     React.useEffect(() => {
         const token = localStorage.getItem('admin_token');
@@ -11,14 +12,14 @@ const CategoriasCrudPage = ({ navigateTo }) => {
             navigateTo('db_crud_login');
             return;
         }
-        fetchCategorias();
+        fetchFabricantes();
     }, []);
 
-    const fetchCategorias = async () => {
+    const fetchFabricantes = async () => {
         try {
-            const res = await fetch('/api/db_crud/categorias');
+            const res = await fetch('/api/db_crud/fabricantes');
             const data = await res.json();
-            setCategorias(data);
+            setFabricantes(data);
         } catch (error) {
             console.error(error);
         }
@@ -26,50 +27,51 @@ const CategoriasCrudPage = ({ navigateTo }) => {
 
     const handleAdd = async () => {
         if (!newItem) return;
-        await fetch('/api/db_crud/categorias', {
+        await fetch('/api/db_crud/fabricantes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nome: newItem })
+            body: JSON.stringify({ nome: newItem, logo_url: newLogo })
         });
         setNewItem('');
-        fetchCategorias();
+        setNewLogo('');
+        fetchFabricantes();
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm('Tem certeza que deseja excluir esta categoria?')) return;
-        await fetch(`/api/db_crud/categorias/${id}`, { method: 'DELETE' });
-        fetchCategorias();
+        if (!window.confirm('Tem certeza que deseja excluir este fabricante?')) return;
+        await fetch(`/api/db_crud/fabricantes/${id}`, { method: 'DELETE' });
+        fetchFabricantes();
     };
 
-    const startEdit = (cat) => {
-        setEditId(cat.id);
-        setEditValue(cat.nome);
+    const startEdit = (fab) => {
+        setEditId(fab.id);
+        setEditValue(fab.nome);
     };
 
     const saveEdit = async () => {
-        await fetch(`/api/db_crud/categorias/${editId}`, {
+        await fetch(`/api/db_crud/fabricantes/${editId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ nome: editValue })
         });
         setEditId(null);
-        fetchCategorias();
+        fetchFabricantes();
     };
 
     return (
         <div style={{ maxWidth: '800px', margin: '40px auto', fontFamily: 'Arial, sans-serif' }} className="p-4 bg-white shadow rounded-lg">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold">Gerenciar Categorias</h1>
+                <h1 className="text-2xl font-bold">Gerenciar Fabricantes</h1>
                 <div className="space-x-4">
-                    <span className="font-bold text-gray-800">Categorias</span>
+                    <button onClick={() => navigateTo('db_crud_categorias')} className="text-blue-600 hover:underline">
+                        Categorias
+                    </button>
                     <span className="text-gray-400">|</span>
                     <button onClick={() => navigateTo('db_crud_planos')} className="text-blue-600 hover:underline">
                         Planos
                     </button>
                     <span className="text-gray-400">|</span>
-                    <button onClick={() => navigateTo('db_crud_fabricantes')} className="text-blue-600 hover:underline">
-                        Fabricantes
-                    </button>
+                    <span className="font-bold text-gray-800">Fabricantes</span>
                     <span className="text-gray-400">|</span>
                     <button onClick={() => navigateTo('db_crud_modelos')} className="text-blue-600 hover:underline">
                         Modelos
@@ -77,12 +79,19 @@ const CategoriasCrudPage = ({ navigateTo }) => {
                 </div>
             </div>
 
-            <div className="flex gap-2 mb-6">
+            <div className="flex gap-2 mb-6 flex-col md:flex-row">
                 <input
                     type="text"
-                    placeholder="Nova Categoria"
+                    placeholder="Nome do Fabricante"
                     value={newItem}
                     onChange={(e) => setNewItem(e.target.value)}
+                    className="flex-1 p-2 border rounded"
+                />
+                <input
+                    type="text"
+                    placeholder="URL do Logo"
+                    value={newLogo}
+                    onChange={(e) => setNewLogo(e.target.value)}
                     className="flex-1 p-2 border rounded"
                 />
                 <button onClick={handleAdd} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
@@ -95,33 +104,46 @@ const CategoriasCrudPage = ({ navigateTo }) => {
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Logo</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
                             <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
-                        {categorias.map(cat => (
-                            <tr key={cat.id}>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{cat.id}</td>
+                        {fabricantes.map(fab => (
+                            <tr key={fab.id}>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{fab.id}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {editId === fab.id ? (
+                                        <input
+                                            value={editLogo}
+                                            onChange={(e) => setEditLogo(e.target.value)}
+                                            className="border p-1 rounded w-full"
+                                            placeholder="URL Logo"
+                                        />
+                                    ) : (
+                                        fab.logo_url && <img src={fab.logo_url} alt={fab.nome} className="h-8 w-8 object-contain" />
+                                    )}
+                                </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    {editId === cat.id ? (
+                                    {editId === fab.id ? (
                                         <input
                                             value={editValue}
                                             onChange={(e) => setEditValue(e.target.value)}
                                             className="border p-1 rounded w-full"
                                         />
-                                    ) : cat.nome}
+                                    ) : fab.nome}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
-                                    {editId === cat.id ? (
+                                    {editId === fab.id ? (
                                         <div className="flex justify-center gap-2">
                                             <button onClick={saveEdit} className="text-green-600 hover:text-green-900">Salvar</button>
                                             <button onClick={() => setEditId(null)} className="text-gray-600 hover:text-gray-900">Cancelar</button>
                                         </div>
                                     ) : (
                                         <div className="flex justify-center gap-4">
-                                            <button onClick={() => startEdit(cat)} className="text-blue-600 hover:text-blue-900">Editar</button>
-                                            <button onClick={() => handleDelete(cat.id)} className="text-red-600 hover:text-red-900">Excluir</button>
+                                            <button onClick={() => startEdit(fab)} className="text-blue-600 hover:text-blue-900">Editar</button>
+                                            <button onClick={() => handleDelete(fab.id)} className="text-red-600 hover:text-red-900">Excluir</button>
                                         </div>
                                     )}
                                 </td>

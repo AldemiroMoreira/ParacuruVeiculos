@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Categoria, Plano } = require('../../models');
+const { Categoria, Plano, Fabricante, Modelo } = require('../../models');
 
 // Middleware to check specific secret/password for 2nd layer auth
 // For MVP, we will verify this in the login endpoint and issue a temporary token or just trust the frontend for now if session based?
@@ -93,6 +93,95 @@ router.delete('/planos/:id', async (req, res) => {
     try {
         const { id } = req.params;
         await Plano.destroy({ where: { id } });
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// CRUD Fabricantes
+router.get('/fabricantes', async (req, res) => {
+    try {
+        const fabricantes = await Fabricante.findAll({ order: [['nome', 'ASC']] });
+        res.json(fabricantes);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.post('/fabricantes', async (req, res) => {
+    try {
+        const { nome, logo_url } = req.body;
+        const newFab = await Fabricante.create({ nome, logo_url });
+        res.json(newFab);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.put('/fabricantes/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, logo_url } = req.body;
+        await Fabricante.update({ nome, logo_url }, { where: { id } });
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/fabricantes/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Fabricante.destroy({ where: { id } });
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// CRUD Modelos
+router.get('/modelos', async (req, res) => {
+    try {
+        // Include associations for display
+        const modelos = await Modelo.findAll({
+            include: [
+                { model: Fabricante },
+                { model: Categoria }
+            ],
+            order: [['nome', 'ASC']]
+        });
+        res.json(modelos);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.post('/modelos', async (req, res) => {
+    try {
+        const { nome, fabricante_id, categoria_id } = req.body;
+        const newMod = await Modelo.create({ nome, fabricante_id, categoria_id });
+        res.json(newMod);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.put('/modelos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, fabricante_id, categoria_id } = req.body;
+        await Modelo.update({ nome, fabricante_id, categoria_id }, { where: { id } });
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/modelos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Modelo.destroy({ where: { id } });
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: error.message });

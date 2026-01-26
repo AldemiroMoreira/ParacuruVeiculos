@@ -2,7 +2,7 @@ const mariadb = require('mariadb');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
-async function checkCounts() {
+async function listTables() {
     let connection;
     try {
         const pool = mariadb.createPool({
@@ -14,11 +14,8 @@ async function checkCounts() {
         });
         connection = await pool.getConnection();
 
-        const tables = ['cidades', 'estados', 'fabricantes', 'modelos'];
-        for (const t of tables) {
-            const res = await connection.query(`SELECT COUNT(*) as count FROM ${t}`);
-            console.log(`${t}: ${res[0].count}`);
-        }
+        const rows = await connection.query("SHOW TABLES");
+        console.log("Tables in database:", rows);
     } catch (err) {
         console.error(err);
     } finally {
@@ -26,4 +23,4 @@ async function checkCounts() {
         process.exit(0);
     }
 }
-checkCounts();
+listTables();

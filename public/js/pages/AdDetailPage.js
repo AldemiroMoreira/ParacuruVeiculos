@@ -78,7 +78,10 @@ const AdDetailPage = ({ adId, navigateTo, user }) => {
                     </div>
                     <div className="flex justify-between border-b py-2">
                         <span>Marca</span>
-                        <span className="font-semibold text-gray-900">{ad.Fabricante?.nome}</span>
+                        <div className="flex items-center gap-2">
+                            {ad.Fabricante?.logo_url && <img src={ad.Fabricante?.logo_url} alt={ad.Fabricante?.nome} className="h-6 w-6 object-contain" />}
+                            <span className="font-semibold text-gray-900">{ad.Fabricante?.nome}</span>
+                        </div>
                     </div>
                     <div className="flex justify-between border-b py-2">
                         <span>Modelo</span>

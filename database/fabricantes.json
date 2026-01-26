@@ -98,5 +98,125 @@
     {
         "id": 25,
         "nome": "Suzuki"
+    },
+    {
+        "id": 26,
+        "nome": "Yamaha"
+    },
+    {
+        "id": 27,
+        "nome": "Kawasaki"
+    },
+    {
+        "id": 28,
+        "nome": "Harley-Davidson"
+    },
+    {
+        "id": 29,
+        "nome": "Triumph"
+    },
+    {
+        "id": 30,
+        "nome": "Royal Enfield"
+    },
+    {
+        "id": 31,
+        "nome": "Dafra"
+    },
+    {
+        "id": 32,
+        "nome": "Shineray"
+    },
+    {
+        "id": 33,
+        "nome": "Haojue"
+    },
+    {
+        "id": 34,
+        "nome": "Ducati"
+    },
+    {
+        "id": 35,
+        "nome": "Ram"
+    },
+    {
+        "id": 36,
+        "nome": "Porsche"
+    },
+    {
+        "id": 37,
+        "nome": "Mini"
+    },
+    {
+        "id": 38,
+        "nome": "Subaru"
+    },
+    {
+        "id": 39,
+        "nome": "Lexus"
+    },
+    {
+        "id": 40,
+        "nome": "Jaguar"
+    },
+    {
+        "id": 41,
+        "nome": "Lada"
+    },
+    {
+        "id": 42,
+        "nome": "Iveco"
+    },
+    {
+        "id": 43,
+        "nome": "Bajaj"
+    },
+    {
+        "id": 44,
+        "nome": "Avelloz"
+    },
+    {
+        "id": 45,
+        "nome": "Zontes"
+    },
+    {
+        "id": 46,
+        "nome": "Scania"
+    },
+    {
+        "id": 47,
+        "nome": "DAF"
+    },
+    {
+        "id": 48,
+        "nome": "Fibrafort"
+    },
+    {
+        "id": 49,
+        "nome": "Schaefer Yachts"
+    },
+    {
+        "id": 50,
+        "nome": "Sea-Doo"
+    },
+    {
+        "id": 51,
+        "nome": "Bayliner"
+    },
+    {
+        "id": 52,
+        "nome": "Embraer"
+    },
+    {
+        "id": 53,
+        "nome": "Cessna"
+    },
+    {
+        "id": 54,
+        "nome": "Piper"
+    },
+    {
+        "id": 55,
+        "nome": "Robinson"
     }
 ]

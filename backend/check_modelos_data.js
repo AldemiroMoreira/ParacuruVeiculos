@@ -1,15 +1,16 @@
-const { Modelo } = require('./models');
+const { Modelo, Categoria } = require('./models');
 
-async function check() {
+(async () => {
     try {
-        const modelos = await Modelo.findAll({ limit: 10 });
-        console.log('--- Top 10 Modelos ---');
-        modelos.forEach(m => {
-            console.log(`ID: ${m.id}, Nome: ${m.nome}, FabID: ${m.fabricante_id}, CatID: ${m.categoria_id}, EspID: ${m.dataValues.especie_id}`);
+        const modelos = await Modelo.findAll({
+            include: [Categoria],
+            limit: 10
         });
-    } catch (error) {
-        console.error(error);
-    }
-}
+        console.log(JSON.stringify(modelos, null, 2));
 
-check();
+        const nullCats = await Modelo.count({ where: { categoria_id: null } });
+        console.log(`Modelos sem categoria: ${nullCats}`);
+    } catch (e) {
+        console.error(e);
+    }
+})();

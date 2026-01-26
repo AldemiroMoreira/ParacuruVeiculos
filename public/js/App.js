@@ -68,6 +68,10 @@ const App = () => {
                 return <CategoriasCrudPage navigateTo={navigateTo} />;
             case 'db_crud_planos':
                 return <PlanosCrudPage navigateTo={navigateTo} />;
+            case 'db_crud_fabricantes':
+                return <FabricantesCrudPage navigateTo={navigateTo} />;
+            case 'db_crud_modelos':
+                return <ModelosCrudPage navigateTo={navigateTo} />;
 
             default:
                 return <HomePage navigateTo={navigateTo} />;

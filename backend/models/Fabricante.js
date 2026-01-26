@@ -11,6 +11,10 @@ const Fabricante = sequelize.define('Fabricante', {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
+    },
+    logo_url: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     tableName: 'fabricantes',

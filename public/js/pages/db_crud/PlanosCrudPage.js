@@ -63,10 +63,18 @@ const PlanosCrudPage = ({ navigateTo }) => {
                 <h1 className="text-2xl font-bold">Gerenciar Planos</h1>
                 <div className="space-x-4">
                     <button onClick={() => navigateTo('db_crud_categorias')} className="text-blue-600 hover:underline">
-                        Gerenciar Categorias
+                        Categorias
                     </button>
                     <span className="text-gray-400">|</span>
-                    <span className="font-bold text-gray-800">Gerenciar Planos</span>
+                    <span className="font-bold text-gray-800">Planos</span>
+                    <span className="text-gray-400">|</span>
+                    <button onClick={() => navigateTo('db_crud_fabricantes')} className="text-blue-600 hover:underline">
+                        Fabricantes
+                    </button>
+                    <span className="text-gray-400">|</span>
+                    <button onClick={() => navigateTo('db_crud_modelos')} className="text-blue-600 hover:underline">
+                        Modelos
+                    </button>
                 </div>
             </div>
 

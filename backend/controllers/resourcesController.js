@@ -11,7 +11,27 @@ exports.getPlanos = async (req, res) => {
 
 exports.getFabricantes = async (req, res) => {
     try {
-        const fabricantes = await Fabricante.findAll({ order: [['nome', 'ASC']] });
+        const { categoriaId } = req.query;
+        let where = {};
+
+        // If Category ID is provided, we need to filter manufacturers that have models in this category
+        // This requires a more complex query (semi-join) or simple logic if your DB is small.
+        // Easiest is to include Model with where clause.
+        let include = [];
+        if (categoriaId) {
+            include = [{
+                model: Modelo,
+                where: { categoria_id: categoriaId },
+                attributes: [], // We don't need model data, just presence
+                required: true // Inner join
+            }];
+        }
+
+        const fabricantes = await Fabricante.findAll({
+            where,
+            include,
+            order: [['nome', 'ASC']]
+        });
         res.json(fabricantes);
     } catch (error) {
         res.status(500).json({ error: error.message });

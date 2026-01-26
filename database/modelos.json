@@ -2,251 +2,2239 @@
     {
         "id": 1,
         "fabricante_id": 1,
-        "nome": "Onix"
+        "nome": "Onix",
+        "categoria_id": 2
     },
     {
         "id": 2,
         "fabricante_id": 1,
-        "nome": "Tracker"
+        "nome": "Tracker",
+        "categoria_id": 2
     },
     {
         "id": 3,
         "fabricante_id": 1,
-        "nome": "S10"
+        "nome": "S10",
+        "categoria_id": 2
     },
     {
         "id": 4,
         "fabricante_id": 1,
-        "nome": "Cruze"
+        "nome": "Cruze",
+        "categoria_id": 2
     },
     {
         "id": 5,
         "fabricante_id": 1,
-        "nome": "Spin"
+        "nome": "Spin",
+        "categoria_id": 2
     },
     {
         "id": 6,
         "fabricante_id": 2,
-        "nome": "Gol"
+        "nome": "Gol",
+        "categoria_id": 2
     },
     {
         "id": 7,
         "fabricante_id": 2,
-        "nome": "Polo"
+        "nome": "Polo",
+        "categoria_id": 2
     },
     {
         "id": 8,
         "fabricante_id": 2,
-        "nome": "T-Cross"
+        "nome": "T-Cross",
+        "categoria_id": 2
     },
     {
         "id": 9,
         "fabricante_id": 2,
-        "nome": "Nivus"
+        "nome": "Nivus",
+        "categoria_id": 2
     },
     {
         "id": 10,
         "fabricante_id": 2,
-        "nome": "Amarok"
+        "nome": "Amarok",
+        "categoria_id": 2
     },
     {
         "id": 11,
         "fabricante_id": 3,
-        "nome": "Strada"
+        "nome": "Strada",
+        "categoria_id": 2
     },
     {
         "id": 12,
         "fabricante_id": 3,
-        "nome": "Argo"
+        "nome": "Argo",
+        "categoria_id": 2
     },
     {
         "id": 13,
         "fabricante_id": 3,
-        "nome": "Mobi"
+        "nome": "Mobi",
+        "categoria_id": 2
     },
     {
         "id": 14,
         "fabricante_id": 3,
-        "nome": "Toro"
+        "nome": "Toro",
+        "categoria_id": 2
     },
     {
         "id": 15,
         "fabricante_id": 3,
-        "nome": "Pulse"
+        "nome": "Pulse",
+        "categoria_id": 2
     },
     {
         "id": 16,
         "fabricante_id": 4,
-        "nome": "Ranger"
+        "nome": "Ranger",
+        "categoria_id": 2
     },
     {
         "id": 17,
         "fabricante_id": 4,
-        "nome": "Mustang"
+        "nome": "Mustang",
+        "categoria_id": 2
     },
     {
         "id": 18,
         "fabricante_id": 4,
-        "nome": "Bronco"
+        "nome": "Bronco",
+        "categoria_id": 2
     },
     {
         "id": 19,
         "fabricante_id": 4,
-        "nome": "Maverick"
+        "nome": "Maverick",
+        "categoria_id": 2
     },
     {
         "id": 20,
         "fabricante_id": 5,
-        "nome": "Corolla"
+        "nome": "Corolla",
+        "categoria_id": 2
     },
     {
         "id": 21,
         "fabricante_id": 5,
-        "nome": "Hilux"
+        "nome": "Hilux",
+        "categoria_id": 2
     },
     {
         "id": 22,
         "fabricante_id": 5,
-        "nome": "Yaris"
+        "nome": "Yaris",
+        "categoria_id": 2
     },
     {
         "id": 23,
         "fabricante_id": 5,
-        "nome": "Corolla Cross"
+        "nome": "Corolla Cross",
+        "categoria_id": 2
     },
     {
         "id": 24,
         "fabricante_id": 5,
-        "nome": "SW4"
+        "nome": "SW4",
+        "categoria_id": 2
     },
     {
         "id": 25,
         "fabricante_id": 6,
-        "nome": "Civic"
+        "nome": "Civic",
+        "categoria_id": 2
     },
     {
         "id": 26,
         "fabricante_id": 6,
-        "nome": "HR-V"
+        "nome": "HR-V",
+        "categoria_id": 2
     },
     {
         "id": 27,
         "fabricante_id": 6,
-        "nome": "City"
+        "nome": "City",
+        "categoria_id": 2
     },
     {
         "id": 28,
         "fabricante_id": 6,
-        "nome": "ZR-V"
+        "nome": "ZR-V",
+        "categoria_id": 2
     },
     {
         "id": 29,
         "fabricante_id": 7,
-        "nome": "HB20"
+        "nome": "HB20",
+        "categoria_id": 2
     },
     {
         "id": 30,
         "fabricante_id": 7,
-        "nome": "Creta"
+        "nome": "Creta",
+        "categoria_id": 2
     },
     {
         "id": 31,
         "fabricante_id": 7,
-        "nome": "Tucson"
+        "nome": "Tucson",
+        "categoria_id": 2
     },
     {
         "id": 32,
         "fabricante_id": 8,
-        "nome": "Kwid"
+        "nome": "Kwid",
+        "categoria_id": 2
     },
     {
         "id": 33,
         "fabricante_id": 8,
-        "nome": "Duster"
+        "nome": "Duster",
+        "categoria_id": 2
     },
     {
         "id": 34,
         "fabricante_id": 8,
-        "nome": "Oroch"
+        "nome": "Oroch",
+        "categoria_id": 2
     },
     {
         "id": 35,
         "fabricante_id": 8,
-        "nome": "Master"
+        "nome": "Master",
+        "categoria_id": 4
     },
     {
         "id": 36,
         "fabricante_id": 9,
-        "nome": "Kicks"
+        "nome": "Kicks",
+        "categoria_id": 2
     },
     {
         "id": 37,
         "fabricante_id": 9,
-        "nome": "Versa"
+        "nome": "Versa",
+        "categoria_id": 2
     },
     {
         "id": 38,
         "fabricante_id": 9,
-        "nome": "Sentra"
+        "nome": "Sentra",
+        "categoria_id": 2
     },
     {
         "id": 39,
         "fabricante_id": 9,
-        "nome": "Frontier"
+        "nome": "Frontier",
+        "categoria_id": 2
     },
     {
         "id": 40,
         "fabricante_id": 10,
-        "nome": "Renegade"
+        "nome": "Renegade",
+        "categoria_id": 2
     },
     {
         "id": 41,
         "fabricante_id": 10,
-        "nome": "Compass"
+        "nome": "Compass",
+        "categoria_id": 2
     },
     {
         "id": 42,
         "fabricante_id": 10,
-        "nome": "Commander"
+        "nome": "Commander",
+        "categoria_id": 2
     },
     {
         "id": 43,
         "fabricante_id": 20,
-        "nome": "Tiggo 5x"
+        "nome": "Tiggo 5x",
+        "categoria_id": 2
     },
     {
         "id": 44,
         "fabricante_id": 20,
-        "nome": "Tiggo 7"
+        "nome": "Tiggo 7",
+        "categoria_id": 2
     },
     {
         "id": 45,
         "fabricante_id": 20,
-        "nome": "Tiggo 8"
+        "nome": "Tiggo 8",
+        "categoria_id": 2
     },
     {
         "id": 46,
         "fabricante_id": 22,
-        "nome": "Dolphin"
+        "nome": "Dolphin",
+        "categoria_id": 2
     },
     {
         "id": 47,
         "fabricante_id": 22,
-        "nome": "Song Plus"
+        "nome": "Song Plus",
+        "categoria_id": 2
     },
     {
         "id": 48,
         "fabricante_id": 22,
-        "nome": "Seal"
+        "nome": "Seal",
+        "categoria_id": 2
     },
     {
         "id": 49,
         "fabricante_id": 23,
-        "nome": "Haval H6"
+        "nome": "Haval H6",
+        "categoria_id": 2
     },
     {
         "id": 50,
         "fabricante_id": 23,
-        "nome": "Ora 03"
+        "nome": "Ora 03",
+        "categoria_id": 2
+    },
+    {
+        "id": 51,
+        "fabricante_id": 5,
+        "nome": "Hilux Cabine Dupla CD 2.8 TDI SRX 4WD (Aut)",
+        "categoria_id": 2
+    },
+    {
+        "id": 52,
+        "fabricante_id": 5,
+        "nome": "Hilux Cabine Dupla CD 2.8 TDI SRV 4WD (Aut)",
+        "categoria_id": 2
+    },
+    {
+        "id": 53,
+        "fabricante_id": 5,
+        "nome": "Hilux Cabine Simples CS 2.8 TDI 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 54,
+        "fabricante_id": 5,
+        "nome": "Corolla Altis Premium 2.0 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 55,
+        "fabricante_id": 5,
+        "nome": "Corolla XEi 2.0 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 56,
+        "fabricante_id": 5,
+        "nome": "Corolla Cross XRX Hybrid 1.8",
+        "categoria_id": 2
+    },
+    {
+        "id": 57,
+        "fabricante_id": 5,
+        "nome": "Yaris Hatch XLS 1.5 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 58,
+        "fabricante_id": 5,
+        "nome": "Yaris Sedan XLS 1.5 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 59,
+        "fabricante_id": 5,
+        "nome": "SW4 SRX 2.8 TDI 4WD 7 Lugares",
+        "categoria_id": 2
+    },
+    {
+        "id": 60,
+        "fabricante_id": 1,
+        "nome": "Onix Hatch Premier 1.0 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 61,
+        "fabricante_id": 1,
+        "nome": "Onix Plus Premier 1.0 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 62,
+        "fabricante_id": 1,
+        "nome": "Tracker Premier 1.2 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 63,
+        "fabricante_id": 1,
+        "nome": "S10 Cabine Dupla High Country 2.8 Turbo Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 64,
+        "fabricante_id": 1,
+        "nome": "S10 Cabine Dupla LTZ 2.5 Flex 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 65,
+        "fabricante_id": 1,
+        "nome": "Cruze Sedan Premier 1.4 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 66,
+        "fabricante_id": 1,
+        "nome": "Spin Activ 7 Lugares 1.8 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 67,
+        "fabricante_id": 2,
+        "nome": "Gol 1.0 MPI",
+        "categoria_id": 2
+    },
+    {
+        "id": 68,
+        "fabricante_id": 2,
+        "nome": "Voyage 1.6 MSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 69,
+        "fabricante_id": 2,
+        "nome": "Polo Highline 200 TSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 70,
+        "fabricante_id": 2,
+        "nome": "Virtus Highline 200 TSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 71,
+        "fabricante_id": 2,
+        "nome": "Nivus Highline 200 TSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 72,
+        "fabricante_id": 2,
+        "nome": "T-Cross Highline 250 TSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 73,
+        "fabricante_id": 2,
+        "nome": "Taos Highline 250 TSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 74,
+        "fabricante_id": 2,
+        "nome": "Amarok V6 Extreme 3.0 TDI 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 75,
+        "fabricante_id": 2,
+        "nome": "Saveiro Cross CD 1.6 MSI",
+        "categoria_id": 2
+    },
+    {
+        "id": 76,
+        "fabricante_id": 3,
+        "nome": "Strada Volcano 1.3 CD",
+        "categoria_id": 2
+    },
+    {
+        "id": 77,
+        "fabricante_id": 3,
+        "nome": "Strada Freedom 1.3 CS",
+        "categoria_id": 2
+    },
+    {
+        "id": 78,
+        "fabricante_id": 3,
+        "nome": "Toro Ranch 2.0 Turbo Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 79,
+        "fabricante_id": 3,
+        "nome": "Toro Volcano 1.3 Turbo 270",
+        "categoria_id": 2
+    },
+    {
+        "id": 80,
+        "fabricante_id": 3,
+        "nome": "Pulse Impetus 1.0 Turbo 200",
+        "categoria_id": 2
+    },
+    {
+        "id": 81,
+        "fabricante_id": 3,
+        "nome": "Fastback Limited Edition 1.3 Turbo 270",
+        "categoria_id": 2
+    },
+    {
+        "id": 82,
+        "fabricante_id": 3,
+        "nome": "Argo HGT 1.8 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 83,
+        "fabricante_id": 3,
+        "nome": "Cronos Precision 1.8 Flex",
+        "categoria_id": 2
+    },
+    {
+        "id": 84,
+        "fabricante_id": 3,
+        "nome": "Mobi Trekking 1.0",
+        "categoria_id": 2
+    },
+    {
+        "id": 85,
+        "fabricante_id": 10,
+        "nome": "Renegade Trailhawk 1.3 Turbo 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 86,
+        "fabricante_id": 10,
+        "nome": "Renegade Longitude 1.3 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 87,
+        "fabricante_id": 10,
+        "nome": "Compass Trailhawk 2.0 Turbo Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 88,
+        "fabricante_id": 10,
+        "nome": "Compass S 1.3 Turbo 270",
+        "categoria_id": 2
+    },
+    {
+        "id": 89,
+        "fabricante_id": 10,
+        "nome": "Commander Overland 2.0 Turbo Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 90,
+        "fabricante_id": 7,
+        "nome": "HB20 Diamond 1.0 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 91,
+        "fabricante_id": 7,
+        "nome": "HB20S Diamond 1.0 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 92,
+        "fabricante_id": 7,
+        "nome": "Creta Ultimate 2.0",
+        "categoria_id": 2
+    },
+    {
+        "id": 93,
+        "fabricante_id": 7,
+        "nome": "Creta N Line 1.0 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 94,
+        "fabricante_id": 6,
+        "nome": "City Touring 1.5",
+        "categoria_id": 2
+    },
+    {
+        "id": 95,
+        "fabricante_id": 6,
+        "nome": "City Hatchback Touring 1.5",
+        "categoria_id": 2
+    },
+    {
+        "id": 96,
+        "fabricante_id": 6,
+        "nome": "HR-V Touring 1.5 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 97,
+        "fabricante_id": 6,
+        "nome": "Civic Touring 1.5 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 98,
+        "fabricante_id": 4,
+        "nome": "Ranger Limited 3.2 Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 99,
+        "fabricante_id": 4,
+        "nome": "Ranger Storm 3.2 Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 100,
+        "fabricante_id": 4,
+        "nome": "Bronco Sport Wildtrak 2.0 Turbo 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 101,
+        "fabricante_id": 4,
+        "nome": "Territory Titanium 1.5 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 102,
+        "fabricante_id": 4,
+        "nome": "Maverick Lariat FX4 2.0 Turbo AWD",
+        "categoria_id": 2
+    },
+    {
+        "id": 103,
+        "fabricante_id": 4,
+        "nome": "Mustang Mach 1 5.0 V8",
+        "categoria_id": 2
+    },
+    {
+        "id": 104,
+        "fabricante_id": 8,
+        "nome": "Kwid Outsider 1.0",
+        "categoria_id": 2
+    },
+    {
+        "id": 105,
+        "fabricante_id": 8,
+        "nome": "Sandero S Edition 1.0",
+        "categoria_id": 2
+    },
+    {
+        "id": 106,
+        "fabricante_id": 8,
+        "nome": "Logan Zen 1.6",
+        "categoria_id": 2
+    },
+    {
+        "id": 107,
+        "fabricante_id": 8,
+        "nome": "Duster Iconic 1.6 CVT",
+        "categoria_id": 2
+    },
+    {
+        "id": 108,
+        "fabricante_id": 8,
+        "nome": "Oroch Outsider 1.3 Turbo",
+        "categoria_id": 2
+    },
+    {
+        "id": 109,
+        "fabricante_id": 9,
+        "nome": "Kicks Exclusive 1.6 CVT",
+        "categoria_id": 2
+    },
+    {
+        "id": 110,
+        "fabricante_id": 9,
+        "nome": "Versa Exclusive 1.6 CVT",
+        "categoria_id": 2
+    },
+    {
+        "id": 111,
+        "fabricante_id": 9,
+        "nome": "Frontier PRO-4X 2.3 Bi-Turbo Diesel 4WD",
+        "categoria_id": 2
+    },
+    {
+        "id": 112,
+        "fabricante_id": 6,
+        "nome": "CG 160 Titan",
+        "categoria_id": 3
+    },
+    {
+        "id": 113,
+        "fabricante_id": 6,
+        "nome": "CG 160 Fan",
+        "categoria_id": 3
+    },
+    {
+        "id": 114,
+        "fabricante_id": 6,
+        "nome": "CG 160 Start",
+        "categoria_id": 3
+    },
+    {
+        "id": 115,
+        "fabricante_id": 6,
+        "nome": "Biz 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 116,
+        "fabricante_id": 6,
+        "nome": "Biz 110i",
+        "categoria_id": 3
+    },
+    {
+        "id": 117,
+        "fabricante_id": 6,
+        "nome": "Pop 110i",
+        "categoria_id": 3
+    },
+    {
+        "id": 118,
+        "fabricante_id": 6,
+        "nome": "NXR 160 Bros",
+        "categoria_id": 3
+    },
+    {
+        "id": 119,
+        "fabricante_id": 6,
+        "nome": "XRE 300",
+        "categoria_id": 3
+    },
+    {
+        "id": 120,
+        "fabricante_id": 6,
+        "nome": "XRE 190",
+        "categoria_id": 3
+    },
+    {
+        "id": 121,
+        "fabricante_id": 6,
+        "nome": "CB 250F Twister",
+        "categoria_id": 3
+    },
+    {
+        "id": 122,
+        "fabricante_id": 6,
+        "nome": "CB 300F Twister",
+        "categoria_id": 3
+    },
+    {
+        "id": 123,
+        "fabricante_id": 6,
+        "nome": "CB 500F",
+        "categoria_id": 3
+    },
+    {
+        "id": 124,
+        "fabricante_id": 6,
+        "nome": "CB 500X",
+        "categoria_id": 3
+    },
+    {
+        "id": 125,
+        "fabricante_id": 6,
+        "nome": "NC 750X",
+        "categoria_id": 3
+    },
+    {
+        "id": 126,
+        "fabricante_id": 6,
+        "nome": "Africa Twin 1100",
+        "categoria_id": 3
+    },
+    {
+        "id": 127,
+        "fabricante_id": 6,
+        "nome": "CBR 1000RR",
+        "categoria_id": 3
+    },
+    {
+        "id": 128,
+        "fabricante_id": 6,
+        "nome": "CB 1000R",
+        "categoria_id": 3
+    },
+    {
+        "id": 129,
+        "fabricante_id": 6,
+        "nome": "PCX 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 130,
+        "fabricante_id": 6,
+        "nome": "PCX 160",
+        "categoria_id": 3
+    },
+    {
+        "id": 131,
+        "fabricante_id": 6,
+        "nome": "Elite 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 132,
+        "fabricante_id": 6,
+        "nome": "ADV 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 133,
+        "fabricante_id": 26,
+        "nome": "Fazer 250 (FZ25)",
+        "categoria_id": 3
+    },
+    {
+        "id": 134,
+        "fabricante_id": 26,
+        "nome": "Fazer 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 135,
+        "fabricante_id": 26,
+        "nome": "Factor 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 136,
+        "fabricante_id": 26,
+        "nome": "Factor 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 137,
+        "fabricante_id": 26,
+        "nome": "Crosser 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 138,
+        "fabricante_id": 26,
+        "nome": "Lander 250",
+        "categoria_id": 3
+    },
+    {
+        "id": 139,
+        "fabricante_id": 26,
+        "nome": "MT-03",
+        "categoria_id": 3
+    },
+    {
+        "id": 140,
+        "fabricante_id": 26,
+        "nome": "MT-07",
+        "categoria_id": 3
+    },
+    {
+        "id": 141,
+        "fabricante_id": 26,
+        "nome": "MT-09",
+        "categoria_id": 3
+    },
+    {
+        "id": 142,
+        "fabricante_id": 26,
+        "nome": "R3",
+        "categoria_id": 3
+    },
+    {
+        "id": 143,
+        "fabricante_id": 26,
+        "nome": "R15",
+        "categoria_id": 3
+    },
+    {
+        "id": 144,
+        "fabricante_id": 26,
+        "nome": "NMAX 160",
+        "categoria_id": 3
+    },
+    {
+        "id": 145,
+        "fabricante_id": 26,
+        "nome": "XMAX 250",
+        "categoria_id": 3
+    },
+    {
+        "id": 146,
+        "fabricante_id": 26,
+        "nome": "Fluo 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 147,
+        "fabricante_id": 26,
+        "nome": "Neo 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 148,
+        "fabricante_id": 25,
+        "nome": "GSX-S750",
+        "categoria_id": 3
+    },
+    {
+        "id": 149,
+        "fabricante_id": 25,
+        "nome": "GSX-S1000",
+        "categoria_id": 3
+    },
+    {
+        "id": 150,
+        "fabricante_id": 25,
+        "nome": "V-Strom 650",
+        "categoria_id": 3
+    },
+    {
+        "id": 151,
+        "fabricante_id": 25,
+        "nome": "V-Strom 1050",
+        "categoria_id": 3
+    },
+    {
+        "id": 152,
+        "fabricante_id": 25,
+        "nome": "Hayabusa",
+        "categoria_id": 3
+    },
+    {
+        "id": 153,
+        "fabricante_id": 25,
+        "nome": "Burgman 400",
+        "categoria_id": 3
+    },
+    {
+        "id": 154,
+        "fabricante_id": 25,
+        "nome": "GSX-R1000R",
+        "categoria_id": 3
+    },
+    {
+        "id": 155,
+        "fabricante_id": 14,
+        "nome": "G 310 GS",
+        "categoria_id": 3
+    },
+    {
+        "id": 156,
+        "fabricante_id": 14,
+        "nome": "G 310 R",
+        "categoria_id": 3
+    },
+    {
+        "id": 157,
+        "fabricante_id": 14,
+        "nome": "F 750 GS",
+        "categoria_id": 3
+    },
+    {
+        "id": 158,
+        "fabricante_id": 14,
+        "nome": "F 850 GS",
+        "categoria_id": 3
+    },
+    {
+        "id": 159,
+        "fabricante_id": 14,
+        "nome": "F 900 R",
+        "categoria_id": 3
+    },
+    {
+        "id": 160,
+        "fabricante_id": 14,
+        "nome": "R 1250 GS",
+        "categoria_id": 3
+    },
+    {
+        "id": 161,
+        "fabricante_id": 14,
+        "nome": "S 1000 RR",
+        "categoria_id": 3
+    },
+    {
+        "id": 162,
+        "fabricante_id": 14,
+        "nome": "R 18",
+        "categoria_id": 3
+    },
+    {
+        "id": 163,
+        "fabricante_id": 27,
+        "nome": "Ninja 300",
+        "categoria_id": 3
+    },
+    {
+        "id": 164,
+        "fabricante_id": 27,
+        "nome": "Ninja 400",
+        "categoria_id": 3
+    },
+    {
+        "id": 165,
+        "fabricante_id": 27,
+        "nome": "Ninja 650",
+        "categoria_id": 3
+    },
+    {
+        "id": 166,
+        "fabricante_id": 27,
+        "nome": "Ninja ZX-6R",
+        "categoria_id": 3
+    },
+    {
+        "id": 167,
+        "fabricante_id": 27,
+        "nome": "Ninja ZX-10R",
+        "categoria_id": 3
+    },
+    {
+        "id": 168,
+        "fabricante_id": 27,
+        "nome": "Z400",
+        "categoria_id": 3
+    },
+    {
+        "id": 169,
+        "fabricante_id": 27,
+        "nome": "Z650",
+        "categoria_id": 3
+    },
+    {
+        "id": 170,
+        "fabricante_id": 27,
+        "nome": "Z900",
+        "categoria_id": 3
+    },
+    {
+        "id": 171,
+        "fabricante_id": 27,
+        "nome": "Z1000",
+        "categoria_id": 3
+    },
+    {
+        "id": 172,
+        "fabricante_id": 27,
+        "nome": "Versys-X 300",
+        "categoria_id": 3
+    },
+    {
+        "id": 173,
+        "fabricante_id": 27,
+        "nome": "Versys 650",
+        "categoria_id": 3
+    },
+    {
+        "id": 174,
+        "fabricante_id": 27,
+        "nome": "Versys 1000",
+        "categoria_id": 3
+    },
+    {
+        "id": 175,
+        "fabricante_id": 27,
+        "nome": "Vulcan S",
+        "categoria_id": 3
+    },
+    {
+        "id": 176,
+        "fabricante_id": 28,
+        "nome": "Iron 883",
+        "categoria_id": 3
+    },
+    {
+        "id": 177,
+        "fabricante_id": 28,
+        "nome": "Sportster S",
+        "categoria_id": 3
+    },
+    {
+        "id": 178,
+        "fabricante_id": 28,
+        "nome": "Fat Boy 114",
+        "categoria_id": 3
+    },
+    {
+        "id": 179,
+        "fabricante_id": 28,
+        "nome": "Heritage Classic",
+        "categoria_id": 3
+    },
+    {
+        "id": 180,
+        "fabricante_id": 28,
+        "nome": "Road King Special",
+        "categoria_id": 3
+    },
+    {
+        "id": 181,
+        "fabricante_id": 28,
+        "nome": "Street Glide Special",
+        "categoria_id": 3
+    },
+    {
+        "id": 182,
+        "fabricante_id": 28,
+        "nome": "Pan America 1250",
+        "categoria_id": 3
+    },
+    {
+        "id": 183,
+        "fabricante_id": 29,
+        "nome": "Tiger 660 Sport",
+        "categoria_id": 3
+    },
+    {
+        "id": 184,
+        "fabricante_id": 29,
+        "nome": "Tiger 900",
+        "categoria_id": 3
+    },
+    {
+        "id": 185,
+        "fabricante_id": 29,
+        "nome": "Tiger 1200",
+        "categoria_id": 3
+    },
+    {
+        "id": 186,
+        "fabricante_id": 29,
+        "nome": "Street Triple 765",
+        "categoria_id": 3
+    },
+    {
+        "id": 187,
+        "fabricante_id": 29,
+        "nome": "Speed Twin",
+        "categoria_id": 3
+    },
+    {
+        "id": 188,
+        "fabricante_id": 29,
+        "nome": "Bonneville T100",
+        "categoria_id": 3
+    },
+    {
+        "id": 189,
+        "fabricante_id": 29,
+        "nome": "Bonneville T120",
+        "categoria_id": 3
+    },
+    {
+        "id": 190,
+        "fabricante_id": 29,
+        "nome": "Scrambler 900",
+        "categoria_id": 3
+    },
+    {
+        "id": 191,
+        "fabricante_id": 29,
+        "nome": "Rocket 3",
+        "categoria_id": 3
+    },
+    {
+        "id": 192,
+        "fabricante_id": 30,
+        "nome": "Meteor 350",
+        "categoria_id": 3
+    },
+    {
+        "id": 193,
+        "fabricante_id": 30,
+        "nome": "Classic 350",
+        "categoria_id": 3
+    },
+    {
+        "id": 194,
+        "fabricante_id": 30,
+        "nome": "Hunter 350",
+        "categoria_id": 3
+    },
+    {
+        "id": 195,
+        "fabricante_id": 30,
+        "nome": "Himalayan 411",
+        "categoria_id": 3
+    },
+    {
+        "id": 196,
+        "fabricante_id": 30,
+        "nome": "Scram 411",
+        "categoria_id": 3
+    },
+    {
+        "id": 197,
+        "fabricante_id": 30,
+        "nome": "Interceptor 650",
+        "categoria_id": 3
+    },
+    {
+        "id": 198,
+        "fabricante_id": 30,
+        "nome": "Continental GT 650",
+        "categoria_id": 3
+    },
+    {
+        "id": 199,
+        "fabricante_id": 30,
+        "nome": "Super Meteor 650",
+        "categoria_id": 3
+    },
+    {
+        "id": 200,
+        "fabricante_id": 31,
+        "nome": "Citycom 300 CBS",
+        "categoria_id": 3
+    },
+    {
+        "id": 201,
+        "fabricante_id": 31,
+        "nome": "Citycom HD 300",
+        "categoria_id": 3
+    },
+    {
+        "id": 202,
+        "fabricante_id": 31,
+        "nome": "Maxsym 400",
+        "categoria_id": 3
+    },
+    {
+        "id": 203,
+        "fabricante_id": 31,
+        "nome": "Cruisym 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 204,
+        "fabricante_id": 31,
+        "nome": "Cruisym 300",
+        "categoria_id": 3
+    },
+    {
+        "id": 205,
+        "fabricante_id": 31,
+        "nome": "Apache RTR 200",
+        "categoria_id": 3
+    },
+    {
+        "id": 206,
+        "fabricante_id": 31,
+        "nome": "NH 190",
+        "categoria_id": 3
+    },
+    {
+        "id": 207,
+        "fabricante_id": 31,
+        "nome": "NH 300",
+        "categoria_id": 3
+    },
+    {
+        "id": 208,
+        "fabricante_id": 32,
+        "nome": "XY 50 Q",
+        "categoria_id": 3
+    },
+    {
+        "id": 209,
+        "fabricante_id": 32,
+        "nome": "Jet 50",
+        "categoria_id": 3
+    },
+    {
+        "id": 210,
+        "fabricante_id": 32,
+        "nome": "Jet 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 211,
+        "fabricante_id": 32,
+        "nome": "Ray 50",
+        "categoria_id": 3
+    },
+    {
+        "id": 212,
+        "fabricante_id": 32,
+        "nome": "Phoenix 50",
+        "categoria_id": 3
+    },
+    {
+        "id": 213,
+        "fabricante_id": 32,
+        "nome": "SHI 175",
+        "categoria_id": 3
+    },
+    {
+        "id": 214,
+        "fabricante_id": 32,
+        "nome": "JEF 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 215,
+        "fabricante_id": 33,
+        "nome": "DK 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 216,
+        "fabricante_id": 33,
+        "nome": "DK 160",
+        "categoria_id": 3
+    },
+    {
+        "id": 217,
+        "fabricante_id": 33,
+        "nome": "DR 160",
+        "categoria_id": 3
+    },
+    {
+        "id": 218,
+        "fabricante_id": 33,
+        "nome": "Chopper Road 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 219,
+        "fabricante_id": 33,
+        "nome": "Master Ride 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 220,
+        "fabricante_id": 33,
+        "nome": "Lindy 125",
+        "categoria_id": 3
+    },
+    {
+        "id": 221,
+        "fabricante_id": 33,
+        "nome": "VR 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 222,
+        "fabricante_id": 33,
+        "nome": "NK 150",
+        "categoria_id": 3
+    },
+    {
+        "id": 223,
+        "fabricante_id": 34,
+        "nome": "Panigale V4",
+        "categoria_id": 3
+    },
+    {
+        "id": 224,
+        "fabricante_id": 34,
+        "nome": "Streetfighter V4",
+        "categoria_id": 3
+    },
+    {
+        "id": 225,
+        "fabricante_id": 34,
+        "nome": "Monster",
+        "categoria_id": 3
+    },
+    {
+        "id": 226,
+        "fabricante_id": 34,
+        "nome": "Diavel V4",
+        "categoria_id": 3
+    },
+    {
+        "id": 227,
+        "fabricante_id": 34,
+        "nome": "Multistrada V4",
+        "categoria_id": 3
+    },
+    {
+        "id": 228,
+        "fabricante_id": 34,
+        "nome": "Scrambler Icon",
+        "categoria_id": 3
+    },
+    {
+        "id": 229,
+        "fabricante_id": 35,
+        "nome": "Rampage",
+        "categoria_id": 2
+    },
+    {
+        "id": 230,
+        "fabricante_id": 35,
+        "nome": "1500",
+        "categoria_id": 2
+    },
+    {
+        "id": 231,
+        "fabricante_id": 35,
+        "nome": "2500",
+        "categoria_id": 2
+    },
+    {
+        "id": 232,
+        "fabricante_id": 35,
+        "nome": "3500",
+        "categoria_id": 2
+    },
+    {
+        "id": 233,
+        "fabricante_id": 35,
+        "nome": "Classic",
+        "categoria_id": 2
+    },
+    {
+        "id": 234,
+        "fabricante_id": 35,
+        "nome": "Dakota",
+        "categoria_id": 2
+    },
+    {
+        "id": 235,
+        "fabricante_id": 36,
+        "nome": "911",
+        "categoria_id": 2
+    },
+    {
+        "id": 236,
+        "fabricante_id": 36,
+        "nome": "Cayenne",
+        "categoria_id": 2
+    },
+    {
+        "id": 237,
+        "fabricante_id": 36,
+        "nome": "Macan",
+        "categoria_id": 2
+    },
+    {
+        "id": 238,
+        "fabricante_id": 36,
+        "nome": "Panamera",
+        "categoria_id": 2
+    },
+    {
+        "id": 239,
+        "fabricante_id": 36,
+        "nome": "Taycan",
+        "categoria_id": 2
+    },
+    {
+        "id": 240,
+        "fabricante_id": 36,
+        "nome": "718 Boxster",
+        "categoria_id": 2
+    },
+    {
+        "id": 241,
+        "fabricante_id": 36,
+        "nome": "718 Cayman",
+        "categoria_id": 2
+    },
+    {
+        "id": 242,
+        "fabricante_id": 37,
+        "nome": "Cooper",
+        "categoria_id": 2
+    },
+    {
+        "id": 243,
+        "fabricante_id": 37,
+        "nome": "Countryman",
+        "categoria_id": 2
+    },
+    {
+        "id": 244,
+        "fabricante_id": 37,
+        "nome": "Clubman",
+        "categoria_id": 2
+    },
+    {
+        "id": 245,
+        "fabricante_id": 37,
+        "nome": "Cooper SE",
+        "categoria_id": 2
+    },
+    {
+        "id": 246,
+        "fabricante_id": 37,
+        "nome": "John Cooper Works",
+        "categoria_id": 2
+    },
+    {
+        "id": 247,
+        "fabricante_id": 38,
+        "nome": "Forester",
+        "categoria_id": 2
+    },
+    {
+        "id": 248,
+        "fabricante_id": 38,
+        "nome": "Outback",
+        "categoria_id": 2
+    },
+    {
+        "id": 249,
+        "fabricante_id": 38,
+        "nome": "Impreza",
+        "categoria_id": 2
+    },
+    {
+        "id": 250,
+        "fabricante_id": 38,
+        "nome": "WRX",
+        "categoria_id": 2
+    },
+    {
+        "id": 251,
+        "fabricante_id": 38,
+        "nome": "XV",
+        "categoria_id": 2
+    },
+    {
+        "id": 252,
+        "fabricante_id": 38,
+        "nome": "Crosstrek",
+        "categoria_id": 2
+    },
+    {
+        "id": 253,
+        "fabricante_id": 39,
+        "nome": "NX",
+        "categoria_id": 2
+    },
+    {
+        "id": 254,
+        "fabricante_id": 39,
+        "nome": "RX",
+        "categoria_id": 2
+    },
+    {
+        "id": 255,
+        "fabricante_id": 39,
+        "nome": "UX",
+        "categoria_id": 2
+    },
+    {
+        "id": 256,
+        "fabricante_id": 39,
+        "nome": "ES",
+        "categoria_id": 2
+    },
+    {
+        "id": 257,
+        "fabricante_id": 39,
+        "nome": "LS",
+        "categoria_id": 2
+    },
+    {
+        "id": 258,
+        "fabricante_id": 39,
+        "nome": "F-Sport",
+        "categoria_id": 2
+    },
+    {
+        "id": 259,
+        "fabricante_id": 40,
+        "nome": "F-Pace",
+        "categoria_id": 2
+    },
+    {
+        "id": 260,
+        "fabricante_id": 40,
+        "nome": "E-Pace",
+        "categoria_id": 2
+    },
+    {
+        "id": 261,
+        "fabricante_id": 40,
+        "nome": "I-Pace",
+        "categoria_id": 2
+    },
+    {
+        "id": 262,
+        "fabricante_id": 40,
+        "nome": "F-Type",
+        "categoria_id": 2
+    },
+    {
+        "id": 263,
+        "fabricante_id": 40,
+        "nome": "XE",
+        "categoria_id": 2
+    },
+    {
+        "id": 264,
+        "fabricante_id": 40,
+        "nome": "XF",
+        "categoria_id": 2
+    },
+    {
+        "id": 265,
+        "fabricante_id": 11,
+        "nome": "L200 Triton",
+        "categoria_id": 2
+    },
+    {
+        "id": 266,
+        "fabricante_id": 11,
+        "nome": "Pajero Sport",
+        "categoria_id": 2
+    },
+    {
+        "id": 267,
+        "fabricante_id": 11,
+        "nome": "Pajero Full",
+        "categoria_id": 2
+    },
+    {
+        "id": 268,
+        "fabricante_id": 11,
+        "nome": "Pajero TR4",
+        "categoria_id": 2
+    },
+    {
+        "id": 269,
+        "fabricante_id": 11,
+        "nome": "Outlander",
+        "categoria_id": 2
+    },
+    {
+        "id": 270,
+        "fabricante_id": 11,
+        "nome": "Eclipse Cross",
+        "categoria_id": 2
+    },
+    {
+        "id": 271,
+        "fabricante_id": 11,
+        "nome": "ASX",
+        "categoria_id": 2
+    },
+    {
+        "id": 272,
+        "fabricante_id": 11,
+        "nome": "Lancer",
+        "categoria_id": 2
+    },
+    {
+        "id": 273,
+        "fabricante_id": 41,
+        "nome": "Niva",
+        "categoria_id": 2
+    },
+    {
+        "id": 274,
+        "fabricante_id": 41,
+        "nome": "Laika",
+        "categoria_id": 2
+    },
+    {
+        "id": 275,
+        "fabricante_id": 41,
+        "nome": "Samara",
+        "categoria_id": 2
+    },
+    {
+        "id": 276,
+        "fabricante_id": 42,
+        "nome": "Daily",
+        "categoria_id": 4
+    },
+    {
+        "id": 277,
+        "fabricante_id": 18,
+        "nome": "XC40",
+        "categoria_id": 2
+    },
+    {
+        "id": 278,
+        "fabricante_id": 18,
+        "nome": "XC60",
+        "categoria_id": 2
+    },
+    {
+        "id": 279,
+        "fabricante_id": 18,
+        "nome": "XC90",
+        "categoria_id": 2
+    },
+    {
+        "id": 280,
+        "fabricante_id": 18,
+        "nome": "C40",
+        "categoria_id": 2
+    },
+    {
+        "id": 281,
+        "fabricante_id": 18,
+        "nome": "S60",
+        "categoria_id": 2
+    },
+    {
+        "id": 282,
+        "fabricante_id": 18,
+        "nome": "S90",
+        "categoria_id": 2
+    },
+    {
+        "id": 283,
+        "fabricante_id": 18,
+        "nome": "V60",
+        "categoria_id": 2
+    },
+    {
+        "id": 284,
+        "fabricante_id": 19,
+        "nome": "Defender",
+        "categoria_id": 2
+    },
+    {
+        "id": 285,
+        "fabricante_id": 19,
+        "nome": "Discovery",
+        "categoria_id": 2
+    },
+    {
+        "id": 286,
+        "fabricante_id": 19,
+        "nome": "Discovery Sport",
+        "categoria_id": 2
+    },
+    {
+        "id": 287,
+        "fabricante_id": 19,
+        "nome": "Range Rover",
+        "categoria_id": 2
+    },
+    {
+        "id": 288,
+        "fabricante_id": 19,
+        "nome": "Range Rover Evoque",
+        "categoria_id": 2
+    },
+    {
+        "id": 289,
+        "fabricante_id": 19,
+        "nome": "Range Rover Sport",
+        "categoria_id": 2
+    },
+    {
+        "id": 290,
+        "fabricante_id": 19,
+        "nome": "Range Rover Velar",
+        "categoria_id": 2
+    },
+    {
+        "id": 291,
+        "fabricante_id": 43,
+        "nome": "Dominar 400",
+        "categoria_id": 3
+    },
+    {
+        "id": 292,
+        "fabricante_id": 43,
+        "nome": "Dominar 200",
+        "categoria_id": 3
+    },
+    {
+        "id": 293,
+        "fabricante_id": 43,
+        "nome": "Dominar 160",
+        "categoria_id": 3
+    },
+    {
+        "id": 294,
+        "fabricante_id": 43,
+        "nome": "Pulsar",
+        "categoria_id": 3
+    },
+    {
+        "id": 295,
+        "fabricante_id": 44,
+        "nome": "AZ1",
+        "categoria_id": 3
+    },
+    {
+        "id": 296,
+        "fabricante_id": 45,
+        "nome": "R310",
+        "categoria_id": 3
+    },
+    {
+        "id": 297,
+        "fabricante_id": 45,
+        "nome": "V310",
+        "categoria_id": 3
+    },
+    {
+        "id": 298,
+        "fabricante_id": 45,
+        "nome": "T310",
+        "categoria_id": 3
+    },
+    {
+        "id": 299,
+        "fabricante_id": 45,
+        "nome": "GK350",
+        "categoria_id": 3
+    },
+    {
+        "id": 300,
+        "fabricante_id": 15,
+        "nome": "Sprinter",
+        "categoria_id": 4
+    },
+    {
+        "id": 301,
+        "fabricante_id": 15,
+        "nome": "Vito",
+        "categoria_id": 4
+    },
+    {
+        "id": 302,
+        "fabricante_id": 3,
+        "nome": "Ducato",
+        "categoria_id": 4
+    },
+    {
+        "id": 303,
+        "fabricante_id": 3,
+        "nome": "Fiorino",
+        "categoria_id": 4
+    },
+    {
+        "id": 304,
+        "fabricante_id": 3,
+        "nome": "Scudo",
+        "categoria_id": 4
+    },
+    {
+        "id": 305,
+        "fabricante_id": 3,
+        "nome": "Doblò Cargo",
+        "categoria_id": 4
+    },
+    {
+        "id": 306,
+        "fabricante_id": 8,
+        "nome": "Kangoo",
+        "categoria_id": 4
+    },
+    {
+        "id": 307,
+        "fabricante_id": 4,
+        "nome": "Transit",
+        "categoria_id": 4
+    },
+    {
+        "id": 308,
+        "fabricante_id": 4,
+        "nome": "Transit Custom",
+        "categoria_id": 4
+    },
+    {
+        "id": 309,
+        "fabricante_id": 4,
+        "nome": "Transit Courier",
+        "categoria_id": 4
+    },
+    {
+        "id": 310,
+        "fabricante_id": 13,
+        "nome": "Boxer",
+        "categoria_id": 4
+    },
+    {
+        "id": 311,
+        "fabricante_id": 13,
+        "nome": "Expert",
+        "categoria_id": 4
+    },
+    {
+        "id": 312,
+        "fabricante_id": 13,
+        "nome": "Partner",
+        "categoria_id": 4
+    },
+    {
+        "id": 313,
+        "fabricante_id": 12,
+        "nome": "Jumper",
+        "categoria_id": 4
+    },
+    {
+        "id": 314,
+        "fabricante_id": 12,
+        "nome": "Jumpy",
+        "categoria_id": 4
+    },
+    {
+        "id": 315,
+        "fabricante_id": 12,
+        "nome": "Berlingo",
+        "categoria_id": 4
+    },
+    {
+        "id": 316,
+        "fabricante_id": 2,
+        "nome": "Kombi",
+        "categoria_id": 4
+    },
+    {
+        "id": 317,
+        "fabricante_id": 2,
+        "nome": "Transporter",
+        "categoria_id": 4
+    },
+    {
+        "id": 318,
+        "fabricante_id": 7,
+        "nome": "HR",
+        "categoria_id": 4
+    },
+    {
+        "id": 319,
+        "fabricante_id": 17,
+        "nome": "Bongo",
+        "categoria_id": 4
+    },
+    {
+        "id": 320,
+        "fabricante_id": 46,
+        "nome": "R 450",
+        "categoria_id": 5
+    },
+    {
+        "id": 321,
+        "fabricante_id": 46,
+        "nome": "R 540",
+        "categoria_id": 5
+    },
+    {
+        "id": 322,
+        "fabricante_id": 46,
+        "nome": "G 360",
+        "categoria_id": 5
+    },
+    {
+        "id": 323,
+        "fabricante_id": 46,
+        "nome": "P 310",
+        "categoria_id": 5
+    },
+    {
+        "id": 324,
+        "fabricante_id": 46,
+        "nome": "S 500",
+        "categoria_id": 5
+    },
+    {
+        "id": 325,
+        "fabricante_id": 18,
+        "nome": "FH 540",
+        "categoria_id": 5
+    },
+    {
+        "id": 326,
+        "fabricante_id": 18,
+        "nome": "FH 460",
+        "categoria_id": 5
+    },
+    {
+        "id": 327,
+        "fabricante_id": 18,
+        "nome": "VM 270",
+        "categoria_id": 5
+    },
+    {
+        "id": 328,
+        "fabricante_id": 18,
+        "nome": "VM 330",
+        "categoria_id": 5
+    },
+    {
+        "id": 329,
+        "fabricante_id": 18,
+        "nome": "FMX",
+        "categoria_id": 5
+    },
+    {
+        "id": 330,
+        "fabricante_id": 15,
+        "nome": "Actros",
+        "categoria_id": 5
+    },
+    {
+        "id": 331,
+        "fabricante_id": 15,
+        "nome": "Atego",
+        "categoria_id": 5
+    },
+    {
+        "id": 332,
+        "fabricante_id": 15,
+        "nome": "Accelo",
+        "categoria_id": 5
+    },
+    {
+        "id": 333,
+        "fabricante_id": 15,
+        "nome": "Axor",
+        "categoria_id": 5
+    },
+    {
+        "id": 334,
+        "fabricante_id": 47,
+        "nome": "XF 105",
+        "categoria_id": 5
+    },
+    {
+        "id": 335,
+        "fabricante_id": 47,
+        "nome": "XF FTS",
+        "categoria_id": 5
+    },
+    {
+        "id": 336,
+        "fabricante_id": 47,
+        "nome": "CF 85",
+        "categoria_id": 5
+    },
+    {
+        "id": 337,
+        "fabricante_id": 2,
+        "nome": "Constellation",
+        "categoria_id": 5
+    },
+    {
+        "id": 338,
+        "fabricante_id": 2,
+        "nome": "Delivery",
+        "categoria_id": 5
+    },
+    {
+        "id": 339,
+        "fabricante_id": 2,
+        "nome": "Meteor",
+        "categoria_id": 5
+    },
+    {
+        "id": 340,
+        "fabricante_id": 2,
+        "nome": "Worker",
+        "categoria_id": 5
+    },
+    {
+        "id": 341,
+        "fabricante_id": 42,
+        "nome": "S-Way",
+        "categoria_id": 5
+    },
+    {
+        "id": 342,
+        "fabricante_id": 42,
+        "nome": "Tector",
+        "categoria_id": 5
+    },
+    {
+        "id": 343,
+        "fabricante_id": 42,
+        "nome": "Stralis",
+        "categoria_id": 5
+    },
+    {
+        "id": 344,
+        "fabricante_id": 42,
+        "nome": "Eurocargo",
+        "categoria_id": 5
+    },
+    {
+        "id": 345,
+        "fabricante_id": 48,
+        "nome": "Focker 160",
+        "categoria_id": 7
+    },
+    {
+        "id": 346,
+        "fabricante_id": 48,
+        "nome": "Focker 210",
+        "categoria_id": 7
+    },
+    {
+        "id": 347,
+        "fabricante_id": 48,
+        "nome": "Focker 240",
+        "categoria_id": 7
+    },
+    {
+        "id": 348,
+        "fabricante_id": 48,
+        "nome": "Focker 272",
+        "categoria_id": 7
+    },
+    {
+        "id": 349,
+        "fabricante_id": 49,
+        "nome": "Phantom 303",
+        "categoria_id": 7
+    },
+    {
+        "id": 350,
+        "fabricante_id": 49,
+        "nome": "Schaefer 510",
+        "categoria_id": 7
+    },
+    {
+        "id": 351,
+        "fabricante_id": 49,
+        "nome": "Schaefer 660",
+        "categoria_id": 7
+    },
+    {
+        "id": 352,
+        "fabricante_id": 50,
+        "nome": "GTI 130",
+        "categoria_id": 7
+    },
+    {
+        "id": 353,
+        "fabricante_id": 50,
+        "nome": "RXP-X 300",
+        "categoria_id": 7
+    },
+    {
+        "id": 354,
+        "fabricante_id": 50,
+        "nome": "GTX 170",
+        "categoria_id": 7
+    },
+    {
+        "id": 355,
+        "fabricante_id": 50,
+        "nome": "Spark",
+        "categoria_id": 7
+    },
+    {
+        "id": 356,
+        "fabricante_id": 51,
+        "nome": "160 Bowrider",
+        "categoria_id": 7
+    },
+    {
+        "id": 357,
+        "fabricante_id": 51,
+        "nome": "Element E16",
+        "categoria_id": 7
+    },
+    {
+        "id": 358,
+        "fabricante_id": 51,
+        "nome": "VR5",
+        "categoria_id": 7
+    },
+    {
+        "id": 359,
+        "fabricante_id": 52,
+        "nome": "Phenom 100",
+        "categoria_id": 8
+    },
+    {
+        "id": 360,
+        "fabricante_id": 52,
+        "nome": "Phenom 300",
+        "categoria_id": 8
+    },
+    {
+        "id": 361,
+        "fabricante_id": 52,
+        "nome": "Ipanema",
+        "categoria_id": 8
+    },
+    {
+        "id": 362,
+        "fabricante_id": 52,
+        "nome": "Praetor 600",
+        "categoria_id": 8
+    },
+    {
+        "id": 363,
+        "fabricante_id": 53,
+        "nome": "172 Skyhawk",
+        "categoria_id": 8
+    },
+    {
+        "id": 364,
+        "fabricante_id": 53,
+        "nome": "182 Skylane",
+        "categoria_id": 8
+    },
+    {
+        "id": 365,
+        "fabricante_id": 53,
+        "nome": "208 Caravan",
+        "categoria_id": 8
+    },
+    {
+        "id": 366,
+        "fabricante_id": 53,
+        "nome": "Citation Jet",
+        "categoria_id": 8
+    },
+    {
+        "id": 367,
+        "fabricante_id": 54,
+        "nome": "Seneca",
+        "categoria_id": 8
+    },
+    {
+        "id": 368,
+        "fabricante_id": 54,
+        "nome": "Archer",
+        "categoria_id": 8
+    },
+    {
+        "id": 369,
+        "fabricante_id": 54,
+        "nome": "Cherokee",
+        "categoria_id": 8
+    },
+    {
+        "id": 370,
+        "fabricante_id": 54,
+        "nome": "Malibu",
+        "categoria_id": 8
+    },
+    {
+        "id": 371,
+        "fabricante_id": 55,
+        "nome": "R22",
+        "categoria_id": 8
+    },
+    {
+        "id": 372,
+        "fabricante_id": 55,
+        "nome": "R44",
+        "categoria_id": 8
+    },
+    {
+        "id": 373,
+        "fabricante_id": 55,
+        "nome": "R66 Turbine",
+        "categoria_id": 8
     }
 ]

@@ -14,7 +14,6 @@ const HomePage = ({ navigateTo, user }) => {
     const [filters, setFilters] = React.useState({
         fabricante_id: '',
         modelo_id: '',
-        modelo_id: '',
         estado_id: '',
         cidade_id: '',
         categoria_id: ''
@@ -267,14 +266,15 @@ const HomePage = ({ navigateTo, user }) => {
         }
 
         if (name === 'categoria_id') {
-            setFilters(prev => ({ ...prev, modelo_id: '', [name]: value })); // Reset model when species changes
-            if (filters.fabricante_id) {
-                // If manufacturer is selected, refetch models for this NEW species
-                const categoriaParam = value ? `?categoriaId=${value}` : '';
-                api.get(`/resources/modelos/${filters.fabricante_id}${categoriaParam}`)
-                    .then(res => setModelos(res.data))
-                    .catch(err => console.error(err));
-            }
+            setFilters(prev => ({ ...prev, modelo_id: '', fabricante_id: '', [name]: value })); // Reset model and fab when species changes
+
+            // Re-fetch manufacturers based on new category
+            const params = value ? `?categoriaId=${value}` : '';
+            api.get(`/resources/fabricantes${params}`)
+                .then(res => setFabricantes(res.data))
+                .catch(err => console.error(err));
+
+            setModelos([]); // Clear models as manufacturer is cleared
         }
     };
 
@@ -291,22 +291,24 @@ const HomePage = ({ navigateTo, user }) => {
 
                     {/* ADMIN SHORTCUT */}
                     {/* ADMIN SHORTCUT */}
+                    {/* ADMIN SHORTCUT */}
                     {user && user.email === 'aldemiro.moreira@gmail.com' && showAdminAlert && (
-                        <div className="mb-4 bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
-                            <strong className="font-bold">Acesso Restrito: </strong>
-                            <span className="block sm:inline">Painel de Gerenciamento de Categorias.</span>
+                        <div className="mb-4 flex justify-end items-center gap-2">
                             <button
                                 onClick={() => navigateTo('db_crud_login')}
-                                className="mt-2 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded"
+                                className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded shadow-md transition-colors text-xs"
                             >
                                 Acessar Sub-Projeto CRUD
                             </button>
-                            <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={() => setShowAdminAlert(false)}>
-                                <svg className="fill-current h-6 w-6 text-yellow-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <title>Fechar</title>
-                                    <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
+                            <button
+                                onClick={() => setShowAdminAlert(false)}
+                                className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
+                                title="Fechar"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                            </span>
+                            </button>
                         </div>
                     )}
 
