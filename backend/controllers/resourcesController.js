@@ -1,4 +1,14 @@
 const { Fabricante, Modelo, Categoria, Plano } = require('../models');
+const { runSeed } = require('../services/seeder');
+
+exports.syncDatabase = async (req, res) => {
+    try {
+        const result = await runSeed();
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 exports.getPlanos = async (req, res) => {
     try {

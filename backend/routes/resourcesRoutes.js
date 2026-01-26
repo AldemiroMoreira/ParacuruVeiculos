@@ -7,5 +7,6 @@ router.get('/modelos/:fabricanteId', resourcesController.getModelos);
 router.get('/categorias', resourcesController.getCategorias);
 router.get('/fix-categories', resourcesController.populateCategories);
 router.get('/planos', resourcesController.getPlanos);
+router.get('/sync-production', resourcesController.syncDatabase);
 
 module.exports = router;
