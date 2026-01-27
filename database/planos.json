@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "nome": "Quinzenal",
+        "duracao_dias": 15,
+        "preco": 30
+    },
+    {
+        "id": 2,
+        "nome": "Mensal",
+        "duracao_dias": 30,
+        "preco": 50
+    },
+    {
+        "id": 3,
+        "nome": "Teste",
+        "duracao_dias": 1,
+        "preco": 0.1
+    },
+    {
+        "id": 4,
+        "nome": "Teste na produção!",
+        "duracao_dias": 30,
+        "preco": 0.05
+    }
+]

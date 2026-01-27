@@ -59,7 +59,27 @@ const AdminPage = () => {
         <div className="space-y-8 fade-in">
             <div className="flex justify-between items-center">
                 <h1 className="text-3xl font-bold text-gray-900">Painel Administrativo</h1>
-                <button onClick={() => { localStorage.removeItem('adminToken'); setAuthorized(false); }} className="text-red-600">Sair</button>
+                <div className="flex gap-4">
+                    <button
+                        onClick={async () => {
+                            if (confirm('ATENÇÃO: ISSO APAGARÁ TODO O BANCO DE DADOS DA PRODUÇÃO (ANÚNCIOS, USUÁRIOS) E RESTAURARÁ O PADRÃO. TEM CERTEZA??')) {
+                                try {
+                                    alert('Iniciando reset... isso pode levar alguns segundos.');
+                                    const token = localStorage.getItem('adminToken');
+                                    await axios.post('/api/db_crud/reset_full', {}, { headers: { Authorization: `Bearer ${token}` } });
+                                    alert('Sucesso! O banco foi resetado.');
+                                    window.location.reload();
+                                } catch (e) {
+                                    alert('Erro ao resetar: ' + (e.response?.data?.message || e.message));
+                                }
+                            }
+                        }}
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold"
+                    >
+                        RESETAR SISTEMA (PERIGO)
+                    </button>
+                    <button onClick={() => { localStorage.removeItem('adminToken'); setAuthorized(false); }} className="text-gray-600 hover:text-red-600 font-medium">Sair</button>
+                </div>
             </div>
 
             {/* Stats Cards */}

@@ -188,4 +188,22 @@ router.delete('/modelos/:id', async (req, res) => {
     }
 });
 
+
+// ... existing code ...
+
+// FULL DATABASE RESET (DANGEROUS)
+const { seedEverything } = require('../../seed_everything');
+
+router.post('/reset_full', async (req, res) => {
+    try {
+        console.log('API Request: FULL DATABASE RESET initiated.');
+        await seedEverything();
+        res.json({ success: true, message: 'Database reset and seeded successfully.' });
+    } catch (e) {
+        console.error('Reset Failed:', e);
+        res.status(500).json({ success: false, message: 'Reset failed: ' + e.message });
+    }
+});
+
+
 module.exports = router;

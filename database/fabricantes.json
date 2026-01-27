@@ -1,222 +1,277 @@
 [
     {
         "id": 1,
-        "nome": "Chevrolet"
+        "nome": "Chevrolet",
+        "logo_url": "/imgs/logos/chevrolet.png"
     },
     {
         "id": 2,
-        "nome": "Volkswagen"
+        "nome": "Volkswagen",
+        "logo_url": "/imgs/logos/volkswagen.png"
     },
     {
         "id": 3,
-        "nome": "Fiat"
+        "nome": "Fiat",
+        "logo_url": "/imgs/logos/fiat.png"
     },
     {
         "id": 4,
-        "nome": "Ford"
+        "nome": "Ford",
+        "logo_url": "/imgs/logos/ford.png"
     },
     {
         "id": 5,
-        "nome": "Toyota"
+        "nome": "Toyota",
+        "logo_url": "/imgs/logos/toyota.png"
     },
     {
         "id": 6,
-        "nome": "Honda"
+        "nome": "Honda",
+        "logo_url": "/imgs/logos/honda.png"
     },
     {
         "id": 7,
-        "nome": "Hyundai"
+        "nome": "Hyundai",
+        "logo_url": "/imgs/logos/hyundai.png"
     },
     {
         "id": 8,
-        "nome": "Renault"
+        "nome": "Renault",
+        "logo_url": "/imgs/logos/renault.png"
     },
     {
         "id": 9,
-        "nome": "Nissan"
+        "nome": "Nissan",
+        "logo_url": "/imgs/logos/nissan.png"
     },
     {
         "id": 10,
-        "nome": "Jeep"
+        "nome": "Jeep",
+        "logo_url": "/imgs/logos/jeep.png"
     },
     {
         "id": 11,
-        "nome": "Mitsubishi"
+        "nome": "Mitsubishi",
+        "logo_url": "/imgs/logos/mitsubishi.png"
     },
     {
         "id": 12,
-        "nome": "Citroën"
+        "nome": "Citroën",
+        "logo_url": "/imgs/logos/citro_n.png"
     },
     {
         "id": 13,
-        "nome": "Peugeot"
+        "nome": "Peugeot",
+        "logo_url": "/imgs/logos/peugeot.png"
     },
     {
         "id": 14,
-        "nome": "BMW"
+        "nome": "BMW",
+        "logo_url": "/imgs/logos/bmw.png"
     },
     {
         "id": 15,
-        "nome": "Mercedes-Benz"
+        "nome": "Mercedes-Benz",
+        "logo_url": "/imgs/logos/mercedes_benz.png"
     },
     {
         "id": 16,
-        "nome": "Audi"
+        "nome": "Audi",
+        "logo_url": "/imgs/logos/audi.png"
     },
     {
         "id": 17,
-        "nome": "Kia"
+        "nome": "Kia",
+        "logo_url": "/imgs/logos/kia.png"
     },
     {
         "id": 18,
-        "nome": "Volvo"
+        "nome": "Volvo",
+        "logo_url": "/imgs/logos/volvo.png"
     },
     {
         "id": 19,
-        "nome": "Land Rover"
+        "nome": "Land Rover",
+        "logo_url": "/imgs/logos/land_rover.png"
     },
     {
         "id": 20,
-        "nome": "Caoa Chery"
+        "nome": "Caoa Chery",
+        "logo_url": "/imgs/logos/caoa_chery.png"
     },
     {
         "id": 21,
-        "nome": "JAC Motors"
+        "nome": "JAC Motors",
+        "logo_url": null
     },
     {
         "id": 22,
-        "nome": "BYD"
+        "nome": "BYD",
+        "logo_url": "/imgs/logos/byd.png"
     },
     {
         "id": 23,
-        "nome": "GWM"
+        "nome": "GWM",
+        "logo_url": "/imgs/logos/gwm.png"
     },
     {
         "id": 24,
-        "nome": "Troller"
+        "nome": "Troller",
+        "logo_url": null
     },
     {
         "id": 25,
-        "nome": "Suzuki"
+        "nome": "Suzuki",
+        "logo_url": "/imgs/logos/suzuki.png"
     },
     {
         "id": 26,
-        "nome": "Yamaha"
+        "nome": "Yamaha",
+        "logo_url": "https://logo.clearbit.com/yamaha-motor.com.br"
     },
     {
         "id": 27,
-        "nome": "Kawasaki"
+        "nome": "Kawasaki",
+        "logo_url": "https://logo.clearbit.com/kawasakibrasil.com"
     },
     {
         "id": 28,
-        "nome": "Harley-Davidson"
+        "nome": "Harley-Davidson",
+        "logo_url": "https://logo.clearbit.com/harley-davidson.com"
     },
     {
         "id": 29,
-        "nome": "Triumph"
+        "nome": "Triumph",
+        "logo_url": "https://logo.clearbit.com/triumphmotorcycles.com.br"
     },
     {
         "id": 30,
-        "nome": "Royal Enfield"
+        "nome": "Royal Enfield",
+        "logo_url": "https://logo.clearbit.com/royalenfield.com"
     },
     {
         "id": 31,
-        "nome": "Dafra"
+        "nome": "Dafra",
+        "logo_url": "https://www.daframotos.com.br/assets/img/logo-dafra.png"
     },
     {
         "id": 32,
-        "nome": "Shineray"
+        "nome": "Shineray",
+        "logo_url": null
     },
     {
         "id": 33,
-        "nome": "Haojue"
+        "nome": "Haojue",
+        "logo_url": null
     },
     {
         "id": 34,
-        "nome": "Ducati"
+        "nome": "Ducati",
+        "logo_url": null
     },
     {
         "id": 35,
-        "nome": "Ram"
+        "nome": "Ram",
+        "logo_url": "/imgs/logos/ram.png"
     },
     {
         "id": 36,
-        "nome": "Porsche"
+        "nome": "Porsche",
+        "logo_url": "/imgs/logos/porsche.png"
     },
     {
         "id": 37,
-        "nome": "Mini"
+        "nome": "Mini",
+        "logo_url": "/imgs/logos/mini.png"
     },
     {
         "id": 38,
-        "nome": "Subaru"
+        "nome": "Subaru",
+        "logo_url": "/imgs/logos/subaru.png"
     },
     {
         "id": 39,
-        "nome": "Lexus"
+        "nome": "Lexus",
+        "logo_url": "/imgs/logos/lexus.png"
     },
     {
         "id": 40,
-        "nome": "Jaguar"
+        "nome": "Jaguar",
+        "logo_url": "/imgs/logos/jaguar.png"
     },
     {
         "id": 41,
-        "nome": "Lada"
+        "nome": "Lada",
+        "logo_url": "/imgs/logos/lada.png"
     },
     {
         "id": 42,
-        "nome": "Iveco"
+        "nome": "Iveco",
+        "logo_url": "/imgs/logos/iveco.png"
     },
     {
         "id": 43,
-        "nome": "Bajaj"
+        "nome": "Bajaj",
+        "logo_url": null
     },
     {
         "id": 44,
-        "nome": "Avelloz"
+        "nome": "Avelloz",
+        "logo_url": null
     },
     {
         "id": 45,
-        "nome": "Zontes"
+        "nome": "Zontes",
+        "logo_url": "/imgs/logos/zontes.png"
     },
     {
         "id": 46,
-        "nome": "Scania"
+        "nome": "Scania",
+        "logo_url": "/imgs/logos/scania.png"
     },
     {
         "id": 47,
-        "nome": "DAF"
+        "nome": "DAF",
+        "logo_url": null
     },
     {
         "id": 48,
-        "nome": "Fibrafort"
+        "nome": "Fibrafort",
+        "logo_url": null
     },
     {
         "id": 49,
-        "nome": "Schaefer Yachts"
+        "nome": "Schaefer Yachts",
+        "logo_url": null
     },
     {
         "id": 50,
-        "nome": "Sea-Doo"
+        "nome": "Sea-Doo",
+        "logo_url": null
     },
     {
         "id": 51,
-        "nome": "Bayliner"
+        "nome": "Bayliner",
+        "logo_url": null
     },
     {
         "id": 52,
-        "nome": "Embraer"
+        "nome": "Embraer",
+        "logo_url": null
     },
     {
         "id": 53,
-        "nome": "Cessna"
+        "nome": "Cessna",
+        "logo_url": null
     },
     {
         "id": 54,
-        "nome": "Piper"
+        "nome": "Piper",
+        "logo_url": null
     },
     {
         "id": 55,
-        "nome": "Robinson"
+        "nome": "Robinson",
+        "logo_url": null
     }
 ]

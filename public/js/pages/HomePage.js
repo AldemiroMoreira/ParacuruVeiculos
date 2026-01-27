@@ -9,7 +9,9 @@ const HomePage = ({ navigateTo, user }) => {
     const [states, setStates] = React.useState([]);
     const [cities, setCities] = React.useState([]);
     const [categorias, setCategorias] = React.useState([]);
-    const [showAdminAlert, setShowAdminAlert] = React.useState(true);
+    const [showAdminAlert, setShowAdminAlert] = React.useState(() => {
+        return localStorage.getItem('hideAdminAlert') !== 'true';
+    });
 
     const [filters, setFilters] = React.useState({
         fabricante_id: '',
@@ -301,7 +303,10 @@ const HomePage = ({ navigateTo, user }) => {
                                 Acessar Sub-Projeto CRUD
                             </button>
                             <button
-                                onClick={() => setShowAdminAlert(false)}
+                                onClick={() => {
+                                    setShowAdminAlert(false);
+                                    localStorage.setItem('hideAdminAlert', 'true');
+                                }}
                                 className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
                                 title="Fechar"
                             >

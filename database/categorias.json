@@ -1,0 +1,34 @@
+[
+    {
+        "id": 2,
+        "nome": "Carro"
+    },
+    {
+        "id": 3,
+        "nome": "Moto"
+    },
+    {
+        "id": 4,
+        "nome": "Van/Utilitário"
+    },
+    {
+        "id": 5,
+        "nome": "Caminhão"
+    },
+    {
+        "id": 6,
+        "nome": "Ônibus"
+    },
+    {
+        "id": 7,
+        "nome": "Barco"
+    },
+    {
+        "id": 8,
+        "nome": "Aeronave"
+    },
+    {
+        "id": 9,
+        "nome": "Outros"
+    }
+]
