@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Manual do Sistema</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded-xl shadow-lg max-w-md w-full">
+        <h1 class="text-2xl font-bold text-red-600 mb-4">Reset de Emergência</h1>
+        <p class="text-gray-600 mb-6 text-sm">Use esta página caso o botão não apareça no painel admin. Isso apagará
+            todo o banco de dados.</p>
+
+        <div id="status" class="hidden mb-4 p-3 rounded text-sm font-bold"></div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-500 uppercase">Token de Admin</label>
+                <input id="tokenInput" type="text" class="w-full p-2 border rounded font-mono text-xs"
+                    placeholder="Cole o token ou faça login automático...">
+            </div>
+
+            <button onclick="performReset()"
+                class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded transition">
+                CONFIRMAR RESET GERAL
+            </button>
+        </div>
+
+        <div class="mt-8 pt-4 border-t text-xs text-center text-gray-400">
+            Ferramenta de Diagnóstico v1.0
+        </div>
+    </div>
+
+    <script>
+        // Try to auto-fill token from localStorage
+        window.onload = () => {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                document.getElementById('tokenInput').value = token;
+                showStatus('Token recuperado do navegador.', 'blue');
+            } else {
+                showStatus('Faça login no painel admin primeiro para pegar o token.', 'yellow');
+            }
+        };
+
+        function showStatus(msg, color) {
+            const el = document.getElementById('status');
+            el.textContent = msg;
+            el.className = `mb-4 p-3 rounded text-sm font-bold bg-${color}-100 text-${color}-700 block`;
+        }
+
+        async function performReset() {
+            const token = document.getElementById('tokenInput').value;
+            if (!token) {
+                alert('Precisa do Token de Admin!');
+                return;
+            }
+
+            if (!confirm('TEM CERTEZA ABSOLUTA? ISSO APAGA TUDO!')) return;
+
+            showStatus('Processando... aguarde...', 'blue');
+
+            try {
+                const res = await axios.post('/api/db_crud/reset_full', {}, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                showStatus('SUCESSO! Banco resetado.', 'green');
+                alert('Banco resetado com sucesso!');
+            } catch (e) {
+                console.error(e);
+                const errorMsg = e.response?.data?.message || e.message;
+                showStatus('ERRO: ' + errorMsg, 'red');
+                if (e.response && e.response.status === 404) {
+                    alert('Erro 404: O servidor não encontrou a rota de reset. O backend não foi atualizado ainda.');
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
