@@ -23,6 +23,12 @@ const AdminPage = () => {
         ]).then(([s, a]) => {
             setStats(s.data);
             setAds(a.data);
+        }).catch(err => {
+            console.error('Failed to load dashboard:', err);
+            // Optionally alert user or just stop loading
+            // For now, we set stats to empty object to remove loading state
+            setStats({ totalAnuncios: 0, totalPagos: 0, totalPendentes: 0, totalFaturado: 0 });
+            setAds([]);
         });
     };
 

@@ -1,5 +1,17 @@
-const { Anuncio, Payment } = require('../models');
-const { Op } = require('sequelize');
+const { Anuncio, Payment, Usuario } = require('../models');
+
+exports.getRecentAds = async (req, res) => {
+    try {
+        const ads = await Anuncio.findAll({
+            limit: 10,
+            order: [['createdAt', 'DESC']],
+            include: [{ model: Usuario, attributes: ['nome', 'email'] }]
+        });
+        res.status(200).json(ads);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 exports.getDashboardStats = async (req, res) => {
     try {

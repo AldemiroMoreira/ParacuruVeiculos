@@ -12,5 +12,6 @@ const startAdminAuth = (req, res, next) => {
 }
 
 router.get('/stats', startAdminAuth, adminController.getDashboardStats);
+router.get('/ads', startAdminAuth, adminController.getRecentAds);
 
 module.exports = router;
