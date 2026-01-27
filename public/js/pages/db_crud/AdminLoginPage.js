@@ -13,8 +13,8 @@ const AdminLoginPage = ({ navigateTo }) => {
             const data = await res.json();
             if (data.success) {
                 localStorage.setItem('admin_token', data.token);
-                // Redirect to the CRUD page using the parent's navigation
-                navigateTo('db_crud_categorias');
+                // Redirect to the Dashboard
+                navigateTo('admin');
             } else {
                 setError(data.message);
             }

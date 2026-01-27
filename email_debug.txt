@@ -1,0 +1,9 @@
+--- LINK DE RECUPERAÇÃO (2026-01-27T10:52:28.062Z) ---
+http://localhost:3003/#/reset-password/bf8b1e376b7676128c7bb39b35e1e4f8d9bada1a
+--------------------------------------
+--- LINK DE RECUPERAÇÃO (2026-01-27T11:00:07.947Z) ---
+http://localhost:3003/#/reset-password/1e53bf94a1ee31acf633b437f99f02ac01812979
+--------------------------------------
+--- LINK DE RECUPERAÇÃO (2026-01-27T11:22:12.519Z) ---
+http://localhost:3003/#/reset-password/75f90a91456d8f19f6bc14111c2ed96bb804ae93
+--------------------------------------

@@ -77,22 +77,11 @@ exports.login = async (req, res) => {
 };
 
 const crypto = require('crypto');
-// const nodemailer = require('nodemailer'); // Dependency install failed, mocking for now
+const nodemailer = require('nodemailer');
 const { Op } = require('sequelize');
 
-// Mock Nodemailer for environments where install fails
-const nodemailer = {
-    createTransport: () => ({
-        sendMail: async (mailOptions) => {
-            console.log('--- [MOCK EMAIL] ---');
-            console.log('To:', mailOptions.to);
-            console.log('Subject:', mailOptions.subject);
-            console.log('Text:', mailOptions.text);
-            console.log('--------------------');
-            return true;
-        }
-    })
-};
+// Mock removed. Real nodemailer is now used.
+
 
 exports.forgotPassword = async (req, res) => {
     try {
@@ -135,16 +124,21 @@ exports.forgotPassword = async (req, res) => {
                 `Se você não solicitou isso, ignore este email.\n`
         };
 
+        // ALWAYS Log for Debugging (since we are mocking)
+        const logMsg = `--- LINK DE RECUPERAÇÃO (${new Date().toISOString()}) ---\n${resetUrl}\n--------------------------------------\n`;
+        console.log(logMsg);
+
+        try {
+            const fs = require('fs');
+            const path = require('path');
+            fs.appendFileSync(path.join(__dirname, '../../email_debug.txt'), logMsg);
+        } catch (e) { console.error("Error writing debug log", e); }
+
         // Attempt to send email
-        // Logic to simulate success if no creds are really working in MVP dev env
         try {
             await transporter.sendMail(mailOptions);
         } catch (emailErr) {
             console.error('Erro ao enviar email:', emailErr);
-            // For MVP demonstration, logging the link is often helpful if email fails
-            console.log('--- LINK DE RECUPERAÇÃO (dev only) ---');
-            console.log(resetUrl);
-            console.log('--------------------------------------');
         }
 
         res.status(200).json({ message: 'Email de recuperação enviado!' });

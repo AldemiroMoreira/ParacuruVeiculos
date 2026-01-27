@@ -7,8 +7,9 @@ router.post('/preference', authMiddleware, pagamentosController.createPreference
 router.post('/webhook', pagamentosController.webhook);
 
 // Simple return handlers
-router.get('/success', (req, res) => res.send('Pagamento Aprovado! Você pode fechar esta janela.'));
-router.get('/failure', (req, res) => res.send('Pagamento Falhou. Tente novamente.'));
-router.get('/pending', (req, res) => res.send('Pagamento Pendente.'));
+// Simple return handlers - Redirect to Frontend
+router.get('/success', (req, res) => res.redirect('/#/my-ads?status=success'));
+router.get('/failure', (req, res) => res.redirect('/#/checkout?status=failure'));
+router.get('/pending', (req, res) => res.redirect('/#/my-ads?status=pending'));
 
 module.exports = router;

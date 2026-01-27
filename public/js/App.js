@@ -14,6 +14,15 @@ const App = () => {
         if (token && userData) {
             setUser(JSON.parse(userData));
         }
+
+        // Hash Routing Check
+        const hash = window.location.hash;
+        if (hash.startsWith('#/reset-password/')) {
+            setCurrentPage('reset-password');
+        }
+        if (hash.startsWith('#/my-ads')) { // Handle payment return
+            setCurrentPage('my-ads');
+        }
     }, []);
 
     const handleLogin = (userData) => {
@@ -43,6 +52,8 @@ const App = () => {
                 return <LoginPage onLogin={handleLogin} navigateTo={navigateTo} />;
             case 'register':
                 return <RegisterPage navigateTo={navigateTo} />;
+            case 'my-ads':
+                return <MyAdsPage navigateTo={navigateTo} user={user} />;
             case 'create-ad':
                 return <CreateAdPage navigateTo={navigateTo} user={user} />;
             case 'ad-detail':
@@ -54,6 +65,8 @@ const App = () => {
 
             case 'forgot-password':
                 return <ForgotPasswordPage navigateTo={navigateTo} />;
+            case 'reset-password':
+                return <ResetPasswordPage navigateTo={navigateTo} />;
             case 'chat':
                 return <ChatPage chatData={currentAdId} navigateTo={navigateTo} user={user} />;
             case 'inbox':

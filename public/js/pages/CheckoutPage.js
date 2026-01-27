@@ -1,5 +1,6 @@
 const CheckoutPage = ({ checkoutData, navigateTo }) => {
     const [loading, setLoading] = React.useState(false);
+    const [planDetails, setPlanDetails] = React.useState(null);
 
     // Get props passed from CreateAdPage
     const { adId, planId } = checkoutData || {};
@@ -8,7 +9,22 @@ const CheckoutPage = ({ checkoutData, navigateTo }) => {
         if (!adId || !planId) {
             alert('Nenhum anuncio pendente de pagamento.');
             navigateTo('home');
+            return;
         }
+
+        // Fetch Plan Details to show correct price
+        api.get('/resources/planos')
+            .then(res => {
+                // Ensure type safety when finding plan. planId might be string, ID usually int.
+                const plan = res.data.find(p => p.id == planId);
+                if (plan) {
+                    setPlanDetails(plan);
+                } else {
+                    console.warn(`Plan ${planId} not found in resources.`);
+                }
+            })
+            .catch(console.error);
+
     }, [adId, planId]);
 
     const handlePay = async () => {
@@ -29,8 +45,8 @@ const CheckoutPage = ({ checkoutData, navigateTo }) => {
     };
 
     // Calculate Price for display
-    const price = planId == '1' ? 30 : 50;
-    const planName = planId == '1' ? 'Plano Básico (15 dias)' : 'Plano Premium (30 dias)';
+    const price = planDetails ? Number(planDetails.preco) : 0;
+    const planName = planDetails ? `${planDetails.nome} (${planDetails.duracao_dias} dias)` : 'Carregando...';
 
     return (
         <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-2xl shadow-lg border border-gray-100 fade-in text-center">
