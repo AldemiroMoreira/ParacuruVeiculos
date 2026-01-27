@@ -27,7 +27,7 @@ const AdminPage = () => {
         e.preventDefault();
         try {
             const res = await api.post('/auth/admin/login', creds);
-            localStorage.setItem('adminToken', res.data.token);
+            localStorage.setItem('admin_token', res.data.token);
             setAuthorized(true);
             loadDashboard(res.data.token);
         } catch (e) {
@@ -36,7 +36,7 @@ const AdminPage = () => {
     };
 
     React.useEffect(() => {
-        const t = localStorage.getItem('adminToken');
+        const t = localStorage.getItem('admin_token');
         if (t) checkAuth(t);
     }, []);
 
@@ -53,32 +53,41 @@ const AdminPage = () => {
         );
     }
 
-    if (!stats) return <div>Carregando...</div>;
+    const handleReset = async () => {
+        if (confirm('ATENÇÃO: ISSO APAGARÁ TODO O BANCO DE DADOS DA PRODUÇÃO (ANÚNCIOS, USUÁRIOS) E RESTAURARÁ O PADRÃO. TEM CERTEZA??')) {
+            try {
+                alert('Iniciando reset... isso pode levar alguns segundos.');
+                const token = localStorage.getItem('admin_token');
+                await axios.post('/api/db_crud/reset_full', {}, { headers: { Authorization: 'Bearer ' + token } });
+                alert('Sucesso! O banco foi resetado.');
+                window.location.reload();
+            } catch (e) {
+                const msg = (e.response && e.response.data && e.response.data.message) || e.message;
+                alert('Erro ao resetar: ' + msg);
+            }
+        }
+    };
+
+    if (!stats) return <div className="p-8 text-center font-medium text-gray-500">Carregando painel...</div>;
 
     return (
         <div className="space-y-8 fade-in">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                 <h1 className="text-3xl font-bold text-gray-900">Painel Administrativo</h1>
+                <div className="flex flex-wrap gap-2 justify-center">
+                    <button onClick={() => navigateTo('db_crud_planos')} className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-bold shadow hover:bg-blue-700">Planos</button>
+                    <button onClick={() => navigateTo('db_crud_categorias')} className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-bold shadow hover:bg-blue-700">Categorias</button>
+                    <button onClick={() => navigateTo('db_crud_fabricantes')} className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-bold shadow hover:bg-blue-700">Fabricantes</button>
+                    <button onClick={() => navigateTo('db_crud_modelos')} className="bg-blue-600 text-white px-3 py-1 rounded text-sm font-bold shadow hover:bg-blue-700">Modelos</button>
+                </div>
                 <div className="flex gap-4">
                     <button
-                        onClick={async () => {
-                            if (confirm('ATENÇÃO: ISSO APAGARÁ TODO O BANCO DE DADOS DA PRODUÇÃO (ANÚNCIOS, USUÁRIOS) E RESTAURARÁ O PADRÃO. TEM CERTEZA??')) {
-                                try {
-                                    alert('Iniciando reset... isso pode levar alguns segundos.');
-                                    const token = localStorage.getItem('adminToken');
-                                    await axios.post('/api/db_crud/reset_full', {}, { headers: { Authorization: `Bearer ${token}` } });
-                                    alert('Sucesso! O banco foi resetado.');
-                                    window.location.reload();
-                                } catch (e) {
-                                    alert('Erro ao resetar: ' + (e.response?.data?.message || e.message));
-                                }
-                            }
-                        }}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold"
+                        onClick={handleReset}
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded font-bold shadow-lg"
                     >
                         RESETAR SISTEMA (PERIGO)
                     </button>
-                    <button onClick={() => { localStorage.removeItem('adminToken'); setAuthorized(false); }} className="text-gray-600 hover:text-red-600 font-medium">Sair</button>
+                    <button onClick={() => { localStorage.removeItem('admin_token'); setAuthorized(false); }} className="text-gray-600 hover:text-red-600 font-medium">Sair</button>
                 </div>
             </div>
 
