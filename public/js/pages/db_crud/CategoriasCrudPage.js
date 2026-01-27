@@ -61,17 +61,21 @@ const CategoriasCrudPage = ({ navigateTo }) => {
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Gerenciar Categorias</h1>
                 <div className="space-x-4">
-                    <span className="font-bold text-gray-800">Categorias</span>
-                    <span className="text-gray-400">|</span>
-                    <button onClick={() => navigateTo('db_crud_planos')} className="text-blue-600 hover:underline">
+                    <button onClick={() => navigateTo('admin')} className="font-bold text-gray-800 hover:text-blue-600">
+                        ← Painel Principal
+                    </button>
+                    <span className="text-gray-300">|</span>
+                    <span className="font-bold text-blue-600">Categorias</span>
+                    <span className="text-gray-300">|</span>
+                    <button onClick={() => navigateTo('db_crud_planos')} className="text-gray-600 hover:text-blue-600">
                         Planos
                     </button>
-                    <span className="text-gray-400">|</span>
-                    <button onClick={() => navigateTo('db_crud_fabricantes')} className="text-blue-600 hover:underline">
+                    <span className="text-gray-300">|</span>
+                    <button onClick={() => navigateTo('db_crud_fabricantes')} className="text-gray-600 hover:text-blue-600">
                         Fabricantes
                     </button>
-                    <span className="text-gray-400">|</span>
-                    <button onClick={() => navigateTo('db_crud_modelos')} className="text-blue-600 hover:underline">
+                    <span className="text-gray-300">|</span>
+                    <button onClick={() => navigateTo('db_crud_modelos')} className="text-gray-600 hover:text-blue-600">
                         Modelos
                     </button>
                 </div>
