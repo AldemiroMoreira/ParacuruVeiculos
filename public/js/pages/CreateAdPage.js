@@ -97,7 +97,7 @@ const CreateAdPage = ({ user, navigateTo }) => {
             });
         };
 
-        const handleImageChange = async (e) => {
+        const handleImageChange = (e) => {
             const files = Array.from(e.target.files);
 
             if (images.length + files.length > 9) {
@@ -105,19 +105,19 @@ const CreateAdPage = ({ user, navigateTo }) => {
                 return;
             }
 
-            // Indicate loading implicitly or user can wait, for better UX maybe add a small loader if needed, 
-            // but for now await all compressions
-            const compressedFiles = await Promise.all(files.map(file => compressImage(file)));
+            Promise.all(files.map(file => compressImage(file)))
+                .then(compressedFiles => {
+                    setImages(prev => [...prev, ...compressedFiles]);
 
-            setImages(prev => [...prev, ...compressedFiles]);
-
-            // Create new previews
-            const newPreviews = compressedFiles.map(file => {
-                const url = URL.createObjectURL(file);
-                previewUrlsRef.current.push(url);
-                return url;
-            });
-            setPreviews(prev => [...prev, ...newPreviews]);
+                    // Create new previews
+                    const newPreviews = compressedFiles.map(file => {
+                        const url = URL.createObjectURL(file);
+                        previewUrlsRef.current.push(url);
+                        return url;
+                    });
+                    setPreviews(prev => [...prev, ...newPreviews]);
+                })
+                .catch(err => console.error("Error compressing images", err));
         };
 
         const handleStateChange = (e) => {
@@ -126,7 +126,7 @@ const CreateAdPage = ({ user, navigateTo }) => {
 
             if (stateId) {
                 api.get(`/locations/cities/${stateId}`)
-                    .then(res => setCities(res.data))
+                    .then(res => setCities(res.data || []))
                     .catch(err => console.error(err));
             } else {
                 setCities([]);
@@ -161,53 +161,52 @@ const CreateAdPage = ({ user, navigateTo }) => {
                 url += `?categoriaId=${categoriaId}`;
             }
             api.get(url)
-                .then(res => setModelos(res.data))
+                .then(res => setModelos(res.data || []))
                 .catch(err => console.error(err));
         };
 
-        const handleSubmit = async (e) => {
+        const handleSubmit = (e) => {
             e.preventDefault();
             setLoading(true);
 
-            try {
-                const data = new FormData();
-                Object.keys(formData).forEach(key => {
-                    if (key === 'preco') {
-                        // Sanitize price R$ 1.000,00 -> 1000.00
-                        let price = formData[key].replace(/[^\d,]/g, '').replace(',', '.');
-                        data.append(key, price);
-                    } else {
-                        data.append(key, formData[key]);
-                    }
-                });
-                images.forEach(image => data.append('images', image));
-
-                const token = localStorage.getItem('token');
-                const response = await api.post('/anuncios', data, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                // Navigate to checkout with the created ad ID and Plan ID
-                // Backend returns { anuncioId: ... }
-                navigateTo('checkout', {
-                    adId: response.data.anuncioId,
-                    planId: formData.plan_id
-                });
-
-            } catch (error) {
-                console.error(error);
-                const errorMessage = error.response?.data?.error || error.response?.data?.message || 'Erro ao criar anuncio. Verifique os dados.';
-
-                if (errorMessage === 'Auth failed' || error.response?.status === 401) {
-                    alert("Sua sessão expirou. Por favor, faça login novamente.");
-                    navigateTo('login');
+            const data = new FormData();
+            Object.keys(formData).forEach(key => {
+                if (key === 'preco') {
+                    // Sanitize price R$ 1.000,00 -> 1000.00
+                    let price = formData[key].replace(/[^\d,]/g, '').replace(',', '.');
+                    data.append(key, price);
                 } else {
-                    alert(errorMessage);
+                    data.append(key, formData[key]);
                 }
-                setLoading(false);
-            }
+            });
+            images.forEach(image => data.append('images', image));
+
+            const token = localStorage.getItem('token');
+            api.post('/anuncios', data, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(response => {
+                    // Navigate to checkout with the created ad ID and Plan ID
+                    // Backend returns { anuncioId: ... }
+                    navigateTo('checkout', {
+                        adId: response.data.anuncioId,
+                        planId: formData.plan_id
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                    const errorMessage = (error.response && error.response.data && (error.response.data.error || error.response.data.message)) || 'Erro ao criar anuncio. Verifique os dados.';
+
+                    if (errorMessage === 'Auth failed' || (error.response && error.response.status === 401)) {
+                        alert("Sua sessão expirou. Por favor, faça login novamente.");
+                        navigateTo('login');
+                    } else {
+                        alert(errorMessage);
+                    }
+                    setLoading(false);
+                });
         };
 
         return (
