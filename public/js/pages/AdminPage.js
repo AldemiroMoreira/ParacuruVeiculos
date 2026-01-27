@@ -3,36 +3,40 @@ const AdminPage = () => {
     const [ads, setAds] = React.useState([]);
     const [authorized, setAuthorized] = React.useState(false);
     const [creds, setCreds] = React.useState({ username: '', password: '' });
-    const [loading, setLoading] = React.useState(false);
 
-    const checkAuth = async (token) => {
-        try {
-            await axios.get('/api/admin/stats', { headers: { Authorization: `Bearer ${token}` } });
-            setAuthorized(true);
-            loadDashboard(token);
-        } catch (e) {
-            setAuthorized(false);
-        }
+    const checkAuth = (token) => {
+        axios.get('/api/admin/stats', { headers: { Authorization: 'Bearer ' + token } })
+            .then(() => {
+                setAuthorized(true);
+                loadDashboard(token);
+            })
+            .catch(() => {
+                setAuthorized(false);
+            });
     };
 
-    const loadDashboard = async (token) => {
-        const config = { headers: { Authorization: `Bearer ${token}` } };
-        const s = await axios.get('/api/admin/stats', config);
-        const a = await axios.get('/api/admin/ads', config);
-        setStats(s.data);
-        setAds(a.data);
+    const loadDashboard = (token) => {
+        const config = { headers: { Authorization: 'Bearer ' + token } };
+        Promise.all([
+            axios.get('/api/admin/stats', config),
+            axios.get('/api/admin/ads', config)
+        ]).then(([s, a]) => {
+            setStats(s.data);
+            setAds(a.data);
+        });
     };
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        try {
-            const res = await api.post('/auth/admin/login', creds);
-            localStorage.setItem('admin_token', res.data.token);
-            setAuthorized(true);
-            loadDashboard(res.data.token);
-        } catch (e) {
-            alert('Falha login admin');
-        }
+        api.post('/auth/admin/login', creds)
+            .then(res => {
+                localStorage.setItem('admin_token', res.data.token);
+                setAuthorized(true);
+                loadDashboard(res.data.token);
+            })
+            .catch(() => {
+                alert('Falha login admin');
+            });
     };
 
     React.useEffect(() => {
@@ -53,18 +57,19 @@ const AdminPage = () => {
         );
     }
 
-    const handleReset = async () => {
-        if (confirm('ATENÇÃO: ISSO APAGARÁ TODO O BANCO DE DADOS DA PRODUÇÃO (ANÚNCIOS, USUÁRIOS) E RESTAURARÁ O PADRÃO. TEM CERTEZA??')) {
-            try {
-                alert('Iniciando reset... isso pode levar alguns segundos.');
-                const token = localStorage.getItem('admin_token');
-                await axios.post('/api/db_crud/reset_full', {}, { headers: { Authorization: 'Bearer ' + token } });
-                alert('Sucesso! O banco foi resetado.');
-                window.location.reload();
-            } catch (e) {
-                const msg = (e.response && e.response.data && e.response.data.message) || e.message;
-                alert('Erro ao resetar: ' + msg);
-            }
+    const handleReset = () => {
+        if (confirm('ATENÇÃO: ISSO APAGARÁ TODO O BANCO DE DADOS DA PRODUÇÃO (ANÚNCIOS, USUÁRIOS) E RESTAURARÁ O PADRÃO. TEM CERTEZA??')) { // eslint-disable-line no-restricted-globals
+            alert('Iniciando reset... isso pode levar alguns segundos.');
+            const token = localStorage.getItem('admin_token');
+            axios.post('/api/db_crud/reset_full', {}, { headers: { Authorization: 'Bearer ' + token } })
+                .then(() => {
+                    alert('Sucesso! O banco foi resetado.');
+                    window.location.reload();
+                })
+                .catch((e) => {
+                    const msg = (e.response && e.response.data && e.response.data.message) || e.message;
+                    alert('Erro ao resetar: ' + msg);
+                });
         }
     };
 
