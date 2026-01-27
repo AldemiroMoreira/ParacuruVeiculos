@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
-const { sequelize, Categoria, Plano, Fabricante, Modelo, Usuario } = require('./models');
+const { sequelize, Categoria, Plano, Fabricante, Modelo, Usuario, State, City } = require('./models');
 
 // Data Paths
 const DATA_DIR = path.join(__dirname, '../database');
@@ -58,13 +58,46 @@ async function seedEverything() {
         console.log('Seeding Models...');
         const mods = readJson('modelos.json');
         if (mods.length > 0) {
-            // Bulk create is efficient
             await Modelo.bulkCreate(mods);
         } else {
             console.warn('No models found to seed.');
         }
 
-        // 5. Admin User
+        // 5. States
+        console.log('Seeding States...');
+        const rawStates = readJson('estados.json');
+        if (rawStates.length > 0) {
+            const states = rawStates.map(s => ({
+                name: s.nome,
+                abbreviation: s.sigla
+            }));
+            await State.bulkCreate(states);
+        } else {
+            console.warn('No states found to seed.');
+        }
+
+        // 6. Cities
+        console.log('Seeding Cities...');
+        const rawCities = readJson('municipios.json');
+        if (rawCities.length > 0) {
+            const cities = rawCities.map(m => ({
+                id: m.id,
+                nome: m.nome,
+                uf: m.microrregiao?.mesorregiao?.UF?.sigla
+            })).filter(c => c.uf); // valid UF only
+
+            // Chunking
+            const CHUNK_SIZE = 1000;
+            for (let i = 0; i < cities.length; i += CHUNK_SIZE) {
+                const chunk = cities.slice(i, i + CHUNK_SIZE);
+                await City.bulkCreate(chunk);
+                console.log(`Seeded cities ${i} to ${i + chunk.length}`);
+            }
+        } else {
+            console.warn('No cities found to seed.');
+        }
+
+        // 7. Admin User
         console.log('Creating Admin User...');
         const email = 'aldemiro.moreira@gmail.com';
         const hashedPassword = await bcrypt.hash('admin', 10);
@@ -72,20 +105,19 @@ async function seedEverything() {
             nome: 'Aldemiro',
             email: email,
             password_hash: hashedPassword,
-            telefone: '00000000000', // Default dummy
-            isAdmin: true // Ensure logic supports this if field exists, otherwise email check is used
+            telefone: '00000000000',
+            isAdmin: true
         });
 
         console.log('!!! FULL RESET COMPLETE !!!');
         console.log('All data has been restored from local JSON dumps.');
 
-        // If run directly
         if (require.main === module) process.exit(0);
 
     } catch (e) {
         console.error('CRITICAL ERROR DURING SEED:', e);
         if (require.main === module) process.exit(1);
-        throw e; // Re-throw for API handling
+        throw e;
     }
 }
 
