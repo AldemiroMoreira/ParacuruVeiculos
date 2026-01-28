@@ -6,12 +6,24 @@ const adminController = require('../controllers/adminController');
 // Implementing basic separate check or reuse. For MVP, I will skip the separate table logic implementation details 
 // and just protect it with a placeholder middleware or standard auth + role check.
 
-const startAdminAuth = (req, res, next) => {
-    // Placeholder for Admin Auth
-    next();
-}
+const authMiddleware = require('../middleware/authMiddleware');
 
-router.get('/stats', startAdminAuth, adminController.getDashboardStats);
+const checkAdmin = (req, res, next) => {
+    if (!req.userData || !req.userData.isAdmin) {
+        return res.status(403).json({ message: 'Acesso negado. Requer admin.' });
+    }
+    next();
+};
+
+const protectRoute = [authMiddleware, checkAdmin];
+
+router.get('/stats', protectRoute, adminController.getDashboardStats);
+router.get('/ads', protectRoute, adminController.getRecentAds);
+router.put('/ads/:id/approve', protectRoute, adminController.approveAd);
+router.delete('/ads/:id/reject', protectRoute, adminController.rejectAd);
+
+router.get('/users', protectRoute, adminController.getUsers);
+router.put('/users/:id/ban', protectRoute, adminController.toggleUserBan);
 router.get('/ads', startAdminAuth, adminController.getRecentAds);
 
 module.exports = router;

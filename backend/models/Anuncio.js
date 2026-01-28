@@ -57,6 +57,10 @@ const Anuncio = sequelize.define('Anuncio', {
     status: {
         type: DataTypes.ENUM('pending_payment', 'active', 'sold', 'expired'),
         defaultValue: 'pending_payment'
+    },
+    expires_at: {
+        type: DataTypes.DATE,
+        allowNull: true
     }
 }, {
     tableName: 'anuncios',

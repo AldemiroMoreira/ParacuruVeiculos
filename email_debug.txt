@@ -7,3 +7,43 @@ http://localhost:3003/#/reset-password/1e53bf94a1ee31acf633b437f99f02ac01812979
 --- LINK DE RECUPERAÇÃO (2026-01-27T11:22:12.519Z) ---
 http://localhost:3003/#/reset-password/75f90a91456d8f19f6bc14111c2ed96bb804ae93
 --------------------------------------
+--- EMAIL TO tcristina.mv@gmail.com ---
+Subject: Ativação de Conta - ParacuruVeículos
+Olá Cristina,
+
+Para ativar sua conta, clique no link abaixo:
+
+http://localhost:3003/#/activate/9c34bb7e34ccadcde778ab88b3542b50ac349b42
+
+Obrigado!
+-------------------
+--- EMAIL TO tcristina.mv@gmail.com ---
+Subject: Ativação de Conta - ParacuruVeículos
+Olá Cristina,
+
+Para ativar sua conta, clique no link abaixo:
+
+http://localhost:3003/#/activate/b6268ddb25df74fe9a4eb96a1f657390a0634d07
+
+Obrigado!
+-------------------
+--- EMAIL TO tcristina.mv@gmail.com ---
+Subject: Ativação de Conta - ParacuruVeículos
+Olá Cristina,
+
+Para ativar sua conta, clique no link abaixo:
+
+http://localhost:3003/#/activate/25b91795acaf587274eb05e0ea0d3b38fd4061a0
+
+Obrigado!
+-------------------
+--- EMAIL TO tcristina.mv@gmail.com ---
+Subject: Ativação de Conta - ParacuruVeículos
+Olá Cristina,
+
+Para ativar sua conta, clique no link abaixo:
+
+http://localhost:3003/#/activate/902083bf6864efbdbc0834f6b96910dbf4ebce95
+
+Obrigado!
+-------------------

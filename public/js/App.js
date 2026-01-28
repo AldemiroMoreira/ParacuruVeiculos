@@ -23,6 +23,12 @@ const App = () => {
         if (hash.startsWith('#/my-ads')) { // Handle payment return
             setCurrentPage('my-ads');
         }
+        if (hash.startsWith('#/activate/')) {
+            setCurrentPage('activate');
+        }
+        if (hash.startsWith('#/edit-ad/')) {
+            setCurrentPage('edit-ad');
+        }
     }, []);
 
     const handleLogin = (userData) => {
@@ -40,6 +46,13 @@ const App = () => {
     const navigateTo = (page, data = null) => {
         if (page === 'ad-detail') setCurrentAdId(data);
         if (page === 'checkout') setCheckoutData(data);
+        if (page === 'edit-ad') {
+            // For edit-ad, the data is the ID, so we might want to update the URL hash
+            // But actually, simple navigation 'internally' is easier. 
+            // However, EditAdPage checks window.location.hash. 
+            // So we should update it.
+            window.location.hash = `/edit-ad/${data}`;
+        }
         setCurrentPage(page);
         window.scrollTo(0, 0);
     };
@@ -56,6 +69,8 @@ const App = () => {
                 return <MyAdsPage navigateTo={navigateTo} user={user} />;
             case 'create-ad':
                 return <CreateAdPage navigateTo={navigateTo} user={user} />;
+            case 'edit-ad':
+                return <EditAdPage navigateTo={navigateTo} user={user} />;
             case 'ad-detail':
                 return <AdDetailPage adId={currentAdId} navigateTo={navigateTo} user={user} />;
             case 'checkout':
@@ -67,6 +82,8 @@ const App = () => {
                 return <ForgotPasswordPage navigateTo={navigateTo} />;
             case 'reset-password':
                 return <ResetPasswordPage navigateTo={navigateTo} />;
+            case 'activate':
+                return <ActivationPage navigateTo={navigateTo} />;
             case 'chat':
                 return <ChatPage chatData={currentAdId} navigateTo={navigateTo} user={user} />;
             case 'inbox':

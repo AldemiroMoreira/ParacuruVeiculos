@@ -27,6 +27,30 @@ const Usuario = sequelize.define('Usuario', {
     resetPasswordExpires: {
         type: DataTypes.DATE,
         allowNull: true
+    },
+    isVerified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    activationToken: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    termsAcceptedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    }
+    termsAcceptedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    },
+    isBanned: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     }
 }, {
     tableName: 'usuarios',

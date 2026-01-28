@@ -12,6 +12,7 @@ const HomePage = ({ navigateTo, user }) => {
     const [showAdminAlert, setShowAdminAlert] = React.useState(() => {
         return localStorage.getItem('hideAdminAlert') !== 'true';
     });
+    const [showAdvanced, setShowAdvanced] = React.useState(false);
 
     const [filters, setFilters] = React.useState({
         fabricante_id: '',
@@ -324,60 +325,62 @@ const HomePage = ({ navigateTo, user }) => {
                             <h2 className="text-xl md:text-2xl font-bold mb-1">Encontre seu próximo veículo</h2>
                             <p className="text-gray-300 mb-3 text-xs">As melhores ofertas de Paracuru e região.</p>
 
-                            <div className="bg-white/10 backdrop-blur-md p-1.5 rounded-lg border border-white/10 grid grid-cols-2 md:grid-cols-5 gap-1.5">
-                                <select
-                                    name="categoria_id"
-                                    value={filters.categoria_id}
-                                    onChange={handleFilterChange}
-                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5"
-                                >
-                                    <option value="">Categoria (Todas)</option>
-                                    {categorias.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
-                                </select>
-                                <select
-                                    name="fabricante_id"
-                                    value={filters.fabricante_id}
-                                    onChange={handleFilterChange}
-                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5"
-                                >
-                                    <option value="">Marca (Todas)</option>
-                                    {fabricantes.map(f => <option key={f.id} value={f.id}>{f.nome}</option>)}
-                                </select>
-                                <select
-                                    name="modelo_id"
-                                    value={filters.modelo_id}
-                                    onChange={handleFilterChange}
-                                    disabled={!modelos.length}
-                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5 disabled:opacity-50"
-                                >
-                                    <option value="">Modelo (Todos)</option>
-                                    {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
-                                </select>
-                                <select
-                                    name="estado_id"
-                                    value={filters.estado_id}
-                                    onChange={handleFilterChange}
-                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5"
-                                >
-                                    <option value="">Estado (Todos)</option>
-                                    {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
-                                </select>
-                                <select
-                                    name="cidade_id"
-                                    value={filters.cidade_id}
-                                    onChange={handleFilterChange}
-                                    disabled={!cities.length}
-                                    className="bg-gray-50 border border-gray-200 text-gray-900 text-xs rounded shadow-sm focus:ring-brand-500 focus:border-brand-500 block w-full p-1.5 disabled:opacity-50"
-                                >
-                                    <option value="">Cidade (Todas)</option>
-                                    {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                                </select>
-                            </div>
+                            <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/10 space-y-2">
+                                {/* Basic Filters */}
+                                <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
+                                    <select name="categoria_id" value={filters.categoria_id} onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500">
+                                        <option value="">Categoria</option>
+                                        {categorias.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
+                                    </select>
+                                    <select name="fabricante_id" value={filters.fabricante_id} onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500">
+                                        <option value="">Marca</option>
+                                        {fabricantes.map(f => <option key={f.id} value={f.id}>{f.nome}</option>)}
+                                    </select>
+                                    <select name="modelo_id" value={filters.modelo_id} onChange={handleFilterChange} disabled={!modelos.length} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500 disabled:opacity-50">
+                                        <option value="">Modelo</option>
+                                        {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
+                                    </select>
+                                    <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500">
+                                        <option value="">Estado</option>
+                                        {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
+                                    </select>
+                                    <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500 disabled:opacity-50">
+                                        <option value="">Cidade</option>
+                                        {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                    </select>
+                                </div>
 
-                            <div className="mt-2 text-center w-full flex justify-center">
-                                <button onClick={handleSearch} className="w-full md:w-auto min-w-[200px] text-white bg-brand-600 hover:bg-brand-700 shadow-md hover:shadow-brand-500/30 font-bold rounded text-xs py-2 px-6 transition-colors">
-                                    Buscar Ofertas
-                                </button>
+                                {/* Advanced Toggle */}
+                                <div className="flex justify-between items-center text-xs text-white px-1">
+                                    <button onClick={() => setShowAdvanced(!showAdvanced)} className="flex items-center gap-1 hover:text-brand-200 transition">
+                                        {showAdvanced ? '➖ Menos filtros' : '➕ Mais filtros'} (Preço, Km, Ano)
+                                    </button>
+                                </div>
+
+                                {/* Advanced Filters Area */}
+                                {showAdvanced && (
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 border-t border-white/10 pt-2 animate-fade-in-down">
+                                        <input type="number" name="minPrice" placeholder="Preço Min" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
+                                        <input type="number" name="maxPrice" placeholder="Preço Max" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
+                                        <input type="number" name="minYear" placeholder="Ano Min" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
+                                        <input type="number" name="maxYear" placeholder="Ano Max" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
+                                        <input type="number" name="minKm" placeholder="Km Min" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
+                                        <input type="number" name="maxKm" placeholder="Km Max" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
+                                        <select name="sort" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 col-span-2 font-bold text-brand-700">
+                                            <option value="">Ordenação Padrão</option>
+                                            <option value="price_asc">Menor Preço</option>
+                                            <option value="price_desc">Maior Preço</option>
+                                            <option value="year_desc">Mais Novos (Ano)</option>
+                                            <option value="km_asc">Menor Quilometragem</option>
+                                        </select>
+                                    </div>
+                                )}
+
+                                <div className="mt-2 text-center w-full flex justify-center pt-2 border-t border-white/10">
+                                    <button onClick={handleSearch} className="w-full md:w-auto min-w-[200px] text-white bg-brand-600 hover:bg-brand-700 shadow-lg hover:shadow-brand-500/30 font-bold rounded text-sm py-2 px-6 transition-all transform hover:scale-105">
+                                        🔍 Buscar Ofertas
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

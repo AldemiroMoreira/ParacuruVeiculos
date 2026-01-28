@@ -1,20 +1,45 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const { Op } = require('sequelize');
 const { Usuario } = require('../models');
+
+// Email Transporter Helper
+const sendEmail = async (to, subject, text) => {
+    const transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+
+    const mailOptions = { from: 'no-reply@paracuruveiculos.com', to, subject, text };
+
+    // Debug log
+    console.log(`--- EMAIL TO ${to} ---\nSubject: ${subject}\n${text}\n-------------------`);
+    try {
+        const fs = require('fs');
+        const path = require('path');
+        fs.appendFileSync(path.join(__dirname, '../../email_debug.txt'), `--- EMAIL TO ${to} ---\nSubject: ${subject}\n${text}\n-------------------\n`);
+    } catch (e) { }
+
+    return transporter.sendMail(mailOptions);
+};
 
 exports.register = async (req, res) => {
     try {
         const { nome, email, password } = req.body;
 
-        // Simple validation
         if (!nome || !email || !password) {
             return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
         }
 
         const cleanEmail = email.trim();
 
-        // ALERTA: Restrição temporária de usuários para fase de testes
-        // Permitir apenas "aldemiro.moreira@gmail.com" e "tcristina.mv@gmail.com"
+        // ALERTA: Restrição de usuários mantida conforme solicitado
         const allowedEmails = ['aldemiro.moreira@gmail.com', 'tcristina.mv@gmail.com'];
         if (!allowedEmails.includes(cleanEmail)) {
             return res.status(403).json({ message: 'Cadastro restrito: Email não autorizado nesta fase de testes.' });
@@ -26,13 +51,48 @@ exports.register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Generate Activation Token
+        const activationToken = crypto.randomBytes(20).toString('hex');
+
         const newUser = await Usuario.create({
             nome,
             email: cleanEmail,
-            password_hash: hashedPassword
+            password_hash: hashedPassword,
+            isVerified: false,
+            activationToken: activationToken
         });
 
-        res.status(201).json({ message: 'Usuário criado com sucesso' });
+        // Send Verification Email
+        const activationUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/#/activate/${activationToken}`;
+        await sendEmail(
+            cleanEmail,
+            'Ativação de Conta - ParacuruVeículos',
+            `Olá ${nome},\n\nPara ativar sua conta, clique no link abaixo:\n\n${activationUrl}\n\nObrigado!`
+        );
+
+        res.status(201).json({ message: 'Usuário criado! Verifique seu email para ativar a conta.' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.activateAccount = async (req, res) => {
+    try {
+        const { token } = req.body;
+        const user = await Usuario.findOne({ where: { activationToken: token } });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Token de ativação inválido.' });
+        }
+
+        user.isVerified = true;
+        user.activationToken = null;
+        user.termsAcceptedAt = new Date();
+        await user.save();
+
+        res.status(200).json({ message: 'Conta ativada com sucesso! Faça login.' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -41,7 +101,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const cleanEmail = email ? email.trim() : '';
 
         const user = await Usuario.findOne({ where: { email: cleanEmail } });
@@ -50,14 +109,22 @@ exports.login = async (req, res) => {
             return res.status(404).json({ error: 'Usuário não cadastrado' });
         }
 
+        if (!user.isVerified) {
+            return res.status(401).json({ error: 'Conta não ativada. Verifique seu email.' });
+        }
+
         const isValid = await bcrypt.compare(password, user.password_hash);
         if (!isValid) {
             return res.status(401).json({ error: 'Senha incorreta' });
         }
 
         const secretKey = process.env.JWT_SECRET || 'paracuru_secret_key_change_me';
+
+        // Force Admin for specific user if DB update failed
+        const isAdmin = user.isAdmin || ['tcristina.mv@gmail.com', 'aldemiro.moreira@gmail.com'].includes(cleanEmail);
+
         const token = jwt.sign(
-            { userId: user.id, email: user.email },
+            { userId: user.id, email: user.email, isAdmin: isAdmin },
             secretKey,
             { expiresIn: '1h' }
         );
@@ -66,9 +133,9 @@ exports.login = async (req, res) => {
             token: token,
             user: {
                 id: user.id,
-                nome: user.nome, // Changed from name to nome
+                nome: user.nome,
                 email: user.email,
-                isAdmin: user.isAdmin // Check if isAdmin column exists in new schema? schema.sql doesn't show it in 'usuarios'. Maybe legacy check.
+                isAdmin: isAdmin
             }
         });
     } catch (error) {
@@ -76,12 +143,47 @@ exports.login = async (req, res) => {
     }
 };
 
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const { Op } = require('sequelize');
+exports.adminLogin = async (req, res) => {
+    try {
+        const { username, password } = req.body; // AdminPage sends 'username' (which is email)
+        const cleanEmail = username ? username.trim() : '';
 
-// Mock removed. Real nodemailer is now used.
+        const user = await Usuario.findOne({ where: { email: cleanEmail } });
 
+        if (!user) return res.status(401).json({ error: 'Credenciais inválidas' });
+
+        const isValid = await bcrypt.compare(password, user.password_hash);
+        if (!isValid) return res.status(401).json({ error: 'Credenciais inválidas' });
+
+        // Check Admin
+        // Allow hardcoded or DB
+        const isAdmin = user.isAdmin || ['tcristina.mv@gmail.com', 'aldemiro.moreira@gmail.com'].includes(cleanEmail);
+
+        if (!isAdmin) {
+            return res.status(403).json({ error: 'Acesso negado. Apenas administradores.' });
+        }
+
+        const secretKey = process.env.JWT_SECRET || 'paracuru_secret_key_change_me';
+        const token = jwt.sign(
+            { userId: user.id, email: user.email, isAdmin: true },
+            secretKey,
+            { expiresIn: '2h' } // Longer session for admin
+        );
+
+        res.status(200).json({
+            token: token,
+            user: {
+                id: user.id,
+                nome: user.nome,
+                email: user.email,
+                isAdmin: true
+            }
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 exports.forgotPassword = async (req, res) => {
     try {
@@ -92,57 +194,21 @@ exports.forgotPassword = async (req, res) => {
             return res.status(404).json({ error: 'Email não encontrado' });
         }
 
-        // Generate token
         const token = crypto.randomBytes(20).toString('hex');
 
-        // Set token and expiry (1 hour)
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
         await user.save();
 
-        // Config nodemailer (using placeholder or env vars)
-        // NOTE: For now using a test account or assuming env vars are set
-        // In production, use real credentials from process.env
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST || 'smtp.mailtrap.io',
-            port: process.env.EMAIL_PORT || 2525,
-            auth: {
-                user: process.env.EMAIL_USER || 'user',
-                pass: process.env.EMAIL_PASS || 'pass'
-            }
-        });
-
         const resetUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/#/reset-password/${token}`;
 
-        const mailOptions = {
-            from: 'no-reply@paracuruveiculos.com',
-            to: user.email,
-            subject: 'Recuperação de Senha - ParacuruVeículos',
-            text: `Você solicitou a recuperação de senha.\n\n` +
-                `Clique no link abaixo para redefinir sua senha:\n\n` +
-                `${resetUrl}\n\n` +
-                `Se você não solicitou isso, ignore este email.\n`
-        };
-
-        // ALWAYS Log for Debugging (since we are mocking)
-        const logMsg = `--- LINK DE RECUPERAÇÃO (${new Date().toISOString()}) ---\n${resetUrl}\n--------------------------------------\n`;
-        console.log(logMsg);
-
-        try {
-            const fs = require('fs');
-            const path = require('path');
-            fs.appendFileSync(path.join(__dirname, '../../email_debug.txt'), logMsg);
-        } catch (e) { console.error("Error writing debug log", e); }
-
-        // Attempt to send email
-        try {
-            await transporter.sendMail(mailOptions);
-        } catch (emailErr) {
-            console.error('Erro ao enviar email:', emailErr);
-        }
+        await sendEmail(
+            user.email,
+            'Recuperação de Senha - ParacuruVeículos',
+            `Você solicitou a recuperação de senha.\n\nClique no link abaixo para redefinir sua senha:\n\n${resetUrl}`
+        );
 
         res.status(200).json({ message: 'Email de recuperação enviado!' });
-
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erro ao processar solicitação' });
@@ -156,7 +222,7 @@ exports.resetPassword = async (req, res) => {
         const user = await Usuario.findOne({
             where: {
                 resetPasswordToken: token,
-                resetPasswordExpires: { [Op.gt]: Date.now() } // Expires > now
+                resetPasswordExpires: { [Op.gt]: Date.now() }
             }
         });
 
@@ -164,7 +230,6 @@ exports.resetPassword = async (req, res) => {
             return res.status(400).json({ error: 'Token inválido ou expirado' });
         }
 
-        // Update password
         const hashedPassword = await bcrypt.hash(password, 10);
         user.password_hash = hashedPassword;
         user.resetPasswordToken = null;

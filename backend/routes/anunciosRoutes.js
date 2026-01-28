@@ -9,6 +9,8 @@ router.get('/', anunciosController.getAnuncios);
 router.get('/:id', anunciosController.getAnuncioById);
 
 // Protected routes
+router.get('/meus', authMiddleware, anunciosController.getMeusAnuncios); // Must be before /:id
+
 router.post('/', authMiddleware, (req, res, next) => {
     upload.array('images', 9)(req, res, (err) => {
         if (err) {
@@ -24,6 +26,15 @@ router.post('/', authMiddleware, (req, res, next) => {
         next();
     });
 }, anunciosController.createAnuncio);
-// router.delete('/:id', authMiddleware, anunciosController.deleteAnuncio); // TODO: Add delete
+
+router.put('/:id', authMiddleware, (req, res, next) => {
+    upload.array('images', 9)(req, res, (err) => {
+        if (err) return res.status(400).json({ error: 'Erro upload: ' + err.message });
+        next();
+    });
+}, anunciosController.updateAnuncio);
+
+router.delete('/:id', authMiddleware, anunciosController.deleteAnuncio);
+router.delete('/:id/images/:imageId', authMiddleware, anunciosController.deleteImage);
 
 module.exports = router;
