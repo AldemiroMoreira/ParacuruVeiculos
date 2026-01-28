@@ -39,10 +39,6 @@ const Usuario = sequelize.define('Usuario', {
     termsAcceptedAt: {
         type: DataTypes.DATE,
         allowNull: true
-    }
-    termsAcceptedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
     },
     isAdmin: {
         type: DataTypes.BOOLEAN,
