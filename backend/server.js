@@ -53,10 +53,10 @@ const sequelize = require('./config/database');
 sequelize.authenticate()
     .then(() => {
         console.log('Database connected...');
-        // Sync models (create tables if missing, but don't force alter existing ones to avoid errors)
-        return sequelize.sync();
+        // Sync models (alter: true creates/updates columns to match model definitions)
+        return sequelize.sync({ alter: true });
     })
-    .then(() => console.log('Database synced!'))
+    .then(() => console.log('Database synced! (ALTER ENABLED)'))
     .catch(err => console.log('Error: ' + err));
 
 // Fallback for SPA (Single Page Application)
