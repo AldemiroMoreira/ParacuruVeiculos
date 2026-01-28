@@ -9,4 +9,7 @@ router.post('/activate', authController.activateAccount);
 router.post('/forgot-password', authController.forgotPassword);
 router.post('/reset-password', authController.resetPassword);
 
+const authMiddleware = require('../middleware/authMiddleware');
+router.put('/profile', authMiddleware, authController.updateProfile);
+
 module.exports = router;

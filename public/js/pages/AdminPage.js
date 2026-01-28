@@ -18,7 +18,7 @@ const checkAuth = (token) => {
 
 const loadDashboard = (token) => {
     const config = { headers: { Authorization: 'Bearer ' + token } };
-    const config = { headers: { Authorization: 'Bearer ' + token } };
+
     Promise.all([
         axios.get('/api/admin/stats', config),
         axios.get('/api/admin/ads', config),

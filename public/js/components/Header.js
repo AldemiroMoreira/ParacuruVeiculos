@@ -165,6 +165,9 @@ const Header = ({ user, navigateTo, onLogout }) => {
                             <button onClick={() => navigateTo('my-ads')} className="text-gray-600 hover:text-brand-600 font-medium transition text-sm">
                                 Meus Anúncios
                             </button>
+                            <button onClick={() => navigateTo('profile')} className="text-gray-600 hover:text-brand-600 font-medium transition text-sm">
+                                Meu Perfil
+                            </button>
                             <span className="text-gray-700 text-sm">Olá, {user.nome || user.name}</span>
                             <button onClick={onLogout} className="border border-brand-600 text-brand-600 hover:bg-brand-50 px-3 py-1.5 rounded-full font-medium transition text-xs">
                                 Sair
@@ -229,6 +232,7 @@ const Header = ({ user, navigateTo, onLogout }) => {
                                     {unreadCount > 0 && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{unreadCount}</span>}
                                 </button>
                                 <button onClick={() => { navigateTo('my-ads'); toggleMenu(); }} className="text-left text-gray-600 py-2">Meus Anúncios</button>
+                                <button onClick={() => { navigateTo('profile'); toggleMenu(); }} className="text-left text-gray-600 py-2">Meu Perfil</button>
                                 <button onClick={() => { onLogout(); toggleMenu(); }} className="text-left text-red-600 py-2 font-medium">Sair</button>
                             </>
                         ) : (

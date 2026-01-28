@@ -242,3 +242,36 @@ exports.resetPassword = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.updateProfile = async (req, res) => {
+    try {
+        const userId = req.userData.userId; // from middleware
+        const { nome, password, confirmPassword } = req.body;
+
+        const user = await Usuario.findByPk(userId);
+        if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+
+        if (nome) user.nome = nome;
+
+        if (password) {
+            if (password !== confirmPassword) {
+                return res.status(400).json({ error: 'Senhas não conferem' });
+            }
+            user.password_hash = await bcrypt.hash(password, 10);
+        }
+
+        await user.save();
+
+        res.status(200).json({
+            message: 'Perfil atualizado com sucesso!',
+            user: {
+                id: user.id,
+                nome: user.nome,
+                email: user.email,
+                isAdmin: user.isAdmin
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

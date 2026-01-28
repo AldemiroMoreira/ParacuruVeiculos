@@ -90,6 +90,8 @@ const App = () => {
                 return <InboxPage navigateTo={navigateTo} user={user} />;
             case 'favorites':
                 return <FavoritesPage navigateTo={navigateTo} user={user} />;
+            case 'profile':
+                return <ProfilePage navigateTo={navigateTo} user={user} />;
 
             // DB CRUD Routes
             case 'db_crud_login':
