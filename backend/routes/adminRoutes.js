@@ -19,6 +19,7 @@ const protectRoute = [authMiddleware, checkAdmin];
 
 router.get('/stats', protectRoute, adminController.getDashboardStats);
 router.get('/ads', protectRoute, adminController.getRecentAds);
+router.get('/ads/all', protectRoute, adminController.getAllAds);
 router.put('/ads/:id/approve', protectRoute, adminController.approveAd);
 router.delete('/ads/:id/reject', protectRoute, adminController.rejectAd);
 

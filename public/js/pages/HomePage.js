@@ -323,7 +323,7 @@ const HomePage = ({ navigateTo, user }) => {
                         <div className="absolute inset-0 bg-black/60"></div>
                         <div className="relative z-10 max-w-5xl mx-auto text-center py-3">
                             <h2 className="text-xl md:text-2xl font-bold mb-1">Encontre seu próximo veículo</h2>
-                            <p className="text-gray-300 mb-3 text-xs">As melhores ofertas de Paracuru e região.</p>
+                            <p className="text-gray-300 mb-3 text-xs">As melhores ofertas de todo o Brasil.</p>
 
                             <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/10 space-y-2">
                                 {/* Basic Filters */}
@@ -441,7 +441,7 @@ const HomePage = ({ navigateTo, user }) => {
 
                         <div className="mt-4 bg-gray-50 rounded-xl p-4 border border-gray-100 hidden lg:block">
                             <h4 className="font-bold text-gray-700 mb-2 text-sm">Anuncie Aqui</h4>
-                            <p className="text-xs text-gray-500 mb-3">Aumente suas vendas alcançando milhares de compradores em Paracuru.</p>
+                            <p className="text-xs text-gray-500 mb-3">Aumente suas vendas alcançando milhares de compradores em todo o Brasil.</p>
                             <button className="w-full bg-white border border-brand-200 text-brand-600 font-bold text-xs py-2 rounded-lg hover:bg-brand-50 transition">
                                 Ver Planos
                             </button>

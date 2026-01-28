@@ -40,7 +40,11 @@ exports.register = async (req, res) => {
         const cleanEmail = email.trim();
 
         // ALERTA: Restrição de usuários mantida conforme solicitado
-        const allowedEmails = ['aldemiro.moreira@gmail.com', 'tcristina.mv@gmail.com'];
+        const allowedEmails = [
+            'aldemiro.moreira@gmail.com',
+            'extcristina.mv@hotmail.com', // Corrigido de hmail.com 
+            'harissonadv@hotmail.com'
+        ];
         if (!allowedEmails.includes(cleanEmail)) {
             return res.status(403).json({ message: 'Cadastro restrito: Email não autorizado nesta fase de testes.' });
         }

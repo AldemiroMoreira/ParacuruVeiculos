@@ -177,6 +177,8 @@ exports.getAnuncioById = async (req, res) => {
     }
 };
 
+
+
 exports.deleteAnuncio = async (req, res) => {
     try {
         const { id } = req.params;
@@ -193,6 +195,10 @@ exports.deleteAnuncio = async (req, res) => {
         if (fs.existsSync(adDir)) {
             fs.rmSync(adDir, { recursive: true, force: true });
         }
+
+        // Delete associated payments first
+        const { Payment } = require('../models');
+        await Payment.destroy({ where: { anuncio_id: anuncio.id } });
 
         // Delete from DB (Images should cascade if configured, but explicit delete is safe)
         await AnuncioImage.destroy({ where: { anuncio_id: anuncio.id } });

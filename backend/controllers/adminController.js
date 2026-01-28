@@ -4,7 +4,19 @@ exports.getRecentAds = async (req, res) => {
     try {
         const ads = await Anuncio.findAll({
             limit: 10,
-            order: [['createdAt', 'DESC']],
+            order: [['created_at', 'DESC']],
+            include: [{ model: Usuario, attributes: ['nome', 'email'] }]
+        });
+        res.status(200).json(ads);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.getAllAds = async (req, res) => {
+    try {
+        const ads = await Anuncio.findAll({
+            order: [['created_at', 'DESC']],
             include: [{ model: Usuario, attributes: ['nome', 'email'] }]
         });
         res.status(200).json(ads);
@@ -57,6 +69,10 @@ exports.rejectAd = async (req, res) => {
             fs.rmSync(adDir, { recursive: true, force: true });
         }
         await AnuncioImage.destroy({ where: { anuncio_id: id } });
+
+        // Delete payments
+        const { Payment } = require('../models');
+        await Payment.destroy({ where: { anuncio_id: id } });
 
         // Delete Ad
         await Anuncio.destroy({ where: { id } });
