@@ -24,6 +24,6 @@ router.delete('/ads/:id/reject', protectRoute, adminController.rejectAd);
 
 router.get('/users', protectRoute, adminController.getUsers);
 router.put('/users/:id/ban', protectRoute, adminController.toggleUserBan);
-router.get('/ads', startAdminAuth, adminController.getRecentAds);
+
 
 module.exports = router;
