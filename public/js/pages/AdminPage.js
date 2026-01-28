@@ -141,6 +141,15 @@ const AdminPage = ({ navigateTo, user }) => {
         } catch (e) { alert('Erro ao banir/desbanir'); }
     };
 
+    const handleVerify = async (id) => {
+        try {
+            const token = localStorage.getItem('admin_token');
+            const res = await axios.put(`/api/admin/users/${id}/verify`, {}, { headers: { Authorization: 'Bearer ' + token } });
+            setUsers(users.map(u => u.id === id ? { ...u, isVerified: true } : u));
+            alert('Usuário ativado com sucesso!');
+        } catch (e) { alert('Erro ao verificar usuário'); }
+    };
+
     return (
         <div className="space-y-4 fade-in">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -266,6 +275,14 @@ const AdminPage = ({ navigateTo, user }) => {
                                                         {u.isBanned ? 'Desbanir' : 'Banir'}
                                                     </button>
                                                 )}
+                                                {!u.isVerified && (
+                                                    <button
+                                                        onClick={() => handleVerify(u.id)}
+                                                        className="ml-1 px-2 py-1 rounded text-[10px] font-bold text-white bg-green-500 hover:bg-green-600"
+                                                    >
+                                                        Ativar
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
@@ -284,6 +301,15 @@ const AdminPage = ({ navigateTo, user }) => {
                             <button onClick={() => navigateTo('db_crud_categorias')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Categorias</button>
                             <button onClick={() => navigateTo('db_crud_fabricantes')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Fabricantes</button>
                             <button onClick={() => navigateTo('db_crud_modelos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Modelos</button>
+                            <button onClick={() => {
+                                if (confirm('Isso vai popular estados e cidades (pode demorar). Continuar?')) {
+                                    const token = localStorage.getItem('admin_token');
+                                    alert('Iniciando... aguarde o alerta de sucesso.');
+                                    axios.post('/api/admin/populate-locations', {}, { headers: { Authorization: 'Bearer ' + token } })
+                                        .then(res => alert(res.data.message))
+                                        .catch(err => alert('Erro: ' + (err.response?.data?.error || err.message)));
+                                }
+                            }} className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Popular Cidades</button>
                         </div>
                         <div className="pt-8 border-t">
                             <button

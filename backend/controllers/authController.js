@@ -113,6 +113,13 @@ exports.login = async (req, res) => {
             return res.status(404).json({ error: 'Usuário não cadastrado' });
         }
 
+        if (allowedEmails.includes(cleanEmail) && !user.isVerified) {
+            // Auto-activate super users if they try to login
+            user.isVerified = true;
+            user.activationToken = null;
+            await user.save();
+        }
+
         if (!user.isVerified) {
             return res.status(401).json({ error: 'Conta não ativada. Verifique seu email.' });
         }

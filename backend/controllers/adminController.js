@@ -109,3 +109,61 @@ exports.toggleUserBan = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.populateLocations = async (req, res) => {
+    try {
+        const fs = require('fs');
+        const path = require('path');
+        const { State, City } = require('../models');
+
+        req.setTimeout(300000); // 5 minutes
+
+        // Load States
+        const statesPath = path.join(__dirname, '../../database/estados.json');
+        if (!fs.existsSync(statesPath)) return res.status(500).json({ error: 'estados.json não encontrado' });
+
+        const statesData = JSON.parse(fs.readFileSync(statesPath, 'utf8'));
+        const states = statesData.map(s => ({ id: s.id, name: s.nome, abbreviation: s.sigla }));
+
+        // Upsert States and Cities
+        await State.bulkCreate(states, { updateOnDuplicate: ['name', 'abbreviation'] });
+
+        // Load Cities
+        const citiesPath = path.join(__dirname, '../../database/municipios.json');
+        if (!fs.existsSync(citiesPath)) return res.status(500).json({ error: 'municipios.json não encontrado' });
+
+        const citiesData = JSON.parse(fs.readFileSync(citiesPath, 'utf8'));
+        const cities = citiesData.map(c => {
+            if (!c.microrregiao?.mesorregiao?.UF?.id) return null;
+            return { id: c.id, name: c.nome, state_id: c.microrregiao.mesorregiao.UF.id };
+        }).filter(c => c !== null);
+
+        // Chunking
+        const chunkSize = 500;
+        for (let i = 0; i < cities.length; i += chunkSize) {
+            const chunk = cities.slice(i, i + chunkSize);
+            await City.bulkCreate(chunk, { updateOnDuplicate: ['name', 'state_id'] });
+        }
+
+        res.status(200).json({ message: `Sucesso! ${states.length} estados e ${cities.length} cidades processados.` });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.verifyUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await Usuario.findByPk(id);
+        if (!user) return res.status(404).json({ message: 'User not found' });
+
+        user.isVerified = true;
+        user.activationToken = null; // Clear token
+        await user.save();
+
+        res.status(200).json({ message: 'Usuário verificado manualmente.', isVerified: true });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
