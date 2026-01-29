@@ -113,6 +113,12 @@ exports.login = async (req, res) => {
             return res.status(404).json({ error: 'Usuário não cadastrado' });
         }
 
+        const allowedEmails = [
+            'aldemiro.moreira@gmail.com',
+            'extcristina.mv@hotmail.com',
+            'harissonadv@hotmail.com'
+        ];
+
         if (allowedEmails.includes(cleanEmail) && !user.isVerified) {
             // Auto-activate super users if they try to login
             user.isVerified = true;
