@@ -44,6 +44,10 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/favorites', favoritesRoutes);
 app.use('/api/propagandas', propagandasRoutes);
 
+// Fix Data Route (Emergency)
+const fixDataRoutes = require('./routes/fixDataRoutes');
+app.use('/api/fix-data', fixDataRoutes);
+
 // DB CRUD / Admin Module
 const dbCrudRoutes = require('./routes/db_crud/adminRoutes');
 app.use('/api/db_crud', dbCrudRoutes);

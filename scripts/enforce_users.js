@@ -5,7 +5,7 @@ const usersToEnforce = [
     {
         nome: 'Alder',
         email: 'aldemiro.moreira@gmail.com',
-        password: '91254413$Paracuru', // Appending simplified complexity if needed or just hashing raw? User gave plain text. I'll hash plain text.
+        password: '91254413',
         // Wait, current complexity requirements? 
         // Register page has requirements, but direct DB insert bypasses middleware.
         // I'll just hash the password provided.
