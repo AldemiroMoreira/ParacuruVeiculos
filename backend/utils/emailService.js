@@ -16,15 +16,37 @@ const nodemailerMock = {
 let transporter;
 try {
     const nodemailer = require('nodemailer');
-    transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
+
+    // Configuração prioritária para SMTP Genérico (Maildev, Railway, etc.)
+    if (process.env.EMAIL_HOST && process.env.EMAIL_PORT) {
+        transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,
+            port: process.env.EMAIL_PORT,
+            secure: false, // Geralmente false para Maildev/SMTP simples
+            ignoreTLS: true, // Útil para dev/interno
+            auth: process.env.EMAIL_USER ? {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            } : undefined
+        });
+        console.log(`Email Service: Configurado via SMTP (${process.env.EMAIL_HOST}:${process.env.EMAIL_PORT})`);
+    }
+    // Fallback para Gmail (Legacy)
+    else if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+        transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            }
+        });
+        console.log('Email Service: Configurado via Gmail');
+    } else {
+        throw new Error('Nenhuma configuração de email encontrada');
+    }
+
 } catch (e) {
-    console.log('Nodemailer not found or failed to initialize, using mock.');
+    console.log('Nodemailer não configurado ou falhou na inicialização, usando mock. Erro:', e.message);
     transporter = nodemailerMock.createTransport();
 }
 

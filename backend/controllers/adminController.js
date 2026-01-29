@@ -134,15 +134,27 @@ exports.populateLocations = async (req, res) => {
 
         const citiesData = JSON.parse(fs.readFileSync(citiesPath, 'utf8'));
         const cities = citiesData.map(c => {
-            if (!c.microrregiao?.mesorregiao?.UF?.id) return null;
-            return { id: c.id, name: c.nome, state_id: c.microrregiao.mesorregiao.UF.id };
+            let ufSigla = null;
+            if (c.microrregiao && c.microrregiao.mesorregiao && c.microrregiao.mesorregiao.UF) {
+                ufSigla = c.microrregiao.mesorregiao.UF.sigla;
+            } else if (c['regiao-imediata'] && c['regiao-imediata']['regiao-intermediaria'] && c['regiao-imediata']['regiao-intermediaria'].UF) {
+                ufSigla = c['regiao-imediata']['regiao-intermediaria'].UF.sigla;
+            }
+
+            if (!ufSigla) return null;
+
+            return {
+                id: c.id,
+                nome: c.nome,
+                uf: ufSigla
+            };
         }).filter(c => c !== null);
 
         // Chunking
         const chunkSize = 500;
         for (let i = 0; i < cities.length; i += chunkSize) {
             const chunk = cities.slice(i, i + chunkSize);
-            await City.bulkCreate(chunk, { updateOnDuplicate: ['name', 'state_id'] });
+            await City.bulkCreate(chunk, { updateOnDuplicate: ['nome', 'uf'] });
         }
 
         res.status(200).json({ message: `Sucesso! ${states.length} estados e ${cities.length} cidades processados.` });

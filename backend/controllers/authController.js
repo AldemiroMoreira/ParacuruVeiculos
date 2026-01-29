@@ -1,33 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const { Op } = require('sequelize');
-const { Usuario } = require('../models');
-
-// Email Transporter Helper
-const sendEmail = async (to, subject, text) => {
-    const transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        }
-    });
-
-    const mailOptions = { from: 'no-reply@paracuruveiculos.com', to, subject, text };
-
-    // Debug log
-    console.log(`--- EMAIL TO ${to} ---\nSubject: ${subject}\n${text}\n-------------------`);
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        fs.appendFileSync(path.join(__dirname, '../../email_debug.txt'), `--- EMAIL TO ${to} ---\nSubject: ${subject}\n${text}\n-------------------\n`);
-    } catch (e) { }
-
-    return transporter.sendMail(mailOptions);
-};
+const { sendEmail } = require('../utils/emailService');
 
 exports.register = async (req, res) => {
     try {
@@ -69,11 +43,11 @@ exports.register = async (req, res) => {
 
         // Send Verification Email
         const activationUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/#/activate/${activationToken}`;
-        await sendEmail(
-            cleanEmail,
-            'Ativação de Conta - ParacuruVeículos',
-            `Olá ${nome},\n\nPara ativar sua conta, clique no link abaixo:\n\n${activationUrl}\n\nObrigado!`
-        );
+        await sendEmail({
+            to: cleanEmail,
+            subject: 'Ativação de Conta - ParacuruVeículos',
+            text: `Olá ${nome},\n\nPara ativar sua conta, clique no link abaixo:\n\n${activationUrl}\n\nObrigado!`
+        });
 
         res.status(201).json({ message: 'Usuário criado! Verifique seu email para ativar a conta.' });
     } catch (error) {
@@ -219,11 +193,11 @@ exports.forgotPassword = async (req, res) => {
 
         const resetUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/#/reset-password/${token}`;
 
-        await sendEmail(
-            user.email,
-            'Recuperação de Senha - ParacuruVeículos',
-            `Você solicitou a recuperação de senha.\n\nClique no link abaixo para redefinir sua senha:\n\n${resetUrl}`
-        );
+        await sendEmail({
+            to: user.email,
+            subject: 'Recuperação de Senha - ParacuruVeículos',
+            text: `Você solicitou a recuperação de senha.\n\nClique no link abaixo para redefinir sua senha:\n\n${resetUrl}`
+        });
 
         res.status(200).json({ message: 'Email de recuperação enviado!' });
     } catch (error) {
