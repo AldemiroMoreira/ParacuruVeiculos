@@ -86,8 +86,8 @@ exports.rejectAd = async (req, res) => {
 exports.getUsers = async (req, res) => {
     try {
         const users = await Usuario.findAll({
-            attributes: ['id', 'nome', 'email', 'isVerified', 'isBanned', 'createdAt', 'isAdmin'],
-            order: [['createdAt', 'DESC']]
+            attributes: ['id', 'nome', 'email', 'isVerified', 'isBanned', 'created_at', 'isAdmin'],
+            order: [['created_at', 'DESC']]
         });
         res.status(200).json(users);
     } catch (error) {

@@ -106,6 +106,8 @@ const App = () => {
                 return <ModelosCrudPage navigateTo={navigateTo} />;
             case 'db_crud_anuncios':
                 return <AnunciosCrudPage navigateTo={navigateTo} />;
+            case 'db_crud_users':
+                return <UsersCrudPage navigateTo={navigateTo} />;
 
             default:
                 return <HomePage navigateTo={navigateTo} />;

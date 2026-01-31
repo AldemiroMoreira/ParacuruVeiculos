@@ -318,33 +318,46 @@ const HomePage = ({ navigateTo, user }) => {
                         </div>
                     )}
 
-                    {/* Hero / Filter Section - Ultra Compact */}
-                    <div className="bg-brand-900 rounded-xl p-3 mb-4 text-white bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center relative overflow-hidden shadow-md">
-                        <div className="absolute inset-0 bg-black/60"></div>
-                        <div className="relative z-10 max-w-5xl mx-auto text-center py-3">
-                            <h2 className="text-xl md:text-2xl font-bold mb-1">Encontre seu próximo veículo</h2>
-                            <p className="text-gray-300 mb-3 text-xs">As melhores ofertas de todo o Brasil.</p>
+                    {/* Hero / Filter Section - Classic with New Colors */}
+                    <div className="bg-sky-500 rounded-xl py-4 px-4 mb-6 text-white shadow-lg relative overflow-hidden">
+                        {/* Abstract Background Shapes */}
+                        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl"></div>
+                        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-amber-400 opacity-20 blur-3xl"></div>
 
-                            <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/10 space-y-2">
+                        {/* Watermark Real Car Image */}
+                        <div className="absolute bottom-0 right-0 w-3/4 h-full overflow-hidden pointer-events-none rounded-r-xl">
+                            <img
+                                src="https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop"
+                                alt="Car Watermark"
+                                className="w-full h-full object-cover object-center opacity-60 mask-image-gradient"
+                                style={{ maskImage: 'linear-gradient(to right, transparent, black)' }}
+                            />
+                        </div>
+
+                        <div className="relative z-10 max-w-5xl mx-auto text-center">
+                            <h2 className="text-3xl md:text-5xl font-black mb-2 drop-shadow-md">Encontre seu próximo veículo</h2>
+                            <p className="text-blue-50 mb-8 text-lg font-medium shadow-black drop-shadow-sm">As melhores ofertas de todo o Brasil.</p>
+
+                            <div className="bg-white/20 backdrop-blur-md p-6 rounded-2xl border border-white/30 shadow-2xl space-y-4">
                                 {/* Basic Filters */}
-                                <div className="grid grid-cols-2 lg:grid-cols-5 gap-2">
-                                    <select name="categoria_id" value={filters.categoria_id} onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500">
+                                <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+                                    <select name="categoria_id" value={filters.categoria_id} onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm">
                                         <option value="">Categoria</option>
                                         {categorias.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
                                     </select>
-                                    <select name="fabricante_id" value={filters.fabricante_id} onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500">
+                                    <select name="fabricante_id" value={filters.fabricante_id} onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm">
                                         <option value="">Marca</option>
                                         {fabricantes.map(f => <option key={f.id} value={f.id}>{f.nome}</option>)}
                                     </select>
-                                    <select name="modelo_id" value={filters.modelo_id} onChange={handleFilterChange} disabled={!modelos.length} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500 disabled:opacity-50">
+                                    <select name="modelo_id" value={filters.modelo_id} onChange={handleFilterChange} disabled={!modelos.length} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm disabled:opacity-50 disabled:bg-gray-100">
                                         <option value="">Modelo</option>
                                         {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
                                     </select>
-                                    <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500">
+                                    <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm">
                                         <option value="">Estado</option>
                                         {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
                                     </select>
-                                    <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 focus:ring-brand-500 disabled:opacity-50">
+                                    <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm disabled:opacity-50 disabled:bg-gray-100">
                                         <option value="">Cidade</option>
                                         {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                                     </select>
@@ -352,21 +365,21 @@ const HomePage = ({ navigateTo, user }) => {
 
                                 {/* Advanced Toggle */}
                                 <div className="flex justify-between items-center text-xs text-white px-1">
-                                    <button onClick={() => setShowAdvanced(!showAdvanced)} className="flex items-center gap-1 hover:text-brand-200 transition">
+                                    <button onClick={() => setShowAdvanced(!showAdvanced)} className="flex items-center gap-1 hover:text-amber-300 transition font-bold shadow-black drop-shadow-sm">
                                         {showAdvanced ? '➖ Menos filtros' : '➕ Mais filtros'} (Preço, Km, Ano)
                                     </button>
                                 </div>
 
                                 {/* Advanced Filters Area */}
                                 {showAdvanced && (
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 border-t border-white/10 pt-2 animate-fade-in-down">
-                                        <input type="number" name="minPrice" placeholder="Preço Min" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
-                                        <input type="number" name="maxPrice" placeholder="Preço Max" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
-                                        <input type="number" name="minYear" placeholder="Ano Min" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
-                                        <input type="number" name="maxYear" placeholder="Ano Max" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
-                                        <input type="number" name="minKm" placeholder="Km Min" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
-                                        <input type="number" name="maxKm" placeholder="Km Max" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5" />
-                                        <select name="sort" onChange={handleFilterChange} className="bg-gray-50 border-gray-200 text-gray-900 text-xs rounded p-1.5 col-span-2 font-bold text-brand-700">
+                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 border-t border-white/20 pt-2 animate-fade-in-down">
+                                        <input type="number" name="minPrice" placeholder="Preço Min" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
+                                        <input type="number" name="maxPrice" placeholder="Preço Max" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
+                                        <input type="number" name="minYear" placeholder="Ano Min" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
+                                        <input type="number" name="maxYear" placeholder="Ano Max" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
+                                        <input type="number" name="minKm" placeholder="Km Min" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
+                                        <input type="number" name="maxKm" placeholder="Km Max" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
+                                        <select name="sort" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 col-span-2 font-bold text-sky-600">
                                             <option value="">Ordenação Padrão</option>
                                             <option value="price_asc">Menor Preço</option>
                                             <option value="price_desc">Maior Preço</option>
@@ -376,8 +389,8 @@ const HomePage = ({ navigateTo, user }) => {
                                     </div>
                                 )}
 
-                                <div className="mt-2 text-center w-full flex justify-center pt-2 border-t border-white/10">
-                                    <button onClick={handleSearch} className="w-full md:w-auto min-w-[200px] text-white bg-brand-600 hover:bg-brand-700 shadow-lg hover:shadow-brand-500/30 font-bold rounded text-sm py-2 px-6 transition-all transform hover:scale-105">
+                                <div className="mt-2 text-center w-full flex justify-center pt-2 border-t border-white/20">
+                                    <button onClick={handleSearch} className="w-full md:w-auto min-w-[200px] text-white bg-amber-500 hover:bg-amber-600 hover:scale-105 shadow-lg shadow-amber-500/30 font-black rounded-lg text-base py-3 px-8 transition-all transform uppercase tracking-wider">
                                         🔍 Buscar Ofertas
                                     </button>
                                 </div>

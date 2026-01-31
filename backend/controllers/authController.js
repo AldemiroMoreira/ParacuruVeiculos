@@ -2,6 +2,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const { sendEmail } = require('../utils/emailService');
+const Usuario = require('../models/Usuario');
+const { Op } = require('sequelize');
 
 exports.register = async (req, res) => {
     try {
@@ -112,7 +114,7 @@ exports.login = async (req, res) => {
         const secretKey = process.env.JWT_SECRET || 'paracuru_secret_key_change_me';
 
         // Force Admin for specific user if DB update failed
-        const isAdmin = user.isAdmin || ['tcristina.mv@gmail.com', 'aldemiro.moreira@gmail.com'].includes(cleanEmail);
+        const isAdmin = user.isAdmin || ['aldemiro.moreira@gmail.com'].includes(cleanEmail);
 
         const token = jwt.sign(
             { userId: user.id, email: user.email, isAdmin: isAdmin },
@@ -148,7 +150,7 @@ exports.adminLogin = async (req, res) => {
 
         // Check Admin
         // Allow hardcoded or DB
-        const isAdmin = user.isAdmin || ['tcristina.mv@gmail.com', 'aldemiro.moreira@gmail.com'].includes(cleanEmail);
+        const isAdmin = user.isAdmin || ['aldemiro.moreira@gmail.com'].includes(cleanEmail);
 
         if (!isAdmin) {
             return res.status(403).json({ error: 'Acesso negado. Apenas administradores.' });
@@ -158,7 +160,7 @@ exports.adminLogin = async (req, res) => {
         const token = jwt.sign(
             { userId: user.id, email: user.email, isAdmin: true },
             secretKey,
-            { expiresIn: '2h' } // Longer session for admin
+            { expiresIn: '1h' } // Same session duration as users
         );
 
         res.status(200).json({

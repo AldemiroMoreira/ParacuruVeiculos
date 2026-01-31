@@ -45,7 +45,7 @@ const AnunciosCrudPage = ({ navigateTo }) => {
             await axios.delete(`/api/admin/ads/${id}/reject`, { headers: { Authorization: 'Bearer ' + token } });
 
             setAds(ads.filter(a => a.id !== id));
-            alert('Anúncio excluído!');
+            // alert('Anúncio excluído!');
         } catch (error) {
             alert('Erro ao excluir: ' + (error.response?.data?.error || error.message));
         }

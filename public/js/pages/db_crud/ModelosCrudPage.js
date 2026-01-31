@@ -131,7 +131,7 @@ const ModelosCrudPage = ({ navigateTo }) => {
                     <option value="">Selecione Categoria...</option>
                     {categorias.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
                 </select>
-                <button onClick={handleAdd} className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full md:w-auto">
+                <button onClick={handleAdd} className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full md:w-auto">
                     Adicionar
                 </button>
             </div>

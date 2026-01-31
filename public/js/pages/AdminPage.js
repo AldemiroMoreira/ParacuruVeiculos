@@ -7,7 +7,15 @@ const AdminPage = ({ navigateTo, user }) => {
     const [creds, setCreds] = React.useState({ username: '', password: '' });
 
     const checkAuth = (token) => {
-        axios.get('/api/admin/stats', { headers: { Authorization: 'Bearer ' + token } })
+        const config = {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        };
+        axios.get('/api/admin/stats', config)
             .then(() => {
                 setAuthorized(true);
                 loadDashboard(token);
@@ -60,14 +68,14 @@ const AdminPage = ({ navigateTo, user }) => {
     if (!authorized) {
         return (
             <div className="max-w-sm mx-auto mt-20 p-8 bg-white shadow-lg rounded-xl">
-                <h2 className="text-xl font-bold mb-4">Admin Login</h2>
+                <h2 className="text-xl font-bold mb-4">Login Administrativo</h2>
                 <form onSubmit={handleLogin} className="space-y-4">
-                    <input className="w-full p-2 border rounded" placeholder="User" onChange={e => setCreds({ ...creds, username: e.target.value })} />
+                    <input className="w-full p-2 border rounded" placeholder="Usuário" onChange={e => setCreds({ ...creds, username: e.target.value })} />
                     <div className="relative">
                         <input
                             className="w-full p-2 border rounded pr-10"
                             type={showPassword ? "text" : "password"}
-                            placeholder="Pass"
+                            placeholder="Senha"
                             onChange={e => setCreds({ ...creds, password: e.target.value })}
                         />
                         <button
@@ -158,8 +166,7 @@ const AdminPage = ({ navigateTo, user }) => {
                 {/* Tabs */}
                 <div className="flex gap-2 bg-gray-100 p-1 rounded-lg">
                     <button onClick={() => setActiveTab('ads')} className={`px-3 py-1.5 rounded-md text-sm font-bold transition ${activeTab === 'ads' ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Anúncios</button>
-                    <button onClick={() => setActiveTab('users')} className={`px-3 py-1.5 rounded-md text-sm font-bold transition ${activeTab === 'users' ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Usuários</button>
-                    <button onClick={() => setActiveTab('db')} className={`px-3 py-1.5 rounded-md text-sm font-bold transition ${activeTab === 'db' ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Banco de Dados</button>
+                    <button onClick={() => setActiveTab('db')} className={`px-3 py-1.5 rounded-md text-sm font-bold transition ${activeTab === 'db' || activeTab === 'users' ? 'bg-white shadow text-blue-600' : 'text-gray-500 hover:text-gray-700'}`}>Banco de Dados</button>
                 </div>
 
                 <div className="flex gap-4">
@@ -167,7 +174,6 @@ const AdminPage = ({ navigateTo, user }) => {
                 </div>
             </div>
 
-            {/* Stats Cards */}
             {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
@@ -239,8 +245,9 @@ const AdminPage = ({ navigateTo, user }) => {
 
                 {activeTab === 'users' && (
                     <>
-                        <div className="p-3 border-b border-gray-100">
+                        <div className="p-3 border-b border-gray-100 flex justify-between items-center">
                             <h3 className="font-bold text-gray-900 text-sm">Gerenciar Usuários ({users.length})</h3>
+                            <button onClick={() => setActiveTab('db')} className="text-xs text-blue-600 hover:underline">Voltar para Banco de Dados</button>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-xs text-gray-600">
@@ -296,6 +303,7 @@ const AdminPage = ({ navigateTo, user }) => {
                     <div className="p-8 text-center space-y-4">
                         <h3 className="font-bold text-xl">Ferramentas de Banco de Dados</h3>
                         <div className="flex flex-wrap gap-2 justify-center">
+                            <button onClick={() => navigateTo('db_crud_users')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Gerenciar Usuários</button>
                             <button onClick={() => navigateTo('db_crud_anuncios')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Gerenciar Anúncios</button>
                             <button onClick={() => navigateTo('db_crud_planos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Planos</button>
                             <button onClick={() => navigateTo('db_crud_categorias')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Categorias</button>

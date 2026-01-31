@@ -50,12 +50,13 @@ try {
     transporter = nodemailerMock.createTransport();
 }
 
-exports.sendEmail = async ({ to, subject, text }) => {
+exports.sendEmail = async ({ to, subject, text, html }) => {
     const mailOptions = {
         from: 'no-reply@paracuruveiculos.com',
         to,
         subject,
-        text
+        text,
+        html
     };
 
     try {

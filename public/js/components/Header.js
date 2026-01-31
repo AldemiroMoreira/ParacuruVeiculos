@@ -118,17 +118,17 @@ const Header = ({ user, navigateTo, onLogout }) => {
         : "Selecionar Localização";
 
     return (
-        <header className="bg-white shadow-sm sticky top-0 z-50">
-            <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+        <header className="bg-sky-500 shadow-lg sticky top-0 z-50">
+            <div className="container mx-auto px-4 h-16 flex items-center justify-between">
                 <div
                     className="flex items-center cursor-pointer group"
                     onClick={() => navigateTo('home')}
                 >
                     {/* Modern Icon with Gradient */}
                     <div className="relative mr-2.5">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-brand-600 to-brand-400 rounded-xl transform rotate-3 group-hover:rotate-6 transition-transform duration-300"></div>
-                        <div className="relative bg-white border-2 border-brand-50 rounded-xl p-1.5 shadow-sm group-hover:-translate-y-0.5 transition-transform duration-300">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-brand-600" viewBox="0 0 24 24" fill="currentColor">
+                        <div className="absolute inset-0 bg-white/20 rounded-xl transform rotate-3 group-hover:rotate-6 transition-transform duration-300"></div>
+                        <div className="relative bg-white text-sky-500 border-2 border-transparent rounded-xl p-1.5 shadow-sm group-hover:-translate-y-0.5 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z" />
                             </svg>
                         </div>
@@ -136,55 +136,55 @@ const Header = ({ user, navigateTo, onLogout }) => {
 
                     {/* Typography */}
                     <div className="flex flex-col justify-center -space-y-1">
-                        <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] text-gray-500 uppercase leading-none ml-0.5">Paracuru</span>
-                        <h1 className="text-xl sm:text-2xl font-black text-brand-600 tracking-tighter leading-none italic">
-                            VEÍCULOS<span className="text-gray-900">.</span>
+                        <span className="text-[10px] sm:text-xs font-semibold tracking-[0.2em] text-blue-100 uppercase leading-none ml-0.5 opacity-90">Paracuru</span>
+                        <h1 className="text-xl sm:text-2xl font-black text-white tracking-tighter leading-none italic drop-shadow-sm">
+                            VEÍCULOS<span className="text-amber-400">.</span>
                         </h1>
                     </div>
                 </div>
 
                 {/* Desktop Nav */}
                 <nav className="hidden md:flex items-center space-x-6">
-                    <button onClick={openLocationModal} className="flex items-center text-gray-600 hover:text-brand-600 font-medium transition text-sm">
-                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <button onClick={openLocationModal} className="flex items-center text-white/90 hover:text-white font-medium transition text-sm bg-white/10 px-3 py-1.5 rounded-full hover:bg-white/20">
+                        <svg className="w-4 h-4 mr-1 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         {locationDisplay}
                     </button>
-                    <button onClick={() => navigateTo('favorites')} className="text-gray-600 hover:text-brand-600 font-medium transition text-sm">
+                    <button onClick={() => navigateTo('favorites')} className="text-white hover:text-amber-300 font-medium transition text-sm">
                         Favoritos
                     </button>
-                    <button onClick={() => user ? navigateTo('create-ad') : navigateTo('login')} className="text-gray-600 hover:text-brand-600 font-medium transition text-sm">
+                    <button onClick={() => user ? navigateTo('create-ad') : navigateTo('login')} className="text-white hover:text-amber-300 font-medium transition text-sm">
                         Anunciar
                     </button>
 
                     {user?.isAdmin && (
-                        <button onClick={() => navigateTo('admin')} className="text-red-900 hover:text-red-700 font-bold transition text-sm">
+                        <button onClick={() => navigateTo('admin')} className="text-amber-300 hover:text-amber-200 font-bold transition text-sm bg-black/20 px-3 py-1 rounded-full">
                             Painel Admin
                         </button>
                     )}
                     {user ? (
                         <div className="flex items-center space-x-4 ml-4">
-                            <button onClick={() => navigateTo('inbox')} className="relative text-gray-600 hover:text-brand-600 font-medium transition text-sm mr-2">
+                            <button onClick={() => navigateTo('inbox')} className="relative text-white hover:text-amber-300 font-medium transition text-sm mr-2">
                                 Mensagens
                                 {unreadCount > 0 && (
-                                    <span className="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                                    <span className="absolute -top-2 -right-3 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-sm border border-white">
                                         {unreadCount}
                                     </span>
                                 )}
                             </button>
-                            <button onClick={() => navigateTo('my-ads')} className="text-gray-600 hover:text-brand-600 font-medium transition text-sm">
+                            <button onClick={() => navigateTo('my-ads')} className="text-white hover:text-amber-300 font-medium transition text-sm">
                                 Meus Anúncios
                             </button>
-                            <button onClick={() => navigateTo('profile')} className="text-gray-600 hover:text-brand-600 font-medium transition text-sm">
+                            <button onClick={() => navigateTo('profile')} className="text-white hover:text-amber-300 font-medium transition text-sm">
                                 Meu Perfil
                             </button>
-                            <span className="text-gray-700 text-sm">Olá, {user.nome || user.name}</span>
-                            <button onClick={onLogout} className="border border-brand-600 text-brand-600 hover:bg-brand-50 px-3 py-1.5 rounded-full font-medium transition text-xs">
+                            <span className="text-blue-100 text-sm font-medium">Olá, {user.nome || user.name}</span>
+                            <button onClick={onLogout} className="border border-white/40 text-white hover:bg-white/10 px-3 py-1.5 rounded-full font-medium transition text-xs">
                                 Sair
                             </button>
                         </div>
                     ) : (
                         <div className="flex items-center space-x-4 ml-4">
-                            <button onClick={() => navigateTo('login')} className="bg-brand-600 text-white px-4 py-1.5 rounded-full font-medium hover:bg-brand-700 transition shadow-lg shadow-brand-500/30 text-sm">
+                            <button onClick={() => navigateTo('login')} className="bg-amber-500 text-white px-5 py-2 rounded-full font-bold hover:bg-amber-600 transition shadow-lg shadow-amber-500/30 text-sm transform hover:-translate-y-0.5">
                                 Entrar
                             </button>
                         </div>
@@ -194,19 +194,19 @@ const Header = ({ user, navigateTo, onLogout }) => {
                 {/* Mobile Menu Button */}
                 <div className="md:hidden flex items-center">
                     {user && (
-                        <button onClick={() => navigateTo('inbox')} className="relative mr-4 text-gray-600">
+                        <button onClick={() => navigateTo('inbox')} className="relative mr-4 text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                             </svg>
                             {unreadCount > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[15px] text-center">
+                                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[15px] text-center border border-white">
                                     {unreadCount}
                                 </span>
                             )}
                         </button>
                     )}
-                    <button onClick={toggleMenu} className="text-gray-600 focus:outline-none">
-                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <button onClick={toggleMenu} className="text-white focus:outline-none">
+                        <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             {isMenuOpen ? (
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                             ) : (
@@ -219,12 +219,12 @@ const Header = ({ user, navigateTo, onLogout }) => {
 
             {/* Mobile Menu Dropdown */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white border-t border-gray-100 py-2 px-4 shadow-lg absolute w-full left-0 animate-fade-in-down">
+                <div className="md:hidden bg-white border-t border-gray-100 py-2 px-4 shadow-lg absolute w-full left-0 animate-fade-in-down z-50 rounded-b-xl">
                     <div className="flex flex-col space-y-3">
                         {user && <div className="text-sm font-semibold text-gray-800 pb-2 border-b">Olá, {user.nome || user.name}</div>}
 
                         <button onClick={openLocationModal} className="text-left text-gray-600 py-2 flex items-center">
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <svg className="w-4 h-4 mr-2 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             {locationDisplay}
                         </button>
 
@@ -245,7 +245,7 @@ const Header = ({ user, navigateTo, onLogout }) => {
                                 <button onClick={() => { onLogout(); toggleMenu(); }} className="text-left text-red-600 py-2 font-medium">Sair</button>
                             </>
                         ) : (
-                            <button onClick={() => { navigateTo('login'); toggleMenu(); }} className="text-left text-brand-600 font-bold py-2">Entrar</button>
+                            <button onClick={() => { navigateTo('login'); toggleMenu(); }} className="text-left text-sky-600 font-bold py-2">Entrar</button>
                         )}
                     </div>
                 </div>
