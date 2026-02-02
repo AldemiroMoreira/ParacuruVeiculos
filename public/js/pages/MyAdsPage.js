@@ -106,6 +106,21 @@ const MyAdsPage = ({ user, navigateTo }) => {
                                         Pagar Agora
                                     </button>
                                 )}
+                                {ad.status === 'active' && ad.expires_at && (
+                                    <div className="flex flex-col items-center">
+                                        <button onClick={() => navigateTo('checkout', { adId: ad.id, planId: 1 })} className="mt-2 bg-brand-600 text-white text-xs px-3 py-1.5 rounded-lg font-bold hover:bg-brand-700 w-full shadow-sm transition-all transform hover:scale-105 flex items-center justify-center gap-1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+                                            </svg>
+                                            Renovar
+                                        </button>
+                                        {new Date(ad.expires_at) > new Date() && (
+                                            <span className="text-[10px] text-green-600 font-extrabold mt-1 animate-pulse bg-green-50 px-2 py-0.5 rounded-full border border-green-200">
+                                                ★ 20% OFF
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                             <div className="flex gap-2">
                                 <button onClick={() => handleDelete(ad.id)} className="p-2 text-red-500 hover:text-red-700 transition" title="Excluir Anúncio">

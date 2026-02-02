@@ -4,7 +4,9 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+// Forced port change to bypass zombie process on 3003
+const PORT = 3006;
+// const PORT = process.env.PORT || 3005;
 
 // Initialize Cron Jobs
 const { initCron } = require('./services/cronService');
@@ -57,8 +59,8 @@ const sequelize = require('./config/database');
 sequelize.authenticate()
     .then(() => {
         console.log('Database connected...');
-        // Sync models (alter: true creates/updates columns to match model definitions)
-        return sequelize.sync({ alter: true });
+        // Sync models (alter disabled to prevent 'Too many keys' error)
+        return sequelize.sync({ alter: false });
     })
     .then(() => console.log('Database synced! (ALTER ENABLED)'))
     .catch(err => console.log('Error: ' + err));

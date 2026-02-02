@@ -28,41 +28,69 @@ const InboxPage = ({ navigateTo, user }) => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 fade-in max-w-4xl">
-            <h2 className="text-2xl font-bold mb-6">Minhas Conversas</h2>
+        <div className="flex justify-center items-center py-4 min-h-[calc(100vh-100px)] bg-gray-100 font-sans">
+            {/* Mobile Container - Compact Size */}
+            <div className="w-full max-w-[320px] h-[550px] bg-white rounded-[24px] shadow-2xl overflow-hidden border border-gray-300 flex flex-col relative">
 
-            {loading && <p>Carregando...</p>}
-            {!loading && conversations.length === 0 && <p className="text-gray-500">Você não tem conversas ainda.</p>}
+                {/* Header */}
+                <div className="bg-[#075e54] text-white p-3 flex items-center shadow-md z-10 shrink-0">
+                    <h1 className="text-base font-bold flex-grow">Conversas</h1>
+                    <div className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-[10px] font-bold">
+                        {user?.nome?.charAt(0).toUpperCase()}
+                    </div>
+                </div>
 
-            <div className="space-y-4">
-                {conversations.map(conv => (
-                    <div
-                        key={conv.key}
-                        onClick={() => navigateTo('chat', { anuncioId: conv.anuncio.id, otherUserId: conv.otherUser.id })}
-                        className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 cursor-pointer hover:shadow-md transition flex items-center justify-between"
-                    >
-                        <div className="flex items-center space-x-4">
-                            <div className="w-12 h-12 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 font-bold">
+                {/* List Container */}
+                <div className="flex-grow overflow-y-auto bg-white">
+                    {loading && (
+                        <div className="flex justify-center p-4">
+                            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#128c7e]"></div>
+                        </div>
+                    )}
+
+                    {!loading && conversations.length === 0 && (
+                        <div className="flex flex-col items-center justify-center h-full text-gray-400 p-6 text-center">
+                            <p className="text-xs">Nenhuma conversa iniciada.</p>
+                        </div>
+                    )}
+
+                    {conversations.map(conv => (
+                        <div
+                            key={conv.key || `${conv.anuncio.id}-${conv.otherUser.id}`}
+                            onClick={() => navigateTo('chat', { anuncioId: conv.anuncio.id, otherUserId: conv.otherUser.id })}
+                            className="flex items-center p-2.5 hover:bg-gray-50 cursor-pointer border-b border-gray-100 transition-colors"
+                        >
+                            {/* Avatar */}
+                            <div className="w-9 h-9 rounded-full bg-gray-200 flex-shrink-0 flex items-center justify-center text-gray-500 font-bold text-sm mr-2.5 overflow-hidden">
                                 {conv.otherUser.nome ? conv.otherUser.nome.charAt(0).toUpperCase() : '?'}
                             </div>
-                            <div>
-                                <h4 className="font-semibold text-gray-900">{conv.anuncio.titulo}</h4>
-                                <p className="text-sm text-gray-500">Com: {conv.otherUser.nome}</p>
-                                <p className="text-sm text-gray-400 truncate max-w-md">{conv.lastMessage.conteudo}</p>
+
+                            {/* Content */}
+                            <div className="flex-grow min-w-0">
+                                <div className="flex justify-between items-baseline">
+                                    <h3 className="font-semibold text-gray-900 truncate text-xs">
+                                        {conv.otherUser.nome}
+                                    </h3>
+                                    <span className={`text-[9px] ${conv.unreadCount > 0 ? 'text-[#25d366] font-bold' : 'text-gray-400'}`}>
+                                        {new Date(conv.lastMessage.created_at).toLocaleDateString([], { day: '2-digit', month: '2-digit' })}
+                                    </span>
+                                </div>
+
+                                <div className="flex justify-between items-center mt-0.5">
+                                    <p className="text-[10px] text-gray-500 truncate max-w-[160px]">
+                                        {conv.lastMessage.conteudo}
+                                    </p>
+
+                                    {conv.unreadCount > 0 && (
+                                        <div className="bg-[#25d366] text-white text-[9px] font-bold w-3.5 h-3.5 flex items-center justify-center rounded-full ml-1">
+                                            {conv.unreadCount}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <div className="flex flex-col items-end">
-                            <span className="text-xs text-gray-400 mb-1">
-                                {new Date(conv.lastMessage.created_at).toLocaleDateString()}
-                            </span>
-                            {conv.unreadCount > 0 && (
-                                <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                                    {conv.unreadCount} nova(s)
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                </div>
             </div>
         </div>
     );

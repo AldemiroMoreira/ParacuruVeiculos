@@ -12,6 +12,7 @@ const Message = require('./Message');
 const Favorite = require('./Favorite');
 const Propaganda = require('./Propaganda');
 const Categoria = require('./Categoria');
+const Bonificacao = require('./Bonificacao');
 
 // Associations
 Usuario.hasMany(Anuncio, { foreignKey: 'usuario_id' });
@@ -67,5 +68,6 @@ module.exports = {
     Message,
     Favorite,
     Propaganda,
-    Categoria
+    Categoria,
+    Bonificacao
 };

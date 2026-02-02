@@ -149,6 +149,9 @@ const Header = ({ user, navigateTo, onLogout }) => {
                         <svg className="w-4 h-4 mr-1 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                         {locationDisplay}
                     </button>
+                    <button onClick={() => navigateTo('home')} className="text-white hover:text-amber-300 font-medium transition text-sm">
+                        Início
+                    </button>
                     <button onClick={() => navigateTo('favorites')} className="text-white hover:text-amber-300 font-medium transition text-sm">
                         Favoritos
                     </button>
@@ -158,7 +161,7 @@ const Header = ({ user, navigateTo, onLogout }) => {
 
                     {user?.isAdmin && (
                         <button onClick={() => navigateTo('admin')} className="text-amber-300 hover:text-amber-200 font-bold transition text-sm bg-black/20 px-3 py-1 rounded-full">
-                            Painel Admin
+                            Administrador
                         </button>
                     )}
                     {user ? (
@@ -228,10 +231,11 @@ const Header = ({ user, navigateTo, onLogout }) => {
                             {locationDisplay}
                         </button>
 
+                        <button onClick={() => { navigateTo('home'); toggleMenu(); }} className="text-left text-gray-600 py-2">Início</button>
                         <button onClick={() => { navigateTo('favorites'); toggleMenu(); }} className="text-left text-gray-600 py-2">Favoritos</button>
                         <button onClick={() => { user ? navigateTo('create-ad') : navigateTo('login'); toggleMenu(); }} className="text-left text-gray-600 py-2">Anunciar</button>
                         {user?.isAdmin && (
-                            <button onClick={() => { navigateTo('admin'); toggleMenu(); }} className="text-left text-red-900 font-bold py-2">Painel Admin</button>
+                            <button onClick={() => { navigateTo('admin'); toggleMenu(); }} className="text-left text-red-900 font-bold py-2">Administrador</button>
                         )}
 
                         {user ? (

@@ -14,6 +14,14 @@ const Payment = sequelize.define('Payment', {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false
     },
+    plan_amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
+    },
+    discount_amount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
+    },
     status: {
         type: DataTypes.STRING,
         defaultValue: 'pending'

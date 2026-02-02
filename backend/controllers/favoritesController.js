@@ -3,7 +3,7 @@ const { Favorite, Anuncio, AnuncioImage, Fabricante, Modelo } = require('../mode
 exports.toggleFavorite = async (req, res) => {
     try {
         const { anuncioId } = req.body;
-        const usuarioId = req.user.id; // From authMiddleware
+        const usuarioId = req.userData.userId; // Fixed: userId matches authController payload
 
         const existing = await Favorite.findOne({
             where: {
@@ -31,7 +31,7 @@ exports.toggleFavorite = async (req, res) => {
 
 exports.getFavorites = async (req, res) => {
     try {
-        const usuarioId = req.user.id;
+        const usuarioId = req.userData.userId;
 
         const favorites = await Favorite.findAll({
             where: { usuario_id: usuarioId },
@@ -61,7 +61,7 @@ exports.getFavorites = async (req, res) => {
 exports.checkFavoriteStatus = async (req, res) => {
     // Return list of favorite ad IDs for quick check
     try {
-        const usuarioId = req.user.id;
+        const usuarioId = req.userData.userId;
         const favorites = await Favorite.findAll({
             where: { usuario_id: usuarioId },
             attributes: ['anuncio_id']

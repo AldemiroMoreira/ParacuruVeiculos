@@ -4,12 +4,12 @@ const anunciosController = require('../controllers/anunciosController');
 const authMiddleware = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
+// Protected routes MUST be defined before parameterized routes
+router.get('/meus', authMiddleware, anunciosController.getMeusAnuncios);
+
 // Public routes
 router.get('/', anunciosController.getAnuncios);
 router.get('/:id', anunciosController.getAnuncioById);
-
-// Protected routes
-router.get('/meus', authMiddleware, anunciosController.getMeusAnuncios); // Must be before /:id
 
 router.post('/', authMiddleware, (req, res, next) => {
     upload.array('images', 9)(req, res, (err) => {

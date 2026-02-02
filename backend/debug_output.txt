@@ -1,0 +1,66 @@
+Fetching all messages with Anuncio include...
+Found 8 messages.
+--------------------------------------------------
+Msg ID: 8
+Sender: Cristina (14)
+Receiver: Alder (1)
+Anuncio ID: 24
+Anuncio Found: Fale com o Suporte
+Anuncio Expires At: Mon Dec 31 2029 21:00:00 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 7
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 6
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 5
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 4
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 3
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 2
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active
+--------------------------------------------------
+Msg ID: 1
+Sender: Alder (1)
+Receiver: Cristina (14)
+Anuncio ID: 23
+Anuncio Found: Renegade 2018
+Anuncio Expires At: Mon Mar 02 2026 20:30:58 GMT-0300 (Horário Padrão de Brasília)
+Anuncio Status: active

@@ -9,9 +9,7 @@ const HomePage = ({ navigateTo, user }) => {
     const [states, setStates] = React.useState([]);
     const [cities, setCities] = React.useState([]);
     const [categorias, setCategorias] = React.useState([]);
-    const [showAdminAlert, setShowAdminAlert] = React.useState(() => {
-        return localStorage.getItem('hideAdminAlert') !== 'true';
-    });
+
     const [showAdvanced, setShowAdvanced] = React.useState(false);
 
     const [filters, setFilters] = React.useState({
@@ -44,17 +42,19 @@ const HomePage = ({ navigateTo, user }) => {
         if (user) {
             const token = localStorage.getItem('token');
             api.get('/favorites/ids', { headers: { Authorization: `Bearer ${token}` } })
-                .then(res => setFavoritedIds(res.data))
+                .then(res => {
+                    if (Array.isArray(res.data)) {
+                        setFavoritedIds(res.data.map(id => Number(id)));
+                    } else {
+                        console.warn('Favorites response is not an array:', res.data);
+                        setFavoritedIds([]);
+                    }
+                })
                 .catch(err => console.error("Error fetching favs", err));
         }
 
         // Check LocalStorage for User Location Plan
-        // ... existing ... 
-
-        // (Just keeping the original structure for detectLocation...)
         const savedLocation = localStorage.getItem('userLocation');
-        // ... (rest of useEffect logic remains same, I am just injecting the favorites fetch above)
-
         if (savedLocation) {
             try {
                 const loc = JSON.parse(savedLocation);
@@ -81,96 +81,32 @@ const HomePage = ({ navigateTo, user }) => {
             } catch (e) { detectLocationAndFetchAds(); }
         } else { detectLocationAndFetchAds(); }
 
-    }, [user]); // Add user to dependency array to refetch favs on login
-
-    // ... detectLocationAndFetchAds, fetchAds, handleFilterChange, handleSearch ...
-
-    const handleToggleFavorite = async (e, adId) => {
-        e.stopPropagation();
-        if (!user) {
-            navigateTo('login');
-            return;
-        }
-
-        // Optimistic UI update
-        const isFav = favoritedIds.includes(adId);
-        if (isFav) {
-            setFavoritedIds(prev => prev.filter(id => id !== adId));
-        } else {
-            setFavoritedIds(prev => [...prev, adId]);
-        }
-
-        try {
-            const token = localStorage.getItem('token');
-            await api.post('/favorites/toggle', { anuncioId: adId }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-        } catch (error) {
-            console.error("Error toggling favorite", error);
-            // Revert on error
-            if (isFav) setFavoritedIds(prev => [...prev, adId]);
-            else setFavoritedIds(prev => prev.filter(id => id !== adId));
-        }
-    };
-
-    // ... return ...
-
-    // Ads Grid replacement
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {ads.map(ad => {
-            const isFav = favoritedIds.includes(ad.id);
-            return (
-                <div key={ad.id} className="relative group/card">
-                    <AdCard ad={ad} onClick={() => navigateTo('ad-detail', ad.id)} />
-                    <button
-                        onClick={(e) => handleToggleFavorite(e, ad.id)}
-                        className={`absolute top-2 right-2 p-2 rounded-full shadow-md transition z-10 ${isFav ? 'bg-white text-red-500' : 'bg-white/80 text-gray-400 hover:text-red-500'}`}
-                        title={isFav ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                    >
-                        <svg className="w-5 h-5" fill={isFav ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                    </button>
-                </div>
-            );
-        })}
-    </div>
-
-    const normalizeText = (text) => {
-        return text ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : "";
-    };
+    }, [user]);
 
     const detectLocationAndFetchAds = () => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(async (position) => {
                 try {
                     const { latitude, longitude } = position.coords;
-                    // OpenStreetMap Nominatim for Reverse Geocoding
                     const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
                     const data = await response.json();
 
                     if (data && data.address) {
-                        // Extract state code (ISO3166-2-lvl4 format is usually 'BR-XX')
                         let detectedUf = '';
                         if (data.address['ISO3166-2-lvl4']) {
                             detectedUf = data.address['ISO3166-2-lvl4'].split('-')[1];
                         }
 
-                        // Extract city name
                         const detectedCityName = data.address.city || data.address.town || data.address.village || data.address.municipality;
 
                         if (detectedUf) {
-                            // Fetch cities for this state to find the matching city ID
                             api.get(`/locations/cities/${detectedUf}`)
                                 .then(res => {
-                                    const loadedCities = res.data;
-                                    setCities(loadedCities);
-
+                                    setCities(res.data);
                                     let matchedCityId = '';
                                     if (detectedCityName) {
-                                        // Robust matching ignoring accents and case
                                         const searchName = normalizeText(detectedCityName);
-                                        const found = loadedCities.find(c => normalizeText(c.name) === searchName);
+                                        const found = res.data.find(c => normalizeText(c.name) === searchName);
                                         if (found) matchedCityId = found.id;
                                     }
 
@@ -182,57 +118,34 @@ const HomePage = ({ navigateTo, user }) => {
                                         categoria_id: ''
                                     };
 
-                                    // Persist to localStorage so it loads next time
                                     localStorage.setItem('userLocation', JSON.stringify({
                                         stateId: detectedUf,
                                         cityId: matchedCityId,
                                         cityName: detectedCityName || ''
                                     }));
-
-                                    // Notify Header to update
                                     window.dispatchEvent(new Event('locationUpdated'));
 
                                     setFilters(initialFilters);
                                     fetchAds(initialFilters);
                                 })
                                 .catch(() => fetchAds());
-                        } else {
-                            fetchAds();
-                        }
-                    } else {
-                        fetchAds();
-                    }
-                } catch (error) {
-                    console.error("Error reverse geocoding:", error);
-                    fetchAds();
-                }
-            }, (error) => {
-                console.warn("Location permission denied or error:", error);
-                fetchAds();
-            }, { timeout: 5000 });
-        } else {
-            fetchAds();
-        }
+                        } else { fetchAds(); }
+                    } else { fetchAds(); }
+                } catch (error) { console.error("Error reverse geocoding:", error); fetchAds(); }
+            }, (error) => { console.warn("Location permission denied", error); fetchAds(); }, { timeout: 5000 });
+        } else { fetchAds(); }
     };
 
     const fetchAds = (queryParams = {}) => {
         setLoading(true);
-        // Build query string
         const params = new URLSearchParams();
         Object.keys(queryParams).forEach(key => {
             if (queryParams[key]) params.append(key, queryParams[key]);
         });
 
-        // Log filters being sent
-        console.log("Fetching ads with filters:", queryParams);
-
         api.get(`/anuncios?${params.toString()}`)
             .then(res => {
-                if (Array.isArray(res.data)) {
-                    setAds(res.data);
-                } else {
-                    setAds([]);
-                }
+                setAds(Array.isArray(res.data) ? res.data : []);
                 setLoading(false);
             })
             .catch(err => {
@@ -246,44 +159,72 @@ const HomePage = ({ navigateTo, user }) => {
         setFilters(prev => ({ ...prev, [name]: value }));
 
         if (name === 'estado_id') {
-            setFilters(prev => ({ ...prev, cidade_id: '' })); // Reset city
+            setFilters(prev => ({ ...prev, cidade_id: '' }));
             if (value) {
-                api.get(`/locations/cities/${value}`)
-                    .then(res => setCities(res.data))
-                    .catch(err => console.error(err));
-            } else {
-                setCities([]);
-            }
+                api.get(`/locations/cities/${value}`).then(res => setCities(res.data)).catch(err => console.error(err));
+            } else { setCities([]); }
         }
 
         if (name === 'fabricante_id') {
-            setFilters(prev => ({ ...prev, modelo_id: '' })); // Reset model
+            setFilters(prev => ({ ...prev, modelo_id: '' }));
             if (value) {
                 const categoriaParam = filters.categoria_id ? `?categoriaId=${filters.categoria_id}` : '';
-                api.get(`/resources/modelos/${value}${categoriaParam}`)
-                    .then(res => setModelos(res.data))
-                    .catch(err => console.error(err));
-            } else {
-                setModelos([]);
-            }
+                api.get(`/resources/modelos/${value}${categoriaParam}`).then(res => setModelos(res.data)).catch(err => console.error(err));
+            } else { setModelos([]); }
         }
 
         if (name === 'categoria_id') {
-            setFilters(prev => ({ ...prev, modelo_id: '', fabricante_id: '', [name]: value })); // Reset model and fab when species changes
-
-            // Re-fetch manufacturers based on new category
+            setFilters(prev => ({ ...prev, modelo_id: '', fabricante_id: '', [name]: value }));
             const params = value ? `?categoriaId=${value}` : '';
-            api.get(`/resources/fabricantes${params}`)
-                .then(res => setFabricantes(res.data))
-                .catch(err => console.error(err));
-
-            setModelos([]); // Clear models as manufacturer is cleared
+            api.get(`/resources/fabricantes${params}`).then(res => setFabricantes(res.data)).catch(err => console.error(err));
+            setModelos([]);
         }
     };
 
-    const handleSearch = () => {
-        fetchAds(filters);
+    const handleSearch = () => { fetchAds(filters); };
+
+    const handleToggleFavorite = async (e, adId) => {
+        e.stopPropagation();
+        e.preventDefault(); // Extra safety
+
+        if (!user) {
+            // alert("Você precisa estar logado para favoritar!"); // Optional feedback
+            navigateTo('login');
+            return;
+        }
+
+        const numericId = Number(adId); // Ensure numeric
+        // Check using loose equality
+        const isFav = favoritedIds.some(id => id == adId);
+
+        // Optimistic
+        if (isFav) {
+            setFavoritedIds(prev => prev.filter(id => id != adId));
+        } else {
+            setFavoritedIds(prev => [...prev, adId]);
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            await api.post('/favorites/toggle', { anuncioId: numericId }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+        } catch (error) {
+            console.error("Error toggling favorite", error);
+            // Revert
+            if (isFav) setFavoritedIds(prev => [...prev, numericId]);
+            else setFavoritedIds(prev => prev.filter(id => id !== numericId));
+        }
     };
+
+
+
+
+    const normalizeText = (text) => {
+        return text ? text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() : "";
+    };
+
+
 
     return (
         <div className="fade-in w-full px-2 lg:px-4">
@@ -295,105 +236,123 @@ const HomePage = ({ navigateTo, user }) => {
                     {/* ADMIN SHORTCUT */}
                     {/* ADMIN SHORTCUT */}
                     {/* ADMIN SHORTCUT */}
-                    {user && user.email === 'aldemiro.moreira@gmail.com' && showAdminAlert && (
-                        <div className="mb-4 flex justify-end items-center gap-2">
-                            <button
-                                onClick={() => navigateTo('db_crud_login')}
-                                className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded shadow-md transition-colors text-xs"
-                            >
-                                Acessar Sub-Projeto CRUD
-                            </button>
-                            <button
-                                onClick={() => {
-                                    setShowAdminAlert(false);
-                                    localStorage.setItem('hideAdminAlert', 'true');
-                                }}
-                                className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
-                                title="Fechar"
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-                    )}
 
-                    {/* Hero / Filter Section - Classic with New Colors */}
-                    <div className="bg-sky-500 rounded-xl py-4 px-4 mb-6 text-white shadow-lg relative overflow-hidden">
-                        {/* Abstract Background Shapes */}
-                        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white opacity-10 blur-3xl"></div>
-                        <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-amber-400 opacity-20 blur-3xl"></div>
 
-                        {/* Watermark Real Car Image */}
-                        <div className="absolute bottom-0 right-0 w-3/4 h-full overflow-hidden pointer-events-none rounded-r-xl">
+                    {/* Hero / Filter Section - Mobiauto Style (Compact Version) */}
+                    {/* Hero / Filter Section - Mobiauto Style (Compact Version) */}
+                    <div className="relative mb-4 px-2 md:px-0">
+
+                        {/* Background Image / Banner - Reduced Height */}
+                        <div className="absolute top-0 left-0 w-full h-[140px] z-0 rounded-b-[20px] overflow-hidden">
                             <img
-                                src="https://images.unsplash.com/photo-1617788138017-80ad40651399?q=80&w=2070&auto=format&fit=crop"
-                                alt="Car Watermark"
-                                className="w-full h-full object-cover object-center opacity-60 mask-image-gradient"
-                                style={{ maskImage: 'linear-gradient(to right, transparent, black)' }}
+                                src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=2070&auto=format&fit=crop"
+                                alt="Background"
+                                className="w-full h-full object-cover brightness-75"
                             />
+                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-50/90"></div>
                         </div>
 
-                        <div className="relative z-10 max-w-5xl mx-auto text-center">
-                            <h2 className="text-3xl md:text-5xl font-black mb-2 drop-shadow-md">Encontre seu próximo veículo</h2>
-                            <p className="text-blue-50 mb-8 text-lg font-medium shadow-black drop-shadow-sm">As melhores ofertas de todo o Brasil.</p>
+                        <div className="relative z-10 max-w-5xl mx-auto mt-4">
+                            <div className="text-center mb-3">
+                                <h2 className="text-xl md:text-2xl font-black text-white drop-shadow-lg leading-tight">
+                                    Seu carro novo está aqui.
+                                </h2>
+                            </div>
 
-                            <div className="bg-white/20 backdrop-blur-md p-6 rounded-2xl border border-white/30 shadow-2xl space-y-4">
-                                {/* Basic Filters */}
-                                <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                                    <select name="categoria_id" value={filters.categoria_id} onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm">
-                                        <option value="">Categoria</option>
-                                        {categorias.map(e => <option key={e.id} value={e.id}>{e.nome}</option>)}
-                                    </select>
-                                    <select name="fabricante_id" value={filters.fabricante_id} onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm">
-                                        <option value="">Marca</option>
-                                        {fabricantes.map(f => <option key={f.id} value={f.id}>{f.nome}</option>)}
-                                    </select>
-                                    <select name="modelo_id" value={filters.modelo_id} onChange={handleFilterChange} disabled={!modelos.length} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm disabled:opacity-50 disabled:bg-gray-100">
-                                        <option value="">Modelo</option>
-                                        {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
-                                    </select>
-                                    <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm">
-                                        <option value="">Estado</option>
-                                        {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
-                                    </select>
-                                    <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 focus:ring-2 focus:ring-amber-500 shadow-sm disabled:opacity-50 disabled:bg-gray-100">
-                                        <option value="">Cidade</option>
-                                        {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                                    </select>
+                            {/* Search Box Container - Compact */}
+                            <div className="bg-white rounded-lg shadow-lg p-3 animate-fade-in-up border border-gray-100 mt-2">
+
+                                {/* Header: Tabs + Quick Categories */}
+                                <div className="flex flex-col md:flex-row justify-between items-center border-b border-gray-100 pb-2 mb-3 gap-3">
+
+                                    {/* Tabs (Left) */}
+                                    <div className="flex gap-4">
+                                        <button
+                                            onClick={() => handleFilterChange({ target: { name: 'categoria_id', value: '1' } })}
+                                            className={`pb-1 border-b-2 font-bold text-sm md:text-base transition-colors ${filters.categoria_id == '1' ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+                                        >
+                                            🚗 Comprar Carros
+                                        </button>
+                                        <button
+                                            onClick={() => handleFilterChange({ target: { name: 'categoria_id', value: '2' } })}
+                                            className={`pb-1 border-b-2 font-bold text-sm md:text-base transition-colors ${filters.categoria_id == '2' ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+                                        >
+                                            🏍️ Comprar Motos
+                                        </button>
+                                    </div>
+
+                                    {/* Quick Categories (Right) - Integrated */}
+                                    <div className="flex gap-3 overflow-x-auto max-w-full pb-1 md:pb-0 hide-scrollbar">
+                                        {[
+                                            { name: 'Hatch', icon: '🚙' },
+                                            { name: 'Sedan', icon: '🚗' },
+                                            { name: 'SUV', icon: '🚙' },
+                                            { name: 'Picape', icon: '🛻' }
+                                        ].map(cat => (
+                                            <div key={cat.name} className="flex items-center gap-1 group cursor-pointer opacity-70 hover:opacity-100 transition bg-gray-50 px-2 py-1 rounded-full border border-gray-100 hover:bg-gray-100">
+                                                <span className="text-sm">{cat.icon}</span>
+                                                <span className="text-[10px] font-bold text-gray-600 uppercase">{cat.name}</span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Filters Row - More Horizontal */}
+                                <div className="grid grid-cols-2 md:flex md:gap-3 gap-2 items-end mb-2">
+                                    <div className="relative w-full">
+                                        <select name="fabricante_id" value={filters.fabricante_id} onChange={handleFilterChange} className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg p-2.5 font-semibold focus:ring-brand-500 focus:border-brand-500">
+                                            <option value="">Marca</option>
+                                            {fabricantes.map(f => <option key={f.id} value={f.id}>{f.nome}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="relative w-full">
+                                        <select name="modelo_id" value={filters.modelo_id} onChange={handleFilterChange} disabled={!modelos.length} className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg p-2.5 font-semibold focus:ring-brand-500 focus:border-brand-500 disabled:opacity-50">
+                                            <option value="">Modelo</option>
+                                            {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
+                                        </select>
+                                    </div>
+                                    <div className="relative w-full">
+                                        <input type="number" name="minYear" placeholder="Ano Min" onChange={handleFilterChange} className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg p-2.5 font-semibold" />
+                                    </div>
+                                    <div className="relative w-full">
+                                        <input type="number" name="maxPrice" placeholder="Preço Máx" onChange={handleFilterChange} className="w-full bg-gray-50 border border-gray-200 text-gray-800 text-sm rounded-lg p-2.5 font-semibold" />
+                                    </div>
+
+                                    {/* Action Row integrated or close by */}
+                                    <div className="col-span-2 md:col-span-auto md:w-auto w-full flex-shrink-0">
+                                        <button onClick={handleSearch} className="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-2.5 px-6 rounded-lg shadow hover:shadow-lg transition-all transform hover:-translate-y-0.5 text-sm uppercase tracking-wide whitespace-nowrap">
+                                            🔍 Buscar
+                                        </button>
+                                    </div>
                                 </div>
 
                                 {/* Advanced Toggle */}
-                                <div className="flex justify-between items-center text-xs text-white px-1">
-                                    <button onClick={() => setShowAdvanced(!showAdvanced)} className="flex items-center gap-1 hover:text-amber-300 transition font-bold shadow-black drop-shadow-sm">
-                                        {showAdvanced ? '➖ Menos filtros' : '➕ Mais filtros'} (Preço, Km, Ano)
+                                <div className="text-center md:text-left">
+                                    <button onClick={() => setShowAdvanced(!showAdvanced)} className="text-brand-600 font-semibold text-xs hover:underline">
+                                        {showAdvanced ? 'Menos opções' : 'Busca Avançada (Estado, Cidade, Km)'}
                                     </button>
                                 </div>
 
-                                {/* Advanced Filters Area */}
+                                {/* Advanced Filters (Conditional) */}
                                 {showAdvanced && (
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 border-t border-white/20 pt-2 animate-fade-in-down">
-                                        <input type="number" name="minPrice" placeholder="Preço Min" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
-                                        <input type="number" name="maxPrice" placeholder="Preço Max" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
-                                        <input type="number" name="minYear" placeholder="Ano Min" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
-                                        <input type="number" name="maxYear" placeholder="Ano Max" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
-                                        <input type="number" name="minKm" placeholder="Km Min" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
-                                        <input type="number" name="maxKm" placeholder="Km Max" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2" />
-                                        <select name="sort" onChange={handleFilterChange} className="bg-white border-0 text-gray-700 text-sm rounded-lg p-2 col-span-2 font-bold text-sky-600">
-                                            <option value="">Ordenação Padrão</option>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 pt-2 border-t border-gray-100 animate-fade-in">
+                                        <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2">
+                                            <option value="">Estado</option>
+                                            {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
+                                        </select>
+                                        <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2">
+                                            <option value="">Cidade</option>
+                                            {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                        </select>
+                                        <input type="number" name="maxKm" placeholder="Km Máximo" onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2" />
+                                        <select name="sort" onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2 font-semibold">
+                                            <option value="">Ordenar</option>
                                             <option value="price_asc">Menor Preço</option>
                                             <option value="price_desc">Maior Preço</option>
-                                            <option value="year_desc">Mais Novos (Ano)</option>
-                                            <option value="km_asc">Menor Quilometragem</option>
+                                            <option value="km_asc">Menor Km</option>
                                         </select>
                                     </div>
                                 )}
-
-                                <div className="mt-2 text-center w-full flex justify-center pt-2 border-t border-white/20">
-                                    <button onClick={handleSearch} className="w-full md:w-auto min-w-[200px] text-white bg-amber-500 hover:bg-amber-600 hover:scale-105 shadow-lg shadow-amber-500/30 font-black rounded-lg text-base py-3 px-8 transition-all transform uppercase tracking-wider">
-                                        🔍 Buscar Ofertas
-                                    </button>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -416,19 +375,15 @@ const HomePage = ({ navigateTo, user }) => {
                             <>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                     {ads.map(ad => {
-                                        const isFav = favoritedIds.includes(ad.id);
+                                        const isFav = favoritedIds.some(favId => favId == ad.id);
                                         return (
-                                            <div key={ad.id} className="relative group/card">
-                                                <AdCard ad={ad} onClick={() => navigateTo('ad-detail', ad.id)} />
-                                                <button
-                                                    onClick={(e) => handleToggleFavorite(e, ad.id)}
-                                                    className={`absolute top-2 right-2 p-2 rounded-full shadow-md transition z-10 ${isFav ? 'bg-white text-red-500' : 'bg-white/80 text-gray-400 hover:text-red-500'}`}
-                                                    title={isFav ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                                                >
-                                                    <svg className="w-5 h-5" fill={isFav ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                                    </svg>
-                                                </button>
+                                            <div key={ad.id} className="relative group/card h-full">
+                                                <AdCard
+                                                    ad={ad}
+                                                    onClick={() => navigateTo('ad-detail', ad.id)}
+                                                    isFavorite={isFav}
+                                                    onToggleFavorite={handleToggleFavorite}
+                                                />
                                             </div>
                                         );
                                     })}

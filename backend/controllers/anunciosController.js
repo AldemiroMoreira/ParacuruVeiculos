@@ -139,6 +139,7 @@ exports.getAnuncios = async (req, res) => {
 exports.getMeusAnuncios = async (req, res) => {
     try {
         const usuario_id = req.userData.userId;
+
         const anuncios = await Anuncio.findAll({
             where: { usuario_id },
             include: [

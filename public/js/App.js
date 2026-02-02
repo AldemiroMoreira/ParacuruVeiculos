@@ -7,6 +7,7 @@ const App = () => {
     const [user, setUser] = React.useState(null);
     const [currentAdId, setCurrentAdId] = React.useState(null);
     const [checkoutData, setCheckoutData] = React.useState(null);
+    const [chatData, setChatData] = React.useState(null); // Added chatData state
 
     React.useEffect(() => {
         const token = localStorage.getItem('token');
@@ -15,20 +16,52 @@ const App = () => {
             setUser(JSON.parse(userData));
         }
 
-        // Hash Routing Check
-        const hash = window.location.hash;
-        if (hash.startsWith('#/reset-password/')) {
-            setCurrentPage('reset-password');
-        }
-        if (hash.startsWith('#/my-ads')) { // Handle payment return
-            setCurrentPage('my-ads');
-        }
-        if (hash.startsWith('#/activate/')) {
-            setCurrentPage('activate');
-        }
-        if (hash.startsWith('#/edit-ad/')) {
-            setCurrentPage('edit-ad');
-        }
+        // Initial Routing based on Hash
+        const handleInitialHash = () => {
+            const hash = window.location.hash;
+            if (hash.startsWith('#/reset-password/')) setCurrentPage('reset-password');
+            else if (hash.startsWith('#/my-ads')) setCurrentPage('my-ads');
+            else if (hash.startsWith('#/activate/')) setCurrentPage('activate');
+            else if (hash.startsWith('#/edit-ad/')) setCurrentPage('edit-ad');
+            else if (hash.startsWith('#/ad-detail/')) {
+                const id = hash.split('/')[2];
+                if (id) {
+                    setCurrentAdId(id);
+                    setCurrentPage('ad-detail');
+                }
+            }
+            else if (hash.startsWith('#/chat/')) {
+                const parts = hash.split('/');
+                // Format: #/chat/anuncioId/otherUserId
+                if (parts.length >= 4) {
+                    const aid = parts[2];
+                    const uid = parts[3];
+                    setChatData({ anuncioId: aid, otherUserId: uid });
+                    setCurrentPage('chat');
+                }
+            }
+            // else default is home (state init)
+        };
+
+        handleInitialHash();
+
+        // Back Button Handler
+        const handlePopState = (event) => {
+            if (event.state && event.state.page) {
+                if (event.state.page === 'ad-detail' && event.state.data) setCurrentAdId(event.state.data);
+                if (event.state.page === 'checkout' && event.state.data) setCheckoutData(event.state.data);
+                if (event.state.page === 'chat' && event.state.data) setChatData(event.state.data); // Restore chatData
+
+                setCurrentPage(event.state.page);
+            } else {
+                // Fallback if no state (e.g. external back to initial load)
+                handleInitialHash();
+                if (!window.location.hash) setCurrentPage('home');
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
     }, []);
 
     const handleLogin = (userData) => {
@@ -41,18 +74,25 @@ const App = () => {
         localStorage.removeItem('user');
         setUser(null);
         setCurrentPage('home');
+        window.history.pushState(null, '', '/');
     };
 
     const navigateTo = (page, data = null) => {
         if (page === 'ad-detail') setCurrentAdId(data);
         if (page === 'checkout') setCheckoutData(data);
-        if (page === 'edit-ad') {
-            // For edit-ad, the data is the ID, so we might want to update the URL hash
-            // But actually, simple navigation 'internally' is easier. 
-            // However, EditAdPage checks window.location.hash. 
-            // So we should update it.
-            window.location.hash = `/edit-ad/${data}`;
+        if (page === 'chat') setChatData(data); // Set chatData
+
+        // Construct Hash URL
+        let hash = `#/${page}`;
+        if (page === 'chat' && data) {
+            hash += `/${data.anuncioId}/${data.otherUserId}`;
+        } else if (data && typeof data !== 'object') {
+            hash += `/${data}`;
         }
+
+        // Push to History
+        window.history.pushState({ page, data }, '', hash);
+
         setCurrentPage(page);
         window.scrollTo(0, 0);
     };
@@ -85,7 +125,7 @@ const App = () => {
             case 'activate':
                 return <ActivationPage navigateTo={navigateTo} />;
             case 'chat':
-                return <ChatPage chatData={currentAdId} navigateTo={navigateTo} user={user} />;
+                return <ChatPage chatData={chatData} navigateTo={navigateTo} user={user} />; // Pass chatData state, not currentAdId
             case 'inbox':
                 return <InboxPage navigateTo={navigateTo} user={user} />;
             case 'favorites':
@@ -120,7 +160,7 @@ const App = () => {
             <main className="flex-grow container mx-auto px-4 py-8">
                 {renderPage()}
             </main>
-            <Footer />
+            <Footer navigateTo={navigateTo} />
         </div>
     );
 };
