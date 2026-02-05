@@ -1,0 +1,5 @@
+
+# Mercado Livre
+ML_APP_ID=360959381171797
+ML_CLIENT_SECRET=nzeiEUdUFwpxa4QHnd3umWgKb3p35S7g
+ML_REDIRECT_URI=https://paracuruveiculos.com.br/api/ml/callback

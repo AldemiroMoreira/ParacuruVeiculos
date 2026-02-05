@@ -65,7 +65,7 @@ exports.fixEverything = async (req, res) => {
             },
             {
                 nome: 'Cristina',
-                email: 'extcristina.mv@hotmail.com',
+                email: 'tcristina.mv@gmail.com',
                 password: '10042012',
                 isAdmin: false
             },

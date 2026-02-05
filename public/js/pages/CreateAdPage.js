@@ -263,7 +263,7 @@ const CreateAdPage = ({ user, navigateTo }) => {
                         {modelos.map(m => <option key={m.id} value={m.id}>{m.nome}</option>)}
                     </select>
 
-                    <input name="ano_fabricacao" type="number" value={formData.ano_fabricacao} onChange={handleChange} required className="p-2 border rounded-lg" placeholder="Ano" />
+                    <input name="ano_fabricacao" type="number" value={formData.ano_fabricacao} onChange={handleChange} required className="p-2 border rounded-lg" placeholder="Ano de fabricação" />
                     <input name="km" type="number" value={formData.km} onChange={handleChange} required className="p-2 border rounded-lg" placeholder="KM" />
 
                     <select name="plan_id" value={formData.plan_id} onChange={handleChange} className="p-2 border rounded-lg bg-white">

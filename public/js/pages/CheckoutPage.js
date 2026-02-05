@@ -35,7 +35,7 @@ const CheckoutPage = ({ checkoutData, navigateTo }) => {
 
             // Redirect to Mercado Pago
             // Use sandbox for testing if needed, or production init_point
-            window.location.href = sandbox_init_point || init_point;
+            window.location.href = init_point || sandbox_init_point;
 
         } catch (error) {
             console.error(error);

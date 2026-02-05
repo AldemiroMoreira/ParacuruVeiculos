@@ -1,23 +1,31 @@
-const { DataTypes } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const Propaganda = sequelize.define('Propaganda', {
     id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        primaryKey: true
     },
     titulo: {
         type: DataTypes.STRING,
         allowNull: false
     },
     imagem_url: {
-        type: DataTypes.STRING(500),
+        type: DataTypes.STRING,
         allowNull: false
     },
     link_destino: {
-        type: DataTypes.STRING(500),
+        type: DataTypes.STRING,
         allowNull: false
+    },
+    preco: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true
+    },
+    descricao: {
+        type: DataTypes.TEXT,
+        allowNull: true
     },
     localizacao: {
         type: DataTypes.ENUM('home_top', 'home_middle', 'sidebar', 'footer'),
@@ -38,6 +46,7 @@ const Propaganda = sequelize.define('Propaganda', {
 }, {
     tableName: 'propagandas',
     timestamps: true
+    // updatedAt / createdAt managed by sequelize
 });
 
 module.exports = Propaganda;

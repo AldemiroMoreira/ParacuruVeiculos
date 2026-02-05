@@ -15,21 +15,48 @@ const loadData = () => {
 };
 
 const runSeed = async () => {
+    // 0. Clean up (Truncate) to ensure IDs match JSON
+    console.log('Cleaning up old data...');
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 0', { raw: true });
+    await Modelo.truncate({ cascade: true, restartIdentity: true }); // Restart IDs
+    await Fabricante.truncate({ cascade: true, restartIdentity: true });
+    await Categoria.truncate({ cascade: true, restartIdentity: true });
+    await sequelize.query('SET FOREIGN_KEY_CHECKS = 1', { raw: true });
+
     // 1. Categorias
     console.log('Seeding Categorias...');
-    const categoriasNomes = ['Carro', 'Moto', 'Caminhão', 'Van/Utilitário', 'Barco', 'Aeronave', 'Outros'];
-    for (const nome of categoriasNomes) {
-        await Categoria.findOrCreate({ where: { nome } });
+    const categorias = [
+        { id: 1, nome: 'Carro' },
+        { id: 2, nome: 'Moto' },
+        { id: 3, nome: 'Caminhão' },
+        { id: 4, nome: 'Van/Utilitário' },
+        { id: 5, nome: 'Barco' },
+        { id: 6, nome: 'Aeronave' },
+        { id: 7, nome: 'Outros' }
+    ];
+    // Using explicit create loop to ensure IDs are respected
+    for (const cat of categorias) {
+        await Categoria.create(cat);
     }
+
+    // VERIFICACAO DE DEBUG
+    const verifyCats = await Categoria.findAll({ attributes: ['id', 'nome'] });
+    console.log('>>> VERIFICACAO DE CATEGORIAS:', JSON.stringify(verifyCats, null, 2));
 
     // Load Data
     const { fabricantesData, modelosData, estadosData, municipiosData } = loadData();
 
     // 2. Fabricantes
     console.log('Seeding Fabricantes...');
+    // Ensure Fabricantes are sorted by ID to avoid gaps if possible, though upsert handles it
+    // Ensure Fabricantes are sorted by ID to avoid gaps if possible
     for (const fab of fabricantesData) {
-        await Fabricante.upsert({ id: fab.id, nome: fab.nome });
+        await Fabricante.create({ id: fab.id, nome: fab.nome });
     }
+
+    // VERIFICACAO DE FABRICANTE 49
+    const fab49 = await Fabricante.findByPk(49);
+    console.log('>>> VERIFICACAO FABRICANTE 49:', fab49 ? 'ENCONTRADO' : 'NAO ENCONTRADO');
 
     // 3. Modelos
     console.log('Seeding Modelos...');

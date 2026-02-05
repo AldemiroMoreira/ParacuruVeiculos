@@ -45,6 +45,7 @@ app.use('/api/resources', resourcesRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/favorites', favoritesRoutes);
 app.use('/api/propagandas', propagandasRoutes);
+app.use('/api/ml', require('./routes/mlRoutes'));
 
 // Fix Data Route (Emergency)
 const fixDataRoutes = require('./routes/fixDataRoutes');

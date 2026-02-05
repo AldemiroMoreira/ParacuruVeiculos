@@ -114,13 +114,20 @@ const checkExpirations = async () => {
     }
 };
 
+const { runAffiliateUpdate } = require('./affiliateService');
+
 const initCron = () => {
-    // Run every hour
+    // Run Expiration Check every hour
     setInterval(checkExpirations, 60 * 60 * 1000);
 
-    // Run immediately on startup for verification (optional, good for verifying now)
-    // checkExpirations(); 
-    console.log('Cron service initialized (Hourly checks).');
+    // Run Affiliate Update every 24 hours
+    setInterval(runAffiliateUpdate, 24 * 60 * 60 * 1000);
+
+    // Run immediately on startup (for testing/initial population)
+    // Run with a slight delay to ensure DB connection
+    setTimeout(runAffiliateUpdate, 10000);
+
+    console.log('Cron service initialized (Hourly Expiration, Daily Affiliate).');
 };
 
 module.exports = { initCron };

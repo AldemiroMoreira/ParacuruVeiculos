@@ -2151,90 +2151,90 @@
         "id": 359,
         "fabricante_id": 52,
         "nome": "Phenom 100",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 360,
         "fabricante_id": 52,
         "nome": "Phenom 300",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 361,
         "fabricante_id": 52,
         "nome": "Ipanema",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 362,
         "fabricante_id": 52,
         "nome": "Praetor 600",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 363,
         "fabricante_id": 53,
         "nome": "172 Skyhawk",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 364,
         "fabricante_id": 53,
         "nome": "182 Skylane",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 365,
         "fabricante_id": 53,
         "nome": "208 Caravan",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 366,
         "fabricante_id": 53,
         "nome": "Citation Jet",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 367,
         "fabricante_id": 54,
         "nome": "Seneca",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 368,
         "fabricante_id": 54,
         "nome": "Archer",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 369,
         "fabricante_id": 54,
         "nome": "Cherokee",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 370,
         "fabricante_id": 54,
         "nome": "Malibu",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 371,
         "fabricante_id": 55,
         "nome": "R22",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 372,
         "fabricante_id": 55,
         "nome": "R44",
-        "categoria_id": 8
+        "categoria_id": 6
     },
     {
         "id": 373,
         "fabricante_id": 55,
         "nome": "R66 Turbine",
-        "categoria_id": 8
+        "categoria_id": 6
     }
 ]

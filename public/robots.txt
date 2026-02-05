@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://paracuruveiculos.com.br/sitemap.xml

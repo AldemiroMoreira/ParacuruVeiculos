@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
         // ALERTA: Restrição de usuários mantida conforme solicitado
         const allowedEmails = [
             'aldemiro.moreira@gmail.com',
-            'extcristina.mv@hotmail.com', // Corrigido de hmail.com 
+            'tcristina.mv@gmail.com',
             'harissonadv@hotmail.com'
         ];
         if (!allowedEmails.includes(cleanEmail)) {
@@ -45,10 +45,17 @@ exports.register = async (req, res) => {
 
         // Send Verification Email
         const activationUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/#/activate/${activationToken}`;
+        const { getHtmlTemplate } = require('../utils/emailTemplates');
+
         await sendEmail({
             to: cleanEmail,
-            subject: 'Ativação de Conta - ParacuruVeículos',
-            text: `Olá ${nome},\n\nPara ativar sua conta, clique no link abaixo:\n\n${activationUrl}\n\nObrigado!`
+            subject: 'Bem-vindo ao ParacuruVeículos!',
+            html: getHtmlTemplate(
+                `Olá, ${nome}!`,
+                'Estamos muito felizes em ter você aqui. Para começar a usar sua conta, por favor, clique no botão abaixo para confirmar seu email.',
+                'Ativar Minha Conta',
+                activationUrl
+            )
         });
 
         res.status(201).json({ message: 'Usuário criado! Verifique seu email para ativar a conta.' });
@@ -91,7 +98,7 @@ exports.login = async (req, res) => {
 
         const allowedEmails = [
             'aldemiro.moreira@gmail.com',
-            'extcristina.mv@hotmail.com',
+            'tcristina.mv@gmail.com',
             'harissonadv@hotmail.com'
         ];
 
@@ -195,10 +202,17 @@ exports.forgotPassword = async (req, res) => {
 
         const resetUrl = `${process.env.BASE_URL || 'http://localhost:3000'}/#/reset-password/${token}`;
 
+        const { getHtmlTemplate } = require('../utils/emailTemplates');
+
         await sendEmail({
             to: user.email,
             subject: 'Recuperação de Senha - ParacuruVeículos',
-            text: `Você solicitou a recuperação de senha.\n\nClique no link abaixo para redefinir sua senha:\n\n${resetUrl}`
+            html: getHtmlTemplate(
+                'Redefinição de Senha',
+                'Você solicitou a recuperação da sua senha. Clique no botão abaixo para criar uma nova senha:',
+                'Redefinir Minha Senha',
+                resetUrl
+            )
         });
 
         res.status(200).json({ message: 'Email de recuperação enviado!' });

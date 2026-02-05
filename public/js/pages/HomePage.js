@@ -262,40 +262,7 @@ const HomePage = ({ navigateTo, user }) => {
                             {/* Search Box Container - Compact */}
                             <div className="bg-white rounded-lg shadow-lg p-3 animate-fade-in-up border border-gray-100 mt-2">
 
-                                {/* Header: Tabs + Quick Categories */}
-                                <div className="flex flex-col md:flex-row justify-between items-center border-b border-gray-100 pb-2 mb-3 gap-3">
 
-                                    {/* Tabs (Left) */}
-                                    <div className="flex gap-4">
-                                        <button
-                                            onClick={() => handleFilterChange({ target: { name: 'categoria_id', value: '1' } })}
-                                            className={`pb-1 border-b-2 font-bold text-sm md:text-base transition-colors ${filters.categoria_id == '1' ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
-                                        >
-                                            🚗 Comprar Carros
-                                        </button>
-                                        <button
-                                            onClick={() => handleFilterChange({ target: { name: 'categoria_id', value: '2' } })}
-                                            className={`pb-1 border-b-2 font-bold text-sm md:text-base transition-colors ${filters.categoria_id == '2' ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
-                                        >
-                                            🏍️ Comprar Motos
-                                        </button>
-                                    </div>
-
-                                    {/* Quick Categories (Right) - Integrated */}
-                                    <div className="flex gap-3 overflow-x-auto max-w-full pb-1 md:pb-0 hide-scrollbar">
-                                        {[
-                                            { name: 'Hatch', icon: '🚙' },
-                                            { name: 'Sedan', icon: '🚗' },
-                                            { name: 'SUV', icon: '🚙' },
-                                            { name: 'Picape', icon: '🛻' }
-                                        ].map(cat => (
-                                            <div key={cat.name} className="flex items-center gap-1 group cursor-pointer opacity-70 hover:opacity-100 transition bg-gray-50 px-2 py-1 rounded-full border border-gray-100 hover:bg-gray-100">
-                                                <span className="text-sm">{cat.icon}</span>
-                                                <span className="text-[10px] font-bold text-gray-600 uppercase">{cat.name}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
 
                                 {/* Filters Row - More Horizontal */}
                                 <div className="grid grid-cols-2 md:flex md:gap-3 gap-2 items-end mb-2">
@@ -335,22 +302,59 @@ const HomePage = ({ navigateTo, user }) => {
 
                                 {/* Advanced Filters (Conditional) */}
                                 {showAdvanced && (
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 pt-2 border-t border-gray-100 animate-fade-in">
-                                        <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2">
-                                            <option value="">Estado</option>
-                                            {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
-                                        </select>
-                                        <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2">
-                                            <option value="">Cidade</option>
-                                            {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                                        </select>
-                                        <input type="number" name="maxKm" placeholder="Km Máximo" onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2" />
-                                        <select name="sort" onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2 font-semibold">
-                                            <option value="">Ordenar</option>
-                                            <option value="price_asc">Menor Preço</option>
-                                            <option value="price_desc">Maior Preço</option>
-                                            <option value="km_asc">Menor Km</option>
-                                        </select>
+                                    <div className="animate-fade-in border-t border-gray-100 mt-2 pt-2">
+                                        {/* Buttons Moved Inside Advanced Search */}
+                                        <div className="flex flex-col md:flex-row justify-between items-center mb-3 gap-3">
+                                            {/* Vehicle Type (Carro/Moto) */}
+                                            <div className="flex gap-4">
+                                                <button
+                                                    onClick={() => handleFilterChange({ target: { name: 'categoria_id', value: '1' } })}
+                                                    className={`pb-1 border-b-2 font-bold text-sm md:text-base transition-colors ${filters.categoria_id == '1' ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+                                                >
+                                                    🚗 Comprar Carros
+                                                </button>
+                                                <button
+                                                    onClick={() => handleFilterChange({ target: { name: 'categoria_id', value: '2' } })}
+                                                    className={`pb-1 border-b-2 font-bold text-sm md:text-base transition-colors ${filters.categoria_id == '2' ? 'border-brand-500 text-brand-600' : 'border-transparent text-gray-400 hover:text-gray-600'}`}
+                                                >
+                                                    🏍️ Comprar Motos
+                                                </button>
+                                            </div>
+
+                                            {/* Body Types (Hatch, Sedan, etc.) */}
+                                            <div className="flex gap-3 overflow-x-auto max-w-full pb-1 md:pb-0 hide-scrollbar">
+                                                {[
+                                                    { name: 'Hatch', icon: '🚙' },
+                                                    { name: 'Sedan', icon: '🚗' },
+                                                    { name: 'SUV', icon: '🚙' },
+                                                    { name: 'Picape', icon: '🛻' }
+                                                ].map(cat => (
+                                                    <div key={cat.name} className="flex items-center gap-1 group cursor-pointer opacity-70 hover:opacity-100 transition bg-gray-50 px-2 py-1 rounded-full border border-gray-100 hover:bg-gray-100">
+                                                        <span className="text-sm">{cat.icon}</span>
+                                                        <span className="text-[10px] font-bold text-gray-600 uppercase">{cat.name}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Advanced Filters Grid */}
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                                            <select name="estado_id" value={filters.estado_id} onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2">
+                                                <option value="">Estado</option>
+                                                {states.map(s => <option key={s.abbreviation} value={s.abbreviation}>{s.name}</option>)}
+                                            </select>
+                                            <select name="cidade_id" value={filters.cidade_id} onChange={handleFilterChange} disabled={!cities.length} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2">
+                                                <option value="">Cidade</option>
+                                                {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                            </select>
+                                            <input type="number" name="maxKm" placeholder="Km Máximo" onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2" />
+                                            <select name="sort" onChange={handleFilterChange} className="bg-white border border-gray-300 text-gray-700 text-xs rounded p-2 font-semibold">
+                                                <option value="">Ordenar</option>
+                                                <option value="price_asc">Menor Preço</option>
+                                                <option value="price_desc">Maior Preço</option>
+                                                <option value="km_asc">Menor Km</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 )}
                             </div>

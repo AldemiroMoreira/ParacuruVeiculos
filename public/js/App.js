@@ -1,6 +1,7 @@
 // DB CRUD Pages - Loaded via index.html globals
 // import AdminLoginPage from './pages/db_crud/AdminLoginPage.js';
 // import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
+// import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
 
 const App = () => {
     const [currentPage, setCurrentPage] = React.useState('home');
@@ -20,6 +21,7 @@ const App = () => {
         const handleInitialHash = () => {
             const hash = window.location.hash;
             if (hash.startsWith('#/reset-password/')) setCurrentPage('reset-password');
+            else if (hash.startsWith('#/ml-auth')) setCurrentPage('ml-auth');
             else if (hash.startsWith('#/my-ads')) setCurrentPage('my-ads');
             else if (hash.startsWith('#/activate/')) setCurrentPage('activate');
             else if (hash.startsWith('#/edit-ad/')) setCurrentPage('edit-ad');
@@ -148,6 +150,8 @@ const App = () => {
                 return <AnunciosCrudPage navigateTo={navigateTo} />;
             case 'db_crud_users':
                 return <UsersCrudPage navigateTo={navigateTo} />;
+            case 'ml-auth':
+                return <MLAuthPage />;
 
             default:
                 return <HomePage navigateTo={navigateTo} />;

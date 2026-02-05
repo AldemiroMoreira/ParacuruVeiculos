@@ -4,7 +4,13 @@ async function checkTables() {
     try {
         await sequelize.authenticate();
         console.log('Connected.');
-        const [results] = await sequelize.query("SHOW TABLES");
+        const rawResult = await sequelize.query("SHOW TABLES");
+        console.log('Raw Result:', rawResult);
+        const [results] = rawResult;
+        if (!results) {
+            console.log('No results found.');
+            return;
+        }
         console.log('Tables:', results.map(r => Object.values(r)[0]));
 
         // Check columns of anuncios

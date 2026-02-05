@@ -309,6 +309,7 @@ const AdminPage = ({ navigateTo, user }) => {
                             <button onClick={() => navigateTo('db_crud_categorias')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Categorias</button>
                             <button onClick={() => navigateTo('db_crud_fabricantes')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Fabricantes</button>
                             <button onClick={() => navigateTo('db_crud_modelos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Modelos</button>
+                            <button onClick={() => navigateTo('ml-auth')} className="bg-yellow-400 text-gray-900 font-bold px-4 py-2 rounded shadow hover:bg-yellow-500">Conectar Mercado Livre</button>
                             <button onClick={() => {
                                 if (confirm('Isso vai popular estados e cidades (pode demorar). Continuar?')) {
                                     const token = localStorage.getItem('admin_token');

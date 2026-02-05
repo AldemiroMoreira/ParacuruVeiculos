@@ -73,6 +73,11 @@ exports.createPreference = async (req, res) => {
                 plan_id: plan.id,
                 is_renewal: isRenewal,
                 discount_amount: discountAmount
+            },
+            payment_methods: {
+                excluded_payment_types: [],
+                excluded_payment_methods: [],
+                installments: 12
             }
         };
 

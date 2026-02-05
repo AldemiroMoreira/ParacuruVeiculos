@@ -73,6 +73,21 @@ exports.createAnuncio = async (req, res) => {
 
     } catch (error) {
         console.error("ERRO AO CRIAR ANUNCIO:", error);
+
+        // CLEANUP: Delete temp images if active process fails
+        if (req.files && req.files.length > 0) {
+            req.files.forEach(file => {
+                try {
+                    if (fs.existsSync(file.path)) {
+                        console.log(`[Cleanup] Deleting temp file: ${file.path}`);
+                        fs.unlinkSync(file.path);
+                    }
+                } catch (cleanupError) {
+                    console.error(`[Cleanup Error] Failed to delete ${file.path}:`, cleanupError);
+                }
+            });
+        }
+
         res.status(500).json({
             error: "Erro interno ao criar anúncio.",
             details: error.message
