@@ -5,6 +5,9 @@ const AdminPage = ({ navigateTo, user }) => {
     const [activeTab, setActiveTab] = React.useState('ads');
     const [authorized, setAuthorized] = React.useState(false);
     const [creds, setCreds] = React.useState({ username: '', password: '' });
+    const [showPassword, setShowPassword] = React.useState(false);
+    const [editingAd, setEditingAd] = React.useState(null);
+    const [importingLinks, setImportingLinks] = React.useState(false);
 
     const checkAuth = (token) => {
         const config = {
@@ -30,7 +33,7 @@ const AdminPage = ({ navigateTo, user }) => {
 
         Promise.all([
             axios.get('/api/admin/stats', config),
-            axios.get('/api/admin/ads', config),
+            axios.get('/api/propagandas/all', config),
             axios.get('/api/admin/users', config)
         ]).then(([s, a, u]) => {
             setStats(s.data);
@@ -47,7 +50,7 @@ const AdminPage = ({ navigateTo, user }) => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        api.post('/auth/admin/login', creds)
+        axios.post('/api/auth/admin/login', creds)
             .then(res => {
                 localStorage.setItem('admin_token', res.data.token);
                 setAuthorized(true);
@@ -63,7 +66,7 @@ const AdminPage = ({ navigateTo, user }) => {
         if (t) checkAuth(t);
     }, []);
 
-    const [showPassword, setShowPassword] = React.useState(false);
+
 
     if (!authorized) {
         return (
@@ -149,6 +152,24 @@ const AdminPage = ({ navigateTo, user }) => {
         } catch (e) { alert('Erro ao banir/desbanir'); }
     };
 
+
+
+    const handleImportLinks = async (e) => {
+        e.preventDefault();
+        const links = e.target.links.value;
+        if (!confirm('Isso atualizará os links dos anúncios sequencialmente (ID 1 = Linha 1, ID 2 = Linha 2...). Confirmar?')) return;
+
+        try {
+            const token = localStorage.getItem('admin_token');
+            const res = await axios.post('/api/propagandas/import-links', { links }, { headers: { Authorization: 'Bearer ' + token } });
+            alert(res.data.message);
+            setImportingLinks(false);
+            loadDashboard(token); // Refresh list
+        } catch (err) {
+            alert('Erro ao importar: ' + (err.response?.data?.error || err.message));
+        }
+    };
+
     const handleVerify = async (id) => {
         try {
             const token = localStorage.getItem('admin_token');
@@ -156,6 +177,38 @@ const AdminPage = ({ navigateTo, user }) => {
             setUsers(users.map(u => u.id === id ? { ...u, isVerified: true } : u));
             alert('Usuário ativado com sucesso!');
         } catch (e) { alert('Erro ao verificar usuário'); }
+    };
+
+    const handleSavePropaganda = async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('admin_token');
+        const formData = new FormData(e.target);
+
+        // Handle checkbox manual adjustment for FormData (optional, usually "on" acts as true-ish)
+        // But backend expects boolean? JSON parsed it, multer might parse to string "on".
+        // Let's ensure consistency:
+        const isActive = formData.get('ativo') === 'on';
+        formData.set('ativo', isActive ? 'true' : 'false');
+
+        // If file input is empty, ensure we don't send an empty 'imagem' field that might confuse multer?
+        // Multer handles empty file fine (req.file is undefined).
+
+        try {
+            const config = { headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'multipart/form-data' } };
+
+            if (editingAd.id) {
+                // Update
+                const res = await axios.put(`/api/propagandas/${editingAd.id}`, formData, config);
+                setAds(ads.map(a => a.id === editingAd.id ? res.data : a));
+            } else {
+                // Create
+                const res = await axios.post('/api/propagandas', formData, config);
+                setAds([res.data, ...ads]);
+            }
+            setEditingAd(null);
+        } catch (error) {
+            alert('Erro ao salvar propaganda: ' + (error.response?.data?.error || error.message));
+        }
     };
 
     return (
@@ -200,40 +253,53 @@ const AdminPage = ({ navigateTo, user }) => {
                 {activeTab === 'ads' && (
                     <>
                         <div className="p-3 border-b border-gray-100 flex justify-between items-center">
-                            <h3 className="font-bold text-gray-900 text-sm">Gerenciar Anúncios</h3>
+                            <h3 className="font-bold text-gray-900 text-sm">Gerenciar Propagandas (Afiliados/ML)</h3>
+                            <div className="flex gap-2">
+                                <button onClick={() => {
+                                    window.open('https://www.mercadolivre.com.br/afiliados/linkbuilder#hub', '_blank');
+                                    window.location.href = '/api/propagandas/export-links';
+                                }} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬇ Exportar Links</button>
+                                <button onClick={() => setImportingLinks(true)} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬆ Importar Links</button>
+                                <button onClick={() => setEditingAd({})} className="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 font-medium">+ Novo Anúncio</button>
+                            </div>
                         </div>
                         <div className="overflow-x-auto">
                             <table className="w-full text-left text-xs text-gray-600">
                                 <thead className="bg-gray-50">
                                     <tr>
                                         <th className="p-2">ID</th>
-                                        <th className="p-2">Veículo</th>
-                                        <th className="p-2">Valor</th>
+                                        <th className="p-2">Imagem</th>
+                                        <th className="p-2">Título/Link</th>
+                                        <th className="p-2">Preço</th>
+                                        <th className="p-2">Local</th>
+                                        <th className="p-2">Views/Clicks</th>
                                         <th className="p-2">Status</th>
-                                        <th className="p-2">Usuário</th>
                                         <th className="p-2">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100">
-                                    {ads.map(ad => (
-                                        <tr key={ad.id}>
+                                    {Array.isArray(ads) && ads.map(ad => (
+                                        <tr key={ad.id} className="hover:bg-gray-50">
                                             <td className="p-2">#{ad.id}</td>
-                                            <td className="p-2 font-medium text-gray-900">{ad.titulo}</td>
-                                            <td className="p-2">R$ {ad.preco}</td>
                                             <td className="p-2">
-                                                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ad.status === 'active' ? 'bg-green-100 text-green-700' :
-                                                    ad.status === 'pending_payment' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100'
-                                                    }`}>
-                                                    {ad.status === 'pending_payment' ? 'Pendente' : ad.status}
-                                                </span>
+                                                <img src={ad.imagem_url || '/favicon.svg'} alt="" className="w-10 h-10 object-contain rounded border bg-white" />
                                             </td>
-                                            <td className="p-2">{ad.Usuario?.nome || 'N/A'}</td>
+                                            <td className="p-2 max-w-xs truncate">
+                                                <div className="font-bold text-gray-800 truncate" title={ad.titulo}>{ad.titulo || 'Sem título'}</div>
+                                                <a href={ad.link_destino || '#'} target="_blank" className="text-blue-500 hover:underline truncate block" title={ad.link_destino}>{ad.link_destino || 'Sem Link'}</a>
+                                            </td>
+                                            <td className="p-2 font-bold text-green-700">R$ {ad.preco || '0.00'}</td>
+                                            <td className="p-2">{ad.localizacao || '-'}</td>
+                                            <td className="p-2 text-xs">
+                                                <div title="Visualizações">👁 {ad.views || 0}</div>
+                                                <div title="Cliques" className="text-blue-600">🖱 {ad.clicks || 0}</div>
+                                            </td>
+                                            <td className="p-2">
+                                                {ad.ativo ? <span className="text-green-600 font-bold">Ativo</span> : <span className="text-red-400">Inativo</span>}
+                                            </td>
                                             <td className="p-2 flex gap-1">
-                                                {ad.status !== 'active' && (
-                                                    <button onClick={() => handleApprove(ad.id)} className="p-1 text-green-600 hover:bg-green-50 rounded" title="Aprovar">✔</button>
-                                                )}
-                                                <button onClick={() => handleReject(ad.id)} className="p-1 text-red-600 hover:bg-red-50 rounded" title="Rejeitar/Excluir">✖</button>
-                                                <button onClick={() => navigateTo('ad-detail', ad.id)} className="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Ver">👁</button>
+                                                <button onClick={() => setEditingAd(ad)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Editar">✏️</button>
+                                                <button onClick={() => handleDeletePropaganda(ad.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Excluir">🗑</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -332,6 +398,78 @@ const AdminPage = ({ navigateTo, user }) => {
                 )}
 
             </div>
-        </div>
+            {/* EDIT MODAL */}
+            {editingAd && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg overflow-y-auto max-h-[90vh]">
+                        <h3 className="font-bold text-xl mb-4">{editingAd.id ? 'Editar Propaganda' : 'Nova Propaganda'}</h3>
+                        <form onSubmit={handleSavePropaganda} className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase">Título</label>
+                                <input name="titulo" defaultValue={editingAd.titulo} className="w-full border p-2 rounded" required />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 uppercase">Preço (R$)</label>
+                                    <input name="preco" type="number" step="0.01" defaultValue={editingAd.preco} className="w-full border p-2 rounded" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 uppercase">Localização</label>
+                                    <select name="localizacao" defaultValue={editingAd.localizacao || 'sidebar'} className="w-full border p-2 rounded">
+                                        <option value="sidebar">Sidebar/Lateral</option>
+                                        <option value="home_middle">Home (Meio)</option>
+                                        <option value="home_top">Home (Topo)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase">Link de Destino</label>
+                                <input name="link_destino" defaultValue={editingAd.link_destino} className="w-full border p-2 rounded" required />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase">Imagem</label>
+                                {editingAd.imagem_url && (
+                                    <div className="mb-2">
+                                        <img src={editingAd.imagem_url} alt="Atual" className="h-20 object-contain border rounded" />
+                                    </div>
+                                )}
+                                <input type="file" name="imagem" className="w-full border p-2 rounded text-sm" accept="image/*" />
+                                <input type="hidden" name="imagem_url" defaultValue={editingAd.imagem_url} />
+                                <div className="text-[10px] text-gray-400 mt-1">
+                                    Selecione um arquivo para substituir a imagem atual.
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="ativo" defaultChecked={editingAd.ativo !== false} id="activeCheck" />
+                                <label htmlFor="activeCheck" className="text-sm font-medium">Anúncio Ativo</label>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-4 border-t">
+                                <button type="button" onClick={() => setEditingAd(null)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
+                                <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {importingLinks && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg">
+                        <h3 className="font-bold text-xl mb-4">Importar Links (Bulk)</h3>
+                        <p className="text-xs text-gray-500 mb-4">
+                            Cole a lista de links gerados pelo Mercado Livre. <br />
+                            <strong>Importante:</strong> A atualização é sequencial pelo ID. O primeiro link irá para o primeiro anúncio cadastrado (ID menor), e assim por diante.
+                        </p>
+                        <form onSubmit={handleImportLinks} className="space-y-4">
+                            <textarea name="links" rows="10" className="w-full border p-2 rounded text-xs font-mono" placeholder="https://mercadolivre.com/..." required></textarea>
+                            <div className="flex justify-end gap-2 pt-4 border-t">
+                                <button type="button" onClick={() => setImportingLinks(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
+                                <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">Importar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+        </div >
     );
 };

@@ -156,9 +156,31 @@ exports.webhook = async (req, res) => {
                     });
 
                     // Update Local Payment Record
-                    const localPayment = await Payment.findOne({ where: { external_ref: String(id) } });
+                    // We search for the PENDING payment for this ad, since external_ref matches Preference ID, not Payment ID
+                    const localPayment = await Payment.findOne({
+                        where: {
+                            anuncio_id: anuncioId,
+                            status: 'pending'
+                        },
+                        order: [['created_at', 'DESC']]
+                    });
+
                     if (localPayment) {
-                        await localPayment.update({ status: 'approved' });
+                        await localPayment.update({
+                            status: paymentInfo.status,
+                            external_ref: String(id) // Update to the actual Payment ID
+                        });
+                        console.log(`Pagamento local ID ${localPayment.id} atualizado para ${paymentInfo.status}`);
+                    } else {
+                        console.warn(`Nenhum pagamento pendente encontrado para o Anúncio ${anuncioId}. Criando registro...`);
+                        // Optional: Create a record if one doesn't exist (e.g. direct link payment?)
+                        await Payment.create({
+                            external_ref: String(id),
+                            amount: paymentInfo.transaction_amount,
+                            status: paymentInfo.status,
+                            usuario_id: metadata.user_id,
+                            anuncio_id: anuncioId
+                        });
                     }
 
                     // Record Bonus if applicable

@@ -52,8 +52,15 @@ Anuncio.belongsTo(State, { foreignKey: 'estado_id', targetKey: 'abbreviation' })
 Anuncio.belongsTo(City, { foreignKey: 'cidade_id' });
 
 // Images - Use old model for now but might need renaming foreign key 'anuncio_id' -> 'anuncio_id' (it was 'anuncio_id' already).
+// Images - Use old model for now but might need renaming foreign key 'anuncio_id' -> 'anuncio_id' (it was 'anuncio_id' already).
 Anuncio.hasMany(AnuncioImage, { foreignKey: 'anuncio_id', as: 'images' });
 AnuncioImage.belongsTo(Anuncio, { foreignKey: 'anuncio_id' });
+
+// Payment Associations
+Payment.belongsTo(Usuario, { foreignKey: 'usuario_id' });
+Payment.belongsTo(Anuncio, { foreignKey: 'anuncio_id' });
+Usuario.hasMany(Payment, { foreignKey: 'usuario_id' });
+Anuncio.hasMany(Payment, { foreignKey: 'anuncio_id' });
 
 module.exports = {
     sequelize,

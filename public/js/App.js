@@ -3,6 +3,48 @@
 // import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
 // import CategoriasCrudPage from './pages/db_crud/CategoriasCrudPage.js';
 
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false, error: null, errorInfo: null };
+    }
+
+    static getDerivedStateFromError(error) {
+        return { hasError: true, error };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        console.error("React ErrorBoundary caught error:", error, errorInfo);
+        this.setState({ errorInfo });
+    }
+
+    render() {
+        if (this.state.hasError) {
+            return (
+                <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+                    <div className="max-w-xl w-full bg-white shadow-xl rounded-lg p-8">
+                        <h1 className="text-2xl font-bold text-red-600 mb-4">Algo deu errado (Client-Side Error)</h1>
+                        <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-mono overflow-auto max-h-40">
+                            {this.state.error && this.state.error.toString()}
+                            {this.state.errorInfo && this.state.errorInfo.componentStack}
+                        </div>
+                        <div className="flex gap-4">
+                            <button onClick={() => window.location.reload()} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold transition">
+                                Recarregar Página
+                            </button>
+                            <button onClick={() => { localStorage.clear(); window.location.href = '/'; }} className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-2 rounded-lg font-bold transition">
+                                Limpar Dados e Ir para Home
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        return this.props.children;
+    }
+}
+
 const App = () => {
     const [currentPage, setCurrentPage] = React.useState('home');
     const [user, setUser] = React.useState(null);
@@ -41,6 +83,9 @@ const App = () => {
                     setChatData({ anuncioId: aid, otherUserId: uid });
                     setCurrentPage('chat');
                 }
+            }
+            else if (hash === '#/admin' || hash.startsWith('#/admin/')) {
+                setCurrentPage('admin');
             }
             // else default is home (state init)
         };
@@ -159,13 +204,15 @@ const App = () => {
     };
 
     return (
-        <div className="min-h-screen flex flex-col">
-            <Header user={user} navigateTo={navigateTo} onLogout={handleLogout} />
-            <main className="flex-grow container mx-auto px-4 py-8">
-                {renderPage()}
-            </main>
-            <Footer navigateTo={navigateTo} />
-        </div>
+        <ErrorBoundary>
+            <div className="min-h-screen flex flex-col">
+                <Header user={user} navigateTo={navigateTo} onLogout={handleLogout} />
+                <main className="flex-grow container mx-auto px-4 py-8">
+                    {renderPage()}
+                </main>
+                <Footer navigateTo={navigateTo} />
+            </div>
+        </ErrorBoundary>
     );
 };
 

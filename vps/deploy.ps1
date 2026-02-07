@@ -18,8 +18,8 @@ if (Test-Path $LOCAL_ARCHIVE) { Remove-Item $LOCAL_ARCHIVE }
 
 # 2. Compress Project (Excluding node_modules and big files)
 Write-Host ">>> Zipping project files..." -ForegroundColor Yellow
-$excludes = @("node_modules", ".git", ".env", "deploy_package.zip", "tmp")
-Compress-Archive -Path ./* -DestinationPath $LOCAL_ARCHIVE -Update
+$excludes = @("node_modules", ".git", ".env", "deploy_package.zip", "tmp", "backend/node_modules")
+Get-ChildItem -Path . -Exclude $excludes | Compress-Archive -DestinationPath $LOCAL_ARCHIVE -Update
 
 # 3. Create Remote Directory if not exists
 Write-Host ">>> Creating remote dir..."

@@ -43,6 +43,17 @@ async function seedManual() {
             });
         }
 
+        // --- DASHCAM SPECIFIC AD ---
+        await Propaganda.create({
+            titulo: 'Câmera Veicular Segurança Gravador Dashcam Uber Cartão 32gb',
+            imagem_url: '/img/ads/dashcam.jpg', // Local image
+            link_destino: 'https://mercadolivre.com.br', // PLACEHOLDER - ATUALIZAR
+            preco: 219.00,
+            localizacao: 'sidebar',
+            ativo: true
+        });
+        // ---------------------------
+
         console.log(`[Seed] Success! ${MANUAL_LINKS.length} ads active.`);
     } catch (error) {
         console.error('[Seed] Error:', error);
