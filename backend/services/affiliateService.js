@@ -49,6 +49,18 @@ async function getAccessToken() {
 }
 
 exports.runAffiliateUpdate = async () => {
+    // Check if bot is active
+    try {
+        const setting = await SystemSetting.findByPk('ml_bot_active');
+        if (!setting || setting.value !== 'true') {
+            console.log('[Affiliate Bot] SKIPPING: Bot is disabled in settings.');
+            return;
+        }
+    } catch (e) {
+        console.error('[Affiliate Bot] Error checking status:', e.message);
+        return;
+    }
+
     console.log('[Affiliate Bot] Starting daily update (User Context)...');
 
     if (!APP_ID || !CLIENT_SECRET) {
@@ -84,43 +96,72 @@ exports.runAffiliateUpdate = async () => {
 
         console.log(`[Affiliate Bot] Found ${highlightItems.length} highlights directly.`);
 
-        // Filter valid MLB IDs (Standard items, avoid 'MLBU' used items for now if problematic)
-        const validIds = highlightItems
-            .map(i => i.id)
-            .filter(id => id && id.startsWith('MLB') && !id.startsWith('MLBU'))
+        // Filter valid items and keep their type
+        const validItems = highlightItems
+            .filter(i => i.id && i.id.startsWith('MLB') && !i.id.startsWith('MLBU'))
             .slice(0, 15); // Process top 15
 
-        console.log(`[Affiliate Bot] Processing ${validIds.length} valid MLB items sequentially...`);
+        console.log(`[Affiliate Bot] Processing ${validItems.length} valid items sequentially...`);
         console.log(`[Debug] DB Host: ${process.env.DB_HOST}, DB Name: ${process.env.DB_NAME}`);
 
         let addedCount = 0;
 
-        for (const itemId of validIds) {
+        for (const itemData of validItems) {
             try {
-                // Fetch public item details individually to avoid batch Auth requirement
-                const itemRes = await axios.get(`${ML_API_URL}/items/${itemId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-                    }
-                });
+                let title, imageUrl, affiliateLink, price;
 
-                const item = itemRes.data;
-                const affiliateLink = item.permalink;
+                // Handle Catalog Products (TYPE: PRODUCT)
+                if (itemData.type === 'PRODUCT') {
+                    const productRes = await axios.get(`${ML_API_URL}/products/${itemData.id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                        }
+                    });
+                    const p = productRes.data;
+                    title = p.name;
+                    imageUrl = p.pictures?.[0]?.url;
+                    affiliateLink = `https://www.mercadolivre.com.br/p/${itemData.id}`; // Construct Catalog URL
+                    // Catalog products don't always have a single price, usually a range. 
+                    // We might need to fetch a 'buy_box_winner' price if available, or just leave it 0/null?
+                    // Let's try to find a price if possible, or use 0.
+                    // The 'pickers' or 'buy_box_winner' might be in the response but typically require 'items' to get price.
+                    // For now, we accept 0 or generic price.
+                    price = 0; // We can't easily get the live price of a catalog product without checking sellers.
+
+                } else {
+                    // Handle Standard Listings (TYPE: ITEM) - LIKELY TO FAIL IN TEST MODE
+                    // But we keep the logic just in case provided token works for some.
+                    const itemRes = await axios.get(`${ML_API_URL}/items/${itemData.id}`, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+                        }
+                    });
+                    const i = itemRes.data;
+                    title = i.title;
+                    imageUrl = i.thumbnail;
+                    affiliateLink = i.permalink;
+                    price = i.price;
+                }
 
                 if (!affiliateLink) continue;
+
+                // Ensure HTTPS in image
+                if (imageUrl) imageUrl = imageUrl.replace('http://', 'https://');
 
                 const exists = await Propaganda.findOne({ where: { link_destino: affiliateLink } });
 
                 if (!exists) {
                     await Propaganda.create({
-                        titulo: (item.title || 'Produto sem título').substring(0, 255),
-                        imagem_url: (item.thumbnail || item.pictures?.[0]?.url || '').replace('http://', 'https://'),
+                        titulo: (title || 'Produto sem título').substring(0, 255),
+                        imagem_url: imageUrl || '',
                         link_destino: affiliateLink,
                         localizacao: 'sidebar',
+                        preco: price || 0,
                         ativo: true
                     });
-                    console.log(`[Affiliate Bot] Added: ${item.title}`);
+                    console.log(`[Affiliate Bot] Added (${itemData.type}): ${title}`);
                     addedCount++;
                 } else {
                     if (exists.localizacao !== 'sidebar') {
@@ -132,10 +173,10 @@ exports.runAffiliateUpdate = async () => {
                 await new Promise(r => setTimeout(r, 500));
 
             } catch (err) {
-                console.warn(`[Affiliate Bot] Failed to fetch item ${itemId}: ${err.message}`);
-                if (err.response && err.response.status === 403) {
-                    console.warn('403 Forbidden on item. Skipping.');
-                }
+                console.warn(`[Affiliate Bot] Failed to fetch ${itemData.id} (${itemData.type}): ${err.message}`);
+                // if (err.response && err.response.status === 403) {
+                //     console.warn('403 Forbidden. Skipping.');
+                // }
             }
         }
 
