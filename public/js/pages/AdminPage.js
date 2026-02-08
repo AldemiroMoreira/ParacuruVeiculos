@@ -278,228 +278,227 @@ return (
                                 window.open('https://www.mercadolivre.com.br/afiliados/linkbuilder#hub', '_blank');
                                 window.location.href = '/api/propagandas/export-links';
                             }} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬇ Exportar Links</button>
-                            window.location.href = '/api/propagandas/export-links';
-                                }} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬇ Exportar Links</button>
-                        <button onClick={() => setImportingLinks(true)} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬆ Importar Links</button>
-                        <button onClick={handleToggleBot} className={`text-xs px-3 py-1.5 rounded font-bold text-white transition ${botActive ? 'bg-green-600 hover:bg-green-700' : 'bg-red-500 hover:bg-red-600'}`}>
-                            {botActive ? '🤖 Robô ON' : '🤖 Robô OFF'}
-                        </button>
-                        <button onClick={() => setEditingAd({})} className="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 font-medium">+ Novo Anúncio</button>
-                    </div>
-                </div>
-            <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-gray-600">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="p-2">ID</th>
-                            <th className="p-2">Imagem</th>
-                            <th className="p-2">Título/Link</th>
-                            <th className="p-2">Preço</th>
-                            <th className="p-2">Local</th>
-                            <th className="p-2">Views/Clicks</th>
-                            <th className="p-2">Status</th>
-                            <th className="p-2">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100">
-                        {Array.isArray(ads) && ads.map(ad => (
-                            <tr key={ad.id} className="hover:bg-gray-50">
-                                <td className="p-2">#{ad.id}</td>
-                                <td className="p-2">
-                                    <img src={ad.imagem_url || '/favicon.svg'} alt="" className="w-10 h-10 object-contain rounded border bg-white" />
-                                </td>
-                                <td className="p-2 max-w-xs truncate">
-                                    <div className="font-bold text-gray-800 truncate" title={ad.titulo}>{ad.titulo || 'Sem título'}</div>
-                                    <a href={ad.link_destino || '#'} target="_blank" className="text-blue-500 hover:underline truncate block" title={ad.link_destino}>{ad.link_destino || 'Sem Link'}</a>
-                                </td>
-                                <td className="p-2 font-bold text-green-700">R$ {ad.preco || '0.00'}</td>
-                                <td className="p-2">{ad.localizacao || '-'}</td>
-                                <td className="p-2 text-xs">
-                                    <div title="Visualizações">👁 {ad.views || 0}</div>
-                                    <div title="Cliques" className="text-blue-600">🖱 {ad.clicks || 0}</div>
-                                </td>
-                                <td className="p-2">
-                                    {ad.ativo ? <span className="text-green-600 font-bold">Ativo</span> : <span className="text-red-400">Inativo</span>}
-                                </td>
-                                <td className="p-2 flex gap-1">
-                                    <button onClick={() => setEditingAd(ad)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Editar">✏️</button>
-                                    <button onClick={() => handleDeletePropaganda(ad.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Excluir">🗑</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </>
-                )}
 
-        {activeTab === 'users' && (
-            <>
-                <div className="p-3 border-b border-gray-100 flex justify-between items-center">
-                    <h3 className="font-bold text-gray-900 text-sm">Gerenciar Usuários ({users.length})</h3>
-                    <button onClick={() => setActiveTab('db')} className="text-xs text-blue-600 hover:underline">Voltar para Banco de Dados</button>
-                </div>
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-gray-600">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="p-2">ID</th>
-                                <th className="p-2">Nome</th>
-                                <th className="p-2">Email</th>
-                                <th className="p-2">Verificado</th>
-                                <th className="p-2">Admin</th>
-                                <th className="p-2">Status</th>
-                                <th className="p-2">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {users.map(u => (
-                                <tr key={u.id}>
-                                    <td className="p-2">#{u.id}</td>
-                                    <td className="p-2 font-medium text-gray-900">{u.nome}</td>
-                                    <td className="p-2">{u.email}</td>
-                                    <td className="p-2">{u.isVerified ? 'Sim' : 'Não'}</td>
-                                    <td className="p-2">{u.isAdmin ? 'SIM' : '-'}</td>
-                                    <td className="p-2">
-                                        {u.isBanned ? <span className="text-red-600 font-bold">BANIDO</span> : <span className="text-green-600">Ativo</span>}
-                                    </td>
-                                    <td className="p-2">
-                                        {!u.isAdmin && (
-                                            <button
-                                                onClick={() => handleBan(u.id)}
-                                                className={`px-2 py-1 rounded text-[10px] font-bold text-white ${u.isBanned ? 'bg-gray-500 hover:bg-gray-600' : 'bg-red-500 hover:bg-red-600'}`}
-                                            >
-                                                {u.isBanned ? 'Desbanir' : 'Banir'}
-                                            </button>
-                                        )}
-                                        {!u.isVerified && (
-                                            <button
-                                                onClick={() => handleVerify(u.id)}
-                                                className="ml-1 px-2 py-1 rounded text-[10px] font-bold text-white bg-green-500 hover:bg-green-600"
-                                            >
-                                                Ativar
-                                            </button>
-                                        )}
-                                    </td>
+                            <button onClick={() => setImportingLinks(true)} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬆ Importar Links</button>
+                            <button onClick={handleToggleBot} className={`text-xs px-3 py-1.5 rounded font-bold text-white transition ${botActive ? 'bg-green-600 hover:bg-green-700' : 'bg-red-500 hover:bg-red-600'}`}>
+                                {botActive ? '🤖 Robô ON' : '🤖 Robô OFF'}
+                            </button>
+                            <button onClick={() => setEditingAd({})} className="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 font-medium">+ Novo Anúncio</button>
+                        </div>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs text-gray-600">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="p-2">ID</th>
+                                    <th className="p-2">Imagem</th>
+                                    <th className="p-2">Título/Link</th>
+                                    <th className="p-2">Preço</th>
+                                    <th className="p-2">Local</th>
+                                    <th className="p-2">Views/Clicks</th>
+                                    <th className="p-2">Status</th>
+                                    <th className="p-2">Ações</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </>
-        )}
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {Array.isArray(ads) && ads.map(ad => (
+                                    <tr key={ad.id} className="hover:bg-gray-50">
+                                        <td className="p-2">#{ad.id}</td>
+                                        <td className="p-2">
+                                            <img src={ad.imagem_url || '/favicon.svg'} alt="" className="w-10 h-10 object-contain rounded border bg-white" />
+                                        </td>
+                                        <td className="p-2 max-w-xs truncate">
+                                            <div className="font-bold text-gray-800 truncate" title={ad.titulo}>{ad.titulo || 'Sem título'}</div>
+                                            <a href={ad.link_destino || '#'} target="_blank" className="text-blue-500 hover:underline truncate block" title={ad.link_destino}>{ad.link_destino || 'Sem Link'}</a>
+                                        </td>
+                                        <td className="p-2 font-bold text-green-700">R$ {ad.preco || '0.00'}</td>
+                                        <td className="p-2">{ad.localizacao || '-'}</td>
+                                        <td className="p-2 text-xs">
+                                            <div title="Visualizações">👁 {ad.views || 0}</div>
+                                            <div title="Cliques" className="text-blue-600">🖱 {ad.clicks || 0}</div>
+                                        </td>
+                                        <td className="p-2">
+                                            {ad.ativo ? <span className="text-green-600 font-bold">Ativo</span> : <span className="text-red-400">Inativo</span>}
+                                        </td>
+                                        <td className="p-2 flex gap-1">
+                                            <button onClick={() => setEditingAd(ad)} className="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Editar">✏️</button>
+                                            <button onClick={() => handleDeletePropaganda(ad.id)} className="p-1.5 text-red-600 hover:bg-red-50 rounded" title="Excluir">🗑</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            )}
 
-        {activeTab === 'db' && (
-            <div className="p-8 text-center space-y-4">
-                <h3 className="font-bold text-xl">Ferramentas de Banco de Dados</h3>
-                <div className="flex flex-wrap gap-2 justify-center">
-                    <button onClick={() => navigateTo('db_crud_users')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Gerenciar Usuários</button>
-                    <button onClick={() => navigateTo('db_crud_anuncios')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Gerenciar Anúncios</button>
-                    <button onClick={() => navigateTo('db_crud_planos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Planos</button>
-                    <button onClick={() => navigateTo('db_crud_categorias')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Categorias</button>
-                    <button onClick={() => navigateTo('db_crud_fabricantes')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Fabricantes</button>
-                    <button onClick={() => navigateTo('db_crud_modelos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Modelos</button>
-                    <button onClick={() => navigateTo('ml-auth')} className="bg-yellow-400 text-gray-900 font-bold px-4 py-2 rounded shadow hover:bg-yellow-500">Conectar Mercado Livre</button>
-                    <button onClick={() => {
-                        if (confirm('Isso vai popular estados e cidades (pode demorar). Continuar?')) {
-                            const token = localStorage.getItem('admin_token');
-                            alert('Iniciando... aguarde o alerta de sucesso.');
-                            axios.post('/api/admin/populate-locations', {}, { headers: { Authorization: 'Bearer ' + token } })
-                                .then(res => alert(res.data.message))
-                                .catch(err => alert('Erro: ' + (err.response?.data?.error || err.message)));
-                        }
-                    }} className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Popular Cidades</button>
-                </div>
-                <div className="pt-8 border-t">
-                    <button
-                        onClick={handleReset}
-                        className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg"
-                    >
-                        ⚠️ RESETAR SISTEMA COMPLETO ⚠️
-                    </button>
-                </div>
-            </div>
-        )}
+            {activeTab === 'users' && (
+                <>
+                    <div className="p-3 border-b border-gray-100 flex justify-between items-center">
+                        <h3 className="font-bold text-gray-900 text-sm">Gerenciar Usuários ({users.length})</h3>
+                        <button onClick={() => setActiveTab('db')} className="text-xs text-blue-600 hover:underline">Voltar para Banco de Dados</button>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-left text-xs text-gray-600">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="p-2">ID</th>
+                                    <th className="p-2">Nome</th>
+                                    <th className="p-2">Email</th>
+                                    <th className="p-2">Verificado</th>
+                                    <th className="p-2">Admin</th>
+                                    <th className="p-2">Status</th>
+                                    <th className="p-2">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {users.map(u => (
+                                    <tr key={u.id}>
+                                        <td className="p-2">#{u.id}</td>
+                                        <td className="p-2 font-medium text-gray-900">{u.nome}</td>
+                                        <td className="p-2">{u.email}</td>
+                                        <td className="p-2">{u.isVerified ? 'Sim' : 'Não'}</td>
+                                        <td className="p-2">{u.isAdmin ? 'SIM' : '-'}</td>
+                                        <td className="p-2">
+                                            {u.isBanned ? <span className="text-red-600 font-bold">BANIDO</span> : <span className="text-green-600">Ativo</span>}
+                                        </td>
+                                        <td className="p-2">
+                                            {!u.isAdmin && (
+                                                <button
+                                                    onClick={() => handleBan(u.id)}
+                                                    className={`px-2 py-1 rounded text-[10px] font-bold text-white ${u.isBanned ? 'bg-gray-500 hover:bg-gray-600' : 'bg-red-500 hover:bg-red-600'}`}
+                                                >
+                                                    {u.isBanned ? 'Desbanir' : 'Banir'}
+                                                </button>
+                                            )}
+                                            {!u.isVerified && (
+                                                <button
+                                                    onClick={() => handleVerify(u.id)}
+                                                    className="ml-1 px-2 py-1 rounded text-[10px] font-bold text-white bg-green-500 hover:bg-green-600"
+                                                >
+                                                    Ativar
+                                                </button>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
+            )}
 
-    </div>
-            {/* EDIT MODAL */ }
-{
-    editingAd && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg overflow-y-auto max-h-[90vh]">
-                <h3 className="font-bold text-xl mb-4">{editingAd.id ? 'Editar Propaganda' : 'Nova Propaganda'}</h3>
-                <form onSubmit={handleSavePropaganda} className="space-y-4">
-                    <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase">Título</label>
-                        <input name="titulo" defaultValue={editingAd.titulo} className="w-full border p-2 rounded" required />
+            {activeTab === 'db' && (
+                <div className="p-8 text-center space-y-4">
+                    <h3 className="font-bold text-xl">Ferramentas de Banco de Dados</h3>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                        <button onClick={() => navigateTo('db_crud_users')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Gerenciar Usuários</button>
+                        <button onClick={() => navigateTo('db_crud_anuncios')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Gerenciar Anúncios</button>
+                        <button onClick={() => navigateTo('db_crud_planos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Planos</button>
+                        <button onClick={() => navigateTo('db_crud_categorias')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Categorias</button>
+                        <button onClick={() => navigateTo('db_crud_fabricantes')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Fabricantes</button>
+                        <button onClick={() => navigateTo('db_crud_modelos')} className="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700">Editar Modelos</button>
+                        <button onClick={() => navigateTo('ml-auth')} className="bg-yellow-400 text-gray-900 font-bold px-4 py-2 rounded shadow hover:bg-yellow-500">Conectar Mercado Livre</button>
+                        <button onClick={() => {
+                            if (confirm('Isso vai popular estados e cidades (pode demorar). Continuar?')) {
+                                const token = localStorage.getItem('admin_token');
+                                alert('Iniciando... aguarde o alerta de sucesso.');
+                                axios.post('/api/admin/populate-locations', {}, { headers: { Authorization: 'Bearer ' + token } })
+                                    .then(res => alert(res.data.message))
+                                    .catch(err => alert('Erro: ' + (err.response?.data?.error || err.message)));
+                            }
+                        }} className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">Popular Cidades</button>
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 uppercase">Preço (R$)</label>
-                            <input name="preco" type="number" step="0.01" defaultValue={editingAd.preco} className="w-full border p-2 rounded" />
-                        </div>
-                        <div>
-                            <label className="block text-xs font-bold text-gray-500 uppercase">Localização</label>
-                            <select name="localizacao" defaultValue={editingAd.localizacao || 'sidebar'} className="w-full border p-2 rounded">
-                                <option value="sidebar">Sidebar/Lateral</option>
-                                <option value="home_middle">Home (Meio)</option>
-                                <option value="home_top">Home (Topo)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase">Link de Destino</label>
-                        <input name="link_destino" defaultValue={editingAd.link_destino} className="w-full border p-2 rounded" required />
-                    </div>
-                    <div>
-                        <label className="block text-xs font-bold text-gray-500 uppercase">Imagem</label>
-                        {editingAd.imagem_url && (
-                            <div className="mb-2">
-                                <img src={editingAd.imagem_url} alt="Atual" className="h-20 object-contain border rounded" />
-                            </div>
-                        )}
-                        <input type="file" name="imagem" className="w-full border p-2 rounded text-sm" accept="image/*" required={!editingAd.id} />
-                        <input type="hidden" name="imagem_url" defaultValue={editingAd.imagem_url} />
-                        <div className="text-[10px] text-gray-400 mt-1">
-                            Selecione um arquivo para substituir a imagem atual.
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <input type="checkbox" name="ativo" defaultChecked={editingAd.ativo !== false} id="activeCheck" />
-                        <label htmlFor="activeCheck" className="text-sm font-medium">Anúncio Ativo</label>
-                    </div>
-                    <div className="flex justify-end gap-2 pt-4 border-t">
-                        <button type="button" onClick={() => setEditingAd(null)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
-                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">
-                            {editingAd.id ? 'Salvar Alterações' : 'Criar Propaganda'}
+                    <div className="pt-8 border-t">
+                        <button
+                            onClick={handleReset}
+                            className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg"
+                        >
+                            ⚠️ RESETAR SISTEMA COMPLETO ⚠️
                         </button>
                     </div>
-                </form>
-            </div>
-        </div>
-    )
-}
+                </div>
+            )}
 
-{
-    importingLinks && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg">
-                <h3 className="font-bold text-xl mb-4">Importar Links (Bulk)</h3>
-                <p className="text-xs text-gray-500 mb-4">
-                    Cole a lista de links gerados pelo Mercado Livre. <br />
-                    <strong>Importante:</strong> A atualização é sequencial pelo ID. O primeiro link irá para o primeiro anúncio cadastrado (ID menor), e assim por diante.
-                </p>
-                <form onSubmit={handleImportLinks} className="space-y-4">
-                    <textarea name="links" rows="10" className="w-full border p-2 rounded text-xs font-mono" placeholder="https://mercadolivre.com/..." required></textarea>
-                    <div className="flex justify-end gap-2 pt-4 border-t">
-                        <button type="button" onClick={() => setImportingLinks(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
-                        <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">Importar</button>
-                    </div>
-                </form>
-            </div>
         </div>
-    )
-}
-        </div >
-    );
+        {/* EDIT MODAL */}
+        {
+            editingAd && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg overflow-y-auto max-h-[90vh]">
+                        <h3 className="font-bold text-xl mb-4">{editingAd.id ? 'Editar Propaganda' : 'Nova Propaganda'}</h3>
+                        <form onSubmit={handleSavePropaganda} className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase">Título</label>
+                                <input name="titulo" defaultValue={editingAd.titulo} className="w-full border p-2 rounded" required />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 uppercase">Preço (R$)</label>
+                                    <input name="preco" type="number" step="0.01" defaultValue={editingAd.preco} className="w-full border p-2 rounded" />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-gray-500 uppercase">Localização</label>
+                                    <select name="localizacao" defaultValue={editingAd.localizacao || 'sidebar'} className="w-full border p-2 rounded">
+                                        <option value="sidebar">Sidebar/Lateral</option>
+                                        <option value="home_middle">Home (Meio)</option>
+                                        <option value="home_top">Home (Topo)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase">Link de Destino</label>
+                                <input name="link_destino" defaultValue={editingAd.link_destino} className="w-full border p-2 rounded" required />
+                            </div>
+                            <div>
+                                <label className="block text-xs font-bold text-gray-500 uppercase">Imagem</label>
+                                {editingAd.imagem_url && (
+                                    <div className="mb-2">
+                                        <img src={editingAd.imagem_url} alt="Atual" className="h-20 object-contain border rounded" />
+                                    </div>
+                                )}
+                                <input type="file" name="imagem" className="w-full border p-2 rounded text-sm" accept="image/*" required={!editingAd.id} />
+                                <input type="hidden" name="imagem_url" defaultValue={editingAd.imagem_url} />
+                                <div className="text-[10px] text-gray-400 mt-1">
+                                    Selecione um arquivo para substituir a imagem atual.
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <input type="checkbox" name="ativo" defaultChecked={editingAd.ativo !== false} id="activeCheck" />
+                                <label htmlFor="activeCheck" className="text-sm font-medium">Anúncio Ativo</label>
+                            </div>
+                            <div className="flex justify-end gap-2 pt-4 border-t">
+                                <button type="button" onClick={() => setEditingAd(null)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
+                                <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">
+                                    {editingAd.id ? 'Salvar Alterações' : 'Criar Propaganda'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )
+        }
+
+        {
+            importingLinks && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg">
+                        <h3 className="font-bold text-xl mb-4">Importar Links (Bulk)</h3>
+                        <p className="text-xs text-gray-500 mb-4">
+                            Cole a lista de links gerados pelo Mercado Livre. <br />
+                            <strong>Importante:</strong> A atualização é sequencial pelo ID. O primeiro link irá para o primeiro anúncio cadastrado (ID menor), e assim por diante.
+                        </p>
+                        <form onSubmit={handleImportLinks} className="space-y-4">
+                            <textarea name="links" rows="10" className="w-full border p-2 rounded text-xs font-mono" placeholder="https://mercadolivre.com/..." required></textarea>
+                            <div className="flex justify-end gap-2 pt-4 border-t">
+                                <button type="button" onClick={() => setImportingLinks(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
+                                <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">Importar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )
+        }
+    </div >
+);
 };
