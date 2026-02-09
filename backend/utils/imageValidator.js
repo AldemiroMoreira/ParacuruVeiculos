@@ -8,11 +8,25 @@ let model = null;
 
 const POSSIBLE_VEHICLES = [
     'minivan', 'sports car', 'convertible', 'limousine', 'jeep', 'landrover',
-    'cab', 'taxi', 'racer', 'race car', 'moving van', 'trailer truck',
-    'tow truck', 'fire engine', 'bus', 'minibus', 'recreational vehicle',
-    'motor scooter', 'moped', 'motorcycle', 'snowmobile', 'tractor', 'tricycle',
-    'bicycle', 'mountain bike', 'car wheel', 'traffic light', 'pickup', 'pickup truck',
-    'beach wagon', 'station wagon', 'ambulance', 'police van', 'golfcart', 'go-kart'
+    // Trucks & Heavy
+    'trailer truck', 'tow truck', 'fire engine', 'garbage truck', 'pickup', 'pickup truck',
+    'delivery truck', 'police van', 'snowplow', 'harvester', 'tractor',
+    // Buses
+    'bus', 'minibus', 'school bus', 'trolleybus',
+    // Interactions & Parts
+    'seat belt', 'odometer', 'speedometer', 'car mirror', 'dashboard', 'seat',
+    'steering wheel', 'switch', 'control panel',
+    // Engine & Mechanics
+    'grille', 'radiator', 'disk brake', 'engine', 'chassis', 'motor',
+    // Boats
+    'schooner', 'speedboat', 'lifeboat', 'catamaran', 'trimaran', 'container ship',
+    'liner', 'pirate', 'ship', 'boat', 'yacht', 'canoe', 'submarine', 'paddle', 'paddlewheel',
+    // Aircraft
+    'airliner', 'warplane', 'airship', 'balloon', 'space shuttle', 'aircraft', 'airplane', 'helicopter',
+    // Other related
+    'passenger car', 'freight car', 'electric locomotive', 'forklift', 'golfcart', 'go-kart',
+    'motor scooter', 'moped', 'motorcycle', 'snowmobile', 'tricycle', 'bicycle', 'mountain bike',
+    'car wheel', 'traffic light', 'beach wagon', 'station wagon', 'ambulance'
 ];
 
 /**

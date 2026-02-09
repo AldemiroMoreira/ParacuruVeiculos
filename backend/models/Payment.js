@@ -26,6 +26,10 @@ const Payment = sequelize.define('Payment', {
         type: DataTypes.STRING,
         defaultValue: 'pending'
     },
+    mp_payment_data: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     usuario_id: {
         type: DataTypes.INTEGER,
         allowNull: false

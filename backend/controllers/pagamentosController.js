@@ -67,6 +67,7 @@ exports.createPreference = async (req, res) => {
                 failure: `${process.env.BASE_URL}/api/pagamentos/failure`,
                 pending: `${process.env.BASE_URL}/api/pagamentos/pending`
             },
+            notification_url: 'https://paracuruveiculos.com.br/api/pagamentos/webhook',
             metadata: {
                 anuncio_id: anuncio.id,
                 user_id: usuario_id,
@@ -117,85 +118,94 @@ exports.webhook = async (req, res) => {
             console.log(`Payment Webhook received for ID: ${id}`);
 
             // Instantiate MP Payment Client
-            // We use mp.Payment because Payment is occupied by our model
             const PaymentClient = mp.Payment;
             const paymentClient = new PaymentClient(client);
 
             const paymentInfo = await paymentClient.get({ id });
 
-            if (paymentInfo.status === 'approved') {
+            if (paymentInfo) {
                 const metadata = paymentInfo.metadata;
                 const anuncioId = metadata.anuncio_id;
                 const planId = metadata.plan_id;
                 const isRenewal = metadata.is_renewal === 'true' || metadata.is_renewal === true;
                 const discountAmount = Number(metadata.discount_amount || 0);
 
-                const anuncio = await Anuncio.findByPk(anuncioId);
-                const plan = await Plano.findByPk(planId);
+                // Find local payment by external_ref (Preference ID) OR by the Payment ID itself if already updated
+                let localPayment = await Payment.findOne({
+                    where: {
+                        anuncio_id: anuncioId,
+                        status: 'pending'
+                    },
+                    order: [['created_at', 'DESC']]
+                });
 
-                if (anuncio && plan) {
-                    let newExpiresAt;
-                    const planDays = plan.duracao_dias;
+                // If not found by pending, try finding by external_ref = payment_id (idempotency)
+                if (!localPayment) {
+                    localPayment = await Payment.findOne({ where: { external_ref: String(id) } });
+                }
 
-                    if (isRenewal && anuncio.expires_at && new Date(anuncio.expires_at) > new Date()) {
-                        // Add to existing expiration
-                        const currentExpires = new Date(anuncio.expires_at);
-                        currentExpires.setDate(currentExpires.getDate() + planDays);
-                        newExpiresAt = currentExpires;
-                    } else {
-                        // Set from now
-                        const now = new Date();
-                        now.setDate(now.getDate() + planDays);
-                        newExpiresAt = now;
-                    }
-
-                    // Update Anuncio
-                    await anuncio.update({
-                        status: 'active',
-                        expires_at: newExpiresAt
+                if (localPayment) {
+                    await localPayment.update({
+                        status: paymentInfo.status,
+                        external_ref: String(id),
+                        mp_payment_data: JSON.stringify(paymentInfo) // Save full return code
                     });
-
-                    // Update Local Payment Record
-                    // We search for the PENDING payment for this ad, since external_ref matches Preference ID, not Payment ID
-                    const localPayment = await Payment.findOne({
-                        where: {
-                            anuncio_id: anuncioId,
-                            status: 'pending'
-                        },
-                        order: [['created_at', 'DESC']]
+                    console.log(`Pagamento local ID ${localPayment.id} atualizado para ${paymentInfo.status}`);
+                } else {
+                    console.warn(`Nenhum pagamento encontrado para o Anúncio ${anuncioId}. Criando registro...`);
+                    // Create new record if missing
+                    localPayment = await Payment.create({
+                        external_ref: String(id),
+                        amount: paymentInfo.transaction_amount,
+                        status: paymentInfo.status,
+                        usuario_id: metadata.user_id,
+                        anuncio_id: anuncioId,
+                        mp_payment_data: JSON.stringify(paymentInfo)
                     });
+                }
 
-                    if (localPayment) {
-                        await localPayment.update({
-                            status: paymentInfo.status,
-                            external_ref: String(id) // Update to the actual Payment ID
+                if (paymentInfo.status === 'approved') {
+                    const anuncio = await Anuncio.findByPk(anuncioId);
+                    const plan = await Plano.findByPk(planId);
+
+                    if (anuncio && plan) {
+                        let newExpiresAt;
+                        const planDays = plan.duracao_dias;
+
+                        if (isRenewal && anuncio.expires_at && new Date(anuncio.expires_at) > new Date()) {
+                            // Add to existing expiration
+                            const currentExpires = new Date(anuncio.expires_at);
+                            currentExpires.setDate(currentExpires.getDate() + planDays);
+                            newExpiresAt = currentExpires;
+                        } else {
+                            // Set from now
+                            const now = new Date();
+                            now.setDate(now.getDate() + planDays);
+                            newExpiresAt = now;
+                        }
+
+                        await anuncio.update({
+                            status: 'active',
+                            expires_at: newExpiresAt
                         });
-                        console.log(`Pagamento local ID ${localPayment.id} atualizado para ${paymentInfo.status}`);
-                    } else {
-                        console.warn(`Nenhum pagamento pendente encontrado para o Anúncio ${anuncioId}. Criando registro...`);
-                        // Optional: Create a record if one doesn't exist (e.g. direct link payment?)
-                        await Payment.create({
-                            external_ref: String(id),
-                            amount: paymentInfo.transaction_amount,
-                            status: paymentInfo.status,
-                            usuario_id: metadata.user_id,
-                            anuncio_id: anuncioId
-                        });
+                        console.log(`Anuncio ${anuncioId} ativado/renovado até ${newExpiresAt}`);
+
+                        // Record Bonus if applicable
+                        if (isRenewal && discountAmount > 0) {
+                            // Check if bonus already exists to prevent duplicate
+                            const existingBonus = await Bonificacao.findOne({ where: { payment_id: String(id) } });
+                            if (!existingBonus) {
+                                await Bonificacao.create({
+                                    usuario_id: metadata.user_id,
+                                    anuncio_id: anuncioId,
+                                    tipo: 'renovacao_antecipada',
+                                    payment_id: String(id),
+                                    valor_desconto: discountAmount
+                                });
+                                console.log(`Bônus registrado: R$ ${discountAmount}`);
+                            }
+                        }
                     }
-
-                    // Record Bonus if applicable
-                    if (isRenewal && discountAmount > 0) {
-                        await Bonificacao.create({
-                            usuario_id: metadata.user_id,
-                            anuncio_id: anuncioId,
-                            tipo: 'renovacao_antecipada',
-                            payment_id: String(id),
-                            valor_desconto: discountAmount
-                        });
-                        console.log(`Bônus registrado: R$ ${discountAmount} para Anuncio ${anuncioId}`);
-                    }
-
-                    console.log(`Anuncio ${anuncioId} renovado/ativado até ${newExpiresAt}`);
                 }
             }
         }
@@ -203,8 +213,6 @@ exports.webhook = async (req, res) => {
         res.status(200).send('OK');
     } catch (error) {
         console.error('Webhook Error:', error);
-        // Return 200 to avoid MP retries if it's a code error, or 500 if transient.
-        // Usually 200 is safer to prevent loop if error is permanent.
-        res.status(200).send('Error');
+        res.status(200).send('Error'); // Acknowledge to stop retries if it's a code error
     }
 };
