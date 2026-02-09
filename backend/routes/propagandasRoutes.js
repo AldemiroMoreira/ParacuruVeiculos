@@ -33,4 +33,8 @@ router.delete('/:id', authMiddleware, propagandasController.deletePropaganda);
 router.get('/export-links', authMiddleware, propagandasController.exportLinks);
 router.post('/import-links', authMiddleware, propagandasController.importLinks);
 
+// Bot Control
+router.get('/bot-status', authMiddleware, propagandasController.getBotStatus);
+router.post('/bot-toggle', authMiddleware, propagandasController.toggleBot);
+
 module.exports = router;

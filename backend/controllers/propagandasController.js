@@ -47,6 +47,8 @@ exports.createPropaganda = async (req, res) => {
         const data = req.body;
         if (req.file) {
             data.imagem_url = '/img/ads/' + req.file.filename;
+        } else {
+            return res.status(400).json({ error: 'A imagem é obrigatória.' });
         }
 
         const ad = await Propaganda.create(data);
@@ -95,7 +97,14 @@ exports.deletePropaganda = async (req, res) => {
 exports.exportLinks = async (req, res) => {
     try {
         const ads = await Propaganda.findAll({ order: [['id', 'ASC']] });
-        const links = ads.map(a => a.link_destino).join('\n');
+        const links = ads.map(a => {
+            // Prefer original link if available, otherwise use destination
+            const link = a.link_original || a.link_destino;
+            if (!link || link.includes('/img/') || !link.startsWith('http')) {
+                return ''; // Keep empty line to maintain sequence index
+            }
+            return link;
+        }).join('\n');
         res.header('Content-Type', 'text/plain');
         res.send(links);
     } catch (error) {
@@ -133,5 +142,29 @@ exports.getAllPropagandas = async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar todas propagandas:', error);
         res.status(500).json({ error: 'Erro interno' });
+    }
+};
+
+const SystemSetting = require('../models/SystemSetting');
+
+exports.getBotStatus = async (req, res) => {
+    try {
+        const setting = await SystemSetting.findByPk('ml_bot_active');
+        // Default to active if not set, or inactive? Plan implies toggle. Let's default to false/true based on user preference.
+        // Usually bots are active by default.
+        const isActive = setting ? setting.value === 'true' : false;
+        res.json({ active: isActive });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.toggleBot = async (req, res) => {
+    try {
+        const { active } = req.body;
+        await SystemSetting.upsert({ key: 'ml_bot_active', value: String(active) });
+        res.json({ message: `Robô ${active ? 'Ativado' : 'Desativado'} com sucesso.` });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
 };
