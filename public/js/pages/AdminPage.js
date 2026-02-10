@@ -9,6 +9,8 @@ const AdminPage = ({ navigateTo, user }) => {
     const [editingAd, setEditingAd] = React.useState(null);
     const [importingLinks, setImportingLinks] = React.useState(false);
     const [botActive, setBotActive] = React.useState(false);
+    const [linkManagerOpen, setLinkManagerOpen] = React.useState(false);
+    const [currentLinks, setCurrentLinks] = React.useState('');
 
     const checkAuth = (token) => {
         const config = {
@@ -161,41 +163,45 @@ const AdminPage = ({ navigateTo, user }) => {
 
 
 
-    const handleImportLinks = async (e) => {
+
+
+
+    const handleToggleBot = async () => {
+        try {
+            const token = localStorage.getItem('admin_token');
+            const res = await axios.post('/api/propagandas/bot-toggle', {}, { headers: { Authorization: 'Bearer ' + token } });
+            setBotActive(res.data.active);
+            alert('Bot ' + (res.data.active ? 'Ativado' : 'Desativado'));
+        } catch (error) {
+            alert('Erro ao alterar status do bot: ' + (error.response?.data?.error || error.message));
+        }
+    };
+
+    const handleOpenLinkManager = async () => {
+        try {
+            const token = localStorage.getItem('admin_token');
+            const res = await axios.get('/api/propagandas/export-links', { headers: { Authorization: 'Bearer ' + token } });
+            setCurrentLinks(res.data);
+            setLinkManagerOpen(true);
+        } catch (error) {
+            alert('Erro ao buscar links atuais: ' + error.message);
+        }
+    };
+
+    const handleBulkImport = async (e) => {
         e.preventDefault();
         const links = e.target.links.value;
-        if (!confirm('Isso atualizará os links dos anúncios sequencialmente (ID 1 = Linha 1, ID 2 = Linha 2...). Confirmar?')) return;
+        if (!confirm('Isso atualizará os links dos anúncios sequencialmente. Confirmar?')) return;
 
         try {
             const token = localStorage.getItem('admin_token');
             const res = await axios.post('/api/propagandas/import-links', { links }, { headers: { Authorization: 'Bearer ' + token } });
             alert(res.data.message);
-            setImportingLinks(false);
-            loadDashboard(token); // Refresh list
+            setLinkManagerOpen(false);
+            loadDashboard(token);
         } catch (err) {
             alert('Erro ao importar: ' + (err.response?.data?.error || err.message));
         }
-    };
-
-    const handleToggleBot = async () => {
-        try {
-            const token = localStorage.getItem('admin_token');
-            const newState = !botActive;
-            await axios.post('/api/propagandas/bot-toggle', { active: newState }, { headers: { Authorization: 'Bearer ' + token } });
-            setBotActive(newState);
-            alert(`Robô ${newState ? 'ATIVADO' : 'DESATIVADO'} com sucesso!`);
-        } catch (error) {
-            alert('Erro ao alterar status do robô.');
-        }
-    };
-
-    const handleVerify = async (id) => {
-        try {
-            const token = localStorage.getItem('admin_token');
-            const res = await axios.put(`/api/admin/users/${id}/verify`, {}, { headers: { Authorization: 'Bearer ' + token } });
-            setUsers(users.map(u => u.id === id ? { ...u, isVerified: true } : u));
-            alert('Usuário ativado com sucesso!');
-        } catch (e) { alert('Erro ao verificar usuário'); }
     };
 
     const handleSavePropaganda = async (e) => {
@@ -276,14 +282,14 @@ const AdminPage = ({ navigateTo, user }) => {
                             <div className="flex gap-2">
                                 <button onClick={() => {
                                     window.open('https://www.mercadolivre.com.br/afiliados/linkbuilder#hub', '_blank');
-                                    window.location.href = '/api/propagandas/export-links';
-                                }} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬇ Exportar Links</button>
-
-                                <button onClick={() => setImportingLinks(true)} className="bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded hover:bg-gray-300 font-medium">⬆ Importar Links</button>
+                                    handleOpenLinkManager();
+                                }} className="bg-gray-800 text-white text-xs px-3 py-1.5 rounded hover:bg-gray-900 font-bold border border-gray-600 shadow-sm flex items-center gap-1">
+                                    🔗 Gerenciar Links (Bulk)
+                                </button>
                                 <button onClick={handleToggleBot} className={`text-xs px-3 py-1.5 rounded font-bold text-white transition ${botActive ? 'bg-green-600 hover:bg-green-700' : 'bg-red-500 hover:bg-red-600'}`}>
                                     {botActive ? '🤖 Robô ON' : '🤖 Robô OFF'}
                                 </button>
-                                <button onClick={() => setEditingAd({})} className="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 font-medium">+ Novo Anúncio</button>
+                                <button onClick={() => setEditingAd({})} className="bg-blue-600 text-white text-xs px-3 py-1.5 rounded hover:bg-blue-700 font-medium">+ Nova Propaganda</button>
                             </div>
                         </div>
                         <div className="overflow-x-auto">
@@ -480,21 +486,57 @@ const AdminPage = ({ navigateTo, user }) => {
             }
 
             {
-                importingLinks && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-lg">
-                            <h3 className="font-bold text-xl mb-4">Importar Links (Bulk)</h3>
-                            <p className="text-xs text-gray-500 mb-4">
-                                Cole a lista de links gerados pelo Mercado Livre. <br />
-                                <strong>Importante:</strong> A atualização é sequencial pelo ID. O primeiro link irá para o primeiro anúncio cadastrado (ID menor), e assim por diante.
+                linkManagerOpen && (
+                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 fade-in">
+                        <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-4xl h-[80vh] flex flex-col">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="font-bold text-xl">🔗 Gerenciador de Links de Afiliados</h3>
+                                <button onClick={() => setLinkManagerOpen(false)} className="text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+                            </div>
+
+                            <p className="text-sm text-gray-600 mb-4 bg-blue-50 p-2 rounded border border-blue-100">
+                                O processo funciona em duas etapas: <br />
+                                1. <strong>Copie</strong> os links atuais (da esquerda) para o gerador do Mercado Livre.<br />
+                                2. <strong>Cole</strong> os links gerados (na direita) e clique em Salvar/Importar.
                             </p>
-                            <form onSubmit={handleImportLinks} className="space-y-4">
-                                <textarea name="links" rows="10" className="w-full border p-2 rounded text-xs font-mono" placeholder="https://mercadolivre.com/..." required></textarea>
-                                <div className="flex justify-end gap-2 pt-4 border-t">
-                                    <button type="button" onClick={() => setImportingLinks(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancelar</button>
-                                    <button type="submit" className="px-4 py-2 bg-blue-600 text-white font-bold rounded hover:bg-blue-700">Importar</button>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-hidden">
+                                {/* LEFT: Current Links */}
+                                <div className="flex flex-col h-full">
+                                    <label className="text-xs font-bold text-gray-500 uppercase mb-1">1. Links Originais (Copie daqui)</label>
+                                    <textarea
+                                        readOnly
+                                        className="w-full flex-1 border p-2 rounded text-xs font-mono bg-gray-50 focus:outline-none resize-none"
+                                        value={currentLinks}
+                                        onClick={(e) => e.target.select()}
+                                    ></textarea>
+                                    <button
+                                        onClick={() => { navigator.clipboard.writeText(currentLinks); alert('Links copiados!'); }}
+                                        className="mt-2 text-xs bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-4 rounded font-bold"
+                                    >
+                                        📋 Copiar Todos
+                                    </button>
                                 </div>
-                            </form>
+
+                                {/* RIGHT: New Links */}
+                                <div className="flex flex-col h-full">
+                                    <label className="text-xs font-bold text-gray-500 uppercase mb-1">2. Links Gerados (Cole aqui)</label>
+                                    <form onSubmit={handleBulkImport} className="flex flex-col h-full">
+                                        <textarea
+                                            name="links"
+                                            className="w-full flex-1 border p-2 rounded text-xs font-mono focus:border-blue-500 resize-none"
+                                            placeholder="Cole os links gerados aqui..."
+                                            required
+                                        ></textarea>
+                                        <button
+                                            type="submit"
+                                            className="mt-2 text-xs bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded font-bold"
+                                        >
+                                            💾 Salvar / Importar Links
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 )
